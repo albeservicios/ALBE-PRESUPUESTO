@@ -1,2 +1,16 @@
-# ALBE-PRESUPUESTO
-# ALBE Presupuestos  Sistema de presupuestos para Albe Servicios Generales.  ## Funciones - Nuevo presupuesto - Número de agenda - Clientes - Materiales - Mano de obra - Viáticos y flete - Total automático - Generar PDF - Generar Word - Compartir por WhatsApp - Historial de presupuestos  ## Estado 🚧 En desarrollo.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALBE Presupuestos</title>
+</head>
+
+<body>
+
+<h1>ALBE PRESUPUESTOS</h1>
+
+<p>La aplicación está en construcción.</p>
+
+</body>
+</html>
