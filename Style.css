@@ -1,147 +1,163 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Albe Servicios Generales - Presupuesto</title>
 
-body{
-background:#f2f2f2;
-padding:20px;
-}
+  <link rel="stylesheet" href="style.css">
 
-header{
-background:#0057A8;
-color:#fff;
-padding:20px;
-text-align:center;
-border-radius:10px;
-margin-bottom:20px;
-}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
 
-.container{
-max-width:900px;
-margin:auto;
-background:#fff;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,.15);
-}
+<body>
 
-h2{
-margin-top:25px;
-margin-bottom:15px;
-color:#0057A8;
-}
+<header class="header">
+    <h1>ALBE SERVICIOS GENERALES</h1>
+    <p>Sistema Profesional de Presupuestos</p>
+</header>
 
-label{
-display:block;
-margin-top:15px;
-font-weight:bold;
-}
+<div class="contenedor">
 
-input,textarea{
-width:100%;
-padding:10px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:5px;
-font-size:15px;
-}
+<section class="datos">
 
-textarea{
-height:120px;
-resize:vertical;
-}
+<h2>Datos del Cliente</h2>
 
-table{
-width:100%;
-margin-top:15px;
-border-collapse:collapse;
-}
+<label>Cliente</label>
+<input type="text" id="cliente">
 
-th{
-background:#0057A8;
-color:#fff;
-padding:10px;
-}
+<label>Empresa</label>
+<input type="text" id="empresa">
 
-td{
-border:1px solid #ddd;
-padding:8px;
-}
+<label>Provincia</label>
+<input type="text" id="provincia">
 
-td input{
-width:100%;
-border:none;
-padding:8px;
-}
+<label>Localidad</label>
+<input type="text" id="localidad">
 
-button{
-width:100%;
-padding:14px;
-margin-top:15px;
-background:#0057A8;
-color:#fff;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-transition:.2s;
-}
+<label>Lugar del trabajo</label>
+<input type="text" id="lugar">
 
-button:hover{
-background:#003f7a;
-}
+<label>Fecha</label>
+<input type="date" id="fecha">
 
-.total{
-margin-top:25px;
-font-size:30px;
-font-weight:bold;
-text-align:center;
-color:#0057A8;
-}
+</section>
 
-@media(max-width:700px){
+<section>
 
-table{
-display:block;
-overflow-x:auto;
-}
+<h2>Materiales</h2>
 
-.container{
-padding:15px;
-}
+<table id="tablaMateriales">
 
-}<br>
+<thead>
 
-$
+<tr>
+<th>Descripción</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th>Subtotal</th>
+<th></th>
+</tr>
 
-<span id="total">
+</thead>
 
-0
+<tbody id="materialesBody">
 
-</span>
+</tbody>
 
-</div>
+</table>
 
-<button onclick="calcular()">
-
-💰 Calcular
-
+<button onclick="agregarMaterial()">
+Agregar Material
 </button>
 
-<button onclick="compartirWhatsApp()">
+</section>
 
-📲 WhatsApp
+<section>
 
+<h2>Mano de Obra</h2>
+
+<table id="tablaMano">
+
+<thead>
+
+<tr>
+<th>Descripción</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th>Subtotal</th>
+<th></th>
+</tr>
+
+</thead>
+
+<tbody id="manoBody">
+
+</tbody>
+
+</table>
+
+<button onclick="agregarMano()">
+Agregar Mano de Obra
 </button>
+
+</section>
+
+<section class="viaticos">
+
+<h2>Viáticos</h2>
+
+<label>Kilómetros</label>
+
+<input type="number" id="km" value="0" oninput="calcularTodo()">
+
+<label>Tarifa por KM</label>
+
+<input type="number" id="tarifa" value="570">
+
+<label>Total Viáticos</label>
+
+<input type="number" id="viaticos" readonly>
+
+</section>
+
+<section class="hospedaje">
+
+<h2>Hospedaje</h2>
+
+<label>Días</label>
+
+<input type="number" id="dias" value="0" oninput="calcularTodo()">
+
+<label>Valor por Día</label>
+
+<input type="number" id="valorDia" value="60000">
+
+<label>Total Hospedaje</label>
+
+<input type="number" id="hospedajeTotal" readonly>
+
+</section>
+
+<section class="total">
+
+<h2>TOTAL GENERAL</h2>
+
+<h1 id="totalGeneral">$0</h1>
+
+</section>
+
+<div class="botones">
 
 <button onclick="generarPDF()">
-
-📄 PDF
-
+Generar PDF
 </button>
+
+<button onclick="enviarWhatsApp()">
+Enviar WhatsApp
+</button>
+
+</div>
 
 </div>
 
