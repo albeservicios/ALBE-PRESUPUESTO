@@ -1,96 +1,325 @@
-🏗️ Albe Servicios Generales - Página Web
+<!DOCTYPE html>
+<html lang="es">
+<head>
 
-"Albe Servicios Generales" (capturas/inicio.png)
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-📌 Descripción
+<title>ALBE PRESUPUESTOS</title>
 
-Sitio web oficial desarrollado para Albe Servicios Generales, empresa dedicada a brindar soluciones integrales en construcción, mantenimiento y servicios generales.
+<style>
 
-La página permite mostrar los servicios ofrecidos, información de contacto y facilitar la comunicación con clientes mediante acceso directo a WhatsApp.
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-🚀 Características
+body{
+background:#ececec;
+padding:20px;
+}
 
-✅ Diseño adaptable para celulares, tablets y computadoras.
-✅ Presentación profesional de servicios.
-✅ Sección de información empresarial.
-✅ Botón de contacto directo por WhatsApp.
-✅ Desarrollo con HTML, CSS y JavaScript puro.
+.container{
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 15px rgba(0,0,0,.15);
+}
 
-🛠️ Tecnologías utilizadas
+h1{
+text-align:center;
+color:#0057A8;
+margin-bottom:20px;
+}
 
-- HTML5
-- CSS3
-- JavaScript
+h2{
+margin-top:25px;
+margin-bottom:10px;
+color:#0057A8;
+border-bottom:2px solid #0057A8;
+padding-bottom:5px;
+}
 
-📂 Estructura del proyecto
+label{
+display:block;
+margin-top:12px;
+font-weight:bold;
+}
 
-Albe-Servicios-Web/
-│
-├── index.html          # Página principal
-├── style.css           # Estilos visuales
-├── script.js           # Funciones JavaScript
-│
-├── imagenes/
-│   └── logo.png        # Recursos gráficos
-│
-├── capturas/
-│   └── inicio.png      # Capturas de pantalla
-│
-└── README.md           # Documentación del proyecto
+input,
+textarea{
+width:100%;
+padding:10px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:5px;
+font-size:15px;
+}
 
-⚙️ Instalación y uso
+textarea{
+height:100px;
+resize:vertical;
+}
 
-Opción 1 - Uso local
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
 
-1. Descargar o clonar el repositorio:
+th{
+background:#0057A8;
+color:white;
+padding:10px;
+}
 
-git clone https://github.com/usuario/albe-servicios-web.git
+td{
+border:1px solid #ddd;
+padding:8px;
+}
 
-2. Abrir la carpeta del proyecto.
+button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:6px;
+background:#0057A8;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
 
-3. Ejecutar:
+button:hover{
+background:#003f7c;
+}
 
-index.html
+.total{
+margin-top:20px;
+font-size:30px;
+font-weight:bold;
+text-align:center;
+color:#0057A8;
+}
 
-en cualquier navegador.
+</style>
 
-Opción 2 - Publicar en GitHub Pages
+</head>
 
-1. Ir a la configuración del repositorio.
-2. Entrar en Settings → Pages.
-3. Seleccionar la rama principal.
-4. Guardar y esperar la publicación.
+<body>
 
-La página quedará disponible como sitio web público.
+<div class="container">
 
-📸 Capturas
+<h1>PEDIDO DE PRESUPUESTO</h1>
 
-Página principal
+<h2>Datos</h2>
 
-"Inicio" (capturas/inicio.png)
+<label>N° Agenda</label>
+<input type="text" id="agenda">
 
-Servicios
+<label>Fecha</label>
+<input type="date" id="fecha">
 
-"Servicios" (capturas/servicios.png)
+<label>Cliente</label>
+<input type="text" id="cliente">
 
-Contacto
+<label>Sucursal</label>
+<input type="text" id="sucursal">
 
-"Contacto" (capturas/contacto.png)
+<label>Lugar del Servicio</label>
+<input type="text" id="lugar">
 
-📱 Contacto
+<label>Tareas a realizar</label>
 
-Albe Servicios Generales
+<textarea id="tareas"></textarea>
 
-Servicios:
+<h2>Materiales</h2>
 
-- Construcción en seco
-- Durlock
-- Pintura interior y exterior
-- Mantenimiento general
-- Reparaciones
+<table>
 
-📄 Licencia
+<thead>
 
-Proyecto desarrollado para uso comercial de Albe Servicios Generales.
+<tr>
 
-© 2026 Albe Servicios Generales. Todos los derechos reservados.
+<th>Material</th>
+
+<th>Cantidad</th>
+
+<th>Precio</th>
+
+<th>Subtotal</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="cuerpoMateriales">
+
+</tbody>
+
+</table>
+
+<button type="button" onclick="agregarMaterial()">
+
+➕ Agregar Material
+
+</button>
+
+<input type="hidden" id="materiales" value="0">
+
+<h2>Costos</h2>
+
+<label>Mano de Obra ($)</label>
+
+<input type="number" id="mano" value="0">
+
+<label>Viáticos ($)</label>
+
+<input type="number" id="viaticos" value="0">
+
+<label>Flete ($)</label>
+
+<input type="number" id="flete" value="0">
+
+<div class="total">
+
+TOTAL
+
+<br>
+
+$ <span id="total">0</span>
+
+</div>
+
+<button onclick="calcular()">
+
+💰 CALCULAR
+
+</button>
+
+<button onclick="compartirWhatsApp()">
+
+📲 COMPARTIR POR WHATSAPP
+
+</button>
+
+<button onclick="generarPDF()">
+
+📄 GENERAR PDF
+
+</button>
+<script>
+
+document.getElementById("fecha").value =
+new Date().toISOString().split("T")[0];
+
+function calcular(){
+
+let materiales=Number(document.getElementById("materiales").value)||0;
+let mano=Number(document.getElementById("mano").value)||0;
+let viaticos=Number(document.getElementById("viaticos").value)||0;
+let flete=Number(document.getElementById("flete").value)||0;
+
+let total=materiales+mano+viaticos+flete;
+
+document.getElementById("total").innerHTML=
+total.toLocaleString("es-AR");
+
+}
+
+function agregarMaterial(){
+
+let fila=document.createElement("tr");
+
+fila.innerHTML=`
+<td><input type="text" placeholder="Material"></td>
+<td><input type="number" value="1" oninput="actualizarMateriales()"></td>
+<td><input type="number" value="0" oninput="actualizarMateriales()"></td>
+<td class="subtotal">$0</td>
+<td><button type="button" onclick="eliminarMaterial(this)">🗑️</button></td>
+`;
+
+document.getElementById("cuerpoMateriales").appendChild(fila);
+
+actualizarMateriales();
+
+}
+function actualizarMateriales(){
+
+let totalMateriales=0;
+
+document.querySelectorAll("#cuerpoMateriales tr").forEach(fila=>{
+
+let cantidad=Number(fila.cells[1].querySelector("input").value)||0;
+
+let precio=Number(fila.cells[2].querySelector("input").value)||0;
+
+let subtotal=cantidad*precio;
+
+fila.cells[3].innerHTML="$"+subtotal.toLocaleString("es-AR");
+
+totalMateriales+=subtotal;
+
+});
+
+document.getElementById("materiales").value=totalMateriales;
+
+calcular();
+
+}
+
+function eliminarMaterial(btn){
+
+btn.parentElement.parentElement.remove();
+
+actualizarMateriales();
+
+}
+
+function compartirWhatsApp(){
+
+calcular();
+
+let mensaje=`PEDIDO DE PRESUPUESTO
+
+Agenda: ${agenda.value}
+Fecha: ${fecha.value}
+
+Cliente: ${cliente.value}
+Sucursal: ${sucursal.value}
+
+Lugar: ${lugar.value}
+
+Tareas:
+${tareas.value}
+
+Materiales: $${materiales.value}
+Mano de Obra: $${mano.value}
+Viáticos: $${viaticos.value}
+Flete: $${flete.value}
+
+TOTAL: $${total.innerText}`;
+
+location.href="https://api.whatsapp.com/send?text="+encodeURIComponent(mensaje);
+
+}
+
+function generarPDF(){
+
+window.print();
+
+}
+
+</script>
+
+</div>
+
+</body>
+
+</html>
