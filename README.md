@@ -1,325 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>ALBE PRESUPUESTOS</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#ececec;
-padding:20px;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-background:#fff;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 15px rgba(0,0,0,.15);
-}
-
-h1{
-text-align:center;
-color:#0057A8;
-margin-bottom:20px;
-}
-
-h2{
-margin-top:25px;
-margin-bottom:10px;
-color:#0057A8;
-border-bottom:2px solid #0057A8;
-padding-bottom:5px;
-}
-
-label{
-display:block;
-margin-top:12px;
-font-weight:bold;
-}
-
-input,
-textarea{
-width:100%;
-padding:10px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:5px;
-font-size:15px;
-}
+# ALBE Sistema de Presupuestos
 
-textarea{
-height:100px;
-resize:vertical;
-}
+Sistema web para la creación de presupuestos profesionales de ALBE Servicios Generales.
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
+## Descripción
 
-th{
-background:#0057A8;
-color:white;
-padding:10px;
-}
+Aplicación desarrollada en HTML, CSS y JavaScript para generar presupuestos con cálculos automáticos de:
 
-td{
-border:1px solid #ddd;
-padding:8px;
-}
+- Materiales
+- Mano de obra
+- Viáticos
+- Hospedaje
+- Recargos por forma de pago
+- Total general
 
-button{
-width:100%;
-padding:14px;
-margin-top:15px;
-border:none;
-border-radius:6px;
-background:#0057A8;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
+Permite generar presupuestos desde celular o computadora y exportarlos en formato PDF.
 
-button:hover{
-background:#003f7c;
-}
+## Características
 
-.total{
-margin-top:20px;
-font-size:30px;
-font-weight:bold;
-text-align:center;
-color:#0057A8;
-}
+✅ Diseño adaptable para móviles  
+✅ Cálculo automático de subtotales  
+✅ Cálculo de viáticos desde Catriel  
+✅ Generación de PDF profesional  
+✅ Envío del presupuesto por WhatsApp  
+✅ Funciona sin instalación
 
-</style>
+## Tecnologías utilizadas
 
-</head>
+- HTML5
+- CSS3
+- JavaScript
+- jsPDF para generación de PDF
 
-<body>
+## Uso
 
-<div class="container">
+1. Abrir el archivo `index.html`
+2. Completar los datos del cliente
+3. Agregar materiales y trabajos
+4. Generar el presupuesto en PDF
 
-<h1>PEDIDO DE PRESUPUESTO</h1>
+## Empresa
 
-<h2>Datos</h2>
+**ALBE Servicios Generales**
 
-<label>N° Agenda</label>
-<input type="text" id="agenda">
+Servicios:
+- Durlock
+- Pintura
+- Mantenimiento general
+- Construcción en seco
+- Reparaciones e instalaciones
 
-<label>Fecha</label>
-<input type="date" id="fecha">
+## Autor
 
-<label>Cliente</label>
-<input type="text" id="cliente">
-
-<label>Sucursal</label>
-<input type="text" id="sucursal">
-
-<label>Lugar del Servicio</label>
-<input type="text" id="lugar">
-
-<label>Tareas a realizar</label>
-
-<textarea id="tareas"></textarea>
-
-<h2>Materiales</h2>
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Material</th>
-
-<th>Cantidad</th>
-
-<th>Precio</th>
-
-<th>Subtotal</th>
-
-<th></th>
-
-</tr>
-
-</thead>
-
-<tbody id="cuerpoMateriales">
-
-</tbody>
-
-</table>
-
-<button type="button" onclick="agregarMaterial()">
-
-➕ Agregar Material
-
-</button>
-
-<input type="hidden" id="materiales" value="0">
-
-<h2>Costos</h2>
-
-<label>Mano de Obra ($)</label>
-
-<input type="number" id="mano" value="0">
-
-<label>Viáticos ($)</label>
-
-<input type="number" id="viaticos" value="0">
-
-<label>Flete ($)</label>
-
-<input type="number" id="flete" value="0">
-
-<div class="total">
-
-TOTAL
-
-<br>
-
-$ <span id="total">0</span>
-
-</div>
-
-<button onclick="calcular()">
-
-💰 CALCULAR
-
-</button>
-
-<button onclick="compartirWhatsApp()">
-
-📲 COMPARTIR POR WHATSAPP
-
-</button>
-
-<button onclick="generarPDF()">
-
-📄 GENERAR PDF
-
-</button>
-<script>
-
-document.getElementById("fecha").value =
-new Date().toISOString().split("T")[0];
-
-function calcular(){
-
-let materiales=Number(document.getElementById("materiales").value)||0;
-let mano=Number(document.getElementById("mano").value)||0;
-let viaticos=Number(document.getElementById("viaticos").value)||0;
-let flete=Number(document.getElementById("flete").value)||0;
-
-let total=materiales+mano+viaticos+flete;
-
-document.getElementById("total").innerHTML=
-total.toLocaleString("es-AR");
-
-}
-
-function agregarMaterial(){
-
-let fila=document.createElement("tr");
-
-fila.innerHTML=`
-<td><input type="text" placeholder="Material"></td>
-<td><input type="number" value="1" oninput="actualizarMateriales()"></td>
-<td><input type="number" value="0" oninput="actualizarMateriales()"></td>
-<td class="subtotal">$0</td>
-<td><button type="button" onclick="eliminarMaterial(this)">🗑️</button></td>
-`;
-
-document.getElementById("cuerpoMateriales").appendChild(fila);
-
-actualizarMateriales();
-
-}
-function actualizarMateriales(){
-
-let totalMateriales=0;
-
-document.querySelectorAll("#cuerpoMateriales tr").forEach(fila=>{
-
-let cantidad=Number(fila.cells[1].querySelector("input").value)||0;
-
-let precio=Number(fila.cells[2].querySelector("input").value)||0;
-
-let subtotal=cantidad*precio;
-
-fila.cells[3].innerHTML="$"+subtotal.toLocaleString("es-AR");
-
-totalMateriales+=subtotal;
-
-});
-
-document.getElementById("materiales").value=totalMateriales;
-
-calcular();
-
-}
-
-function eliminarMaterial(btn){
-
-btn.parentElement.parentElement.remove();
-
-actualizarMateriales();
-
-}
-
-function compartirWhatsApp(){
-
-calcular();
-
-let mensaje=`PEDIDO DE PRESUPUESTO
-
-Agenda: ${agenda.value}
-Fecha: ${fecha.value}
-
-Cliente: ${cliente.value}
-Sucursal: ${sucursal.value}
-
-Lugar: ${lugar.value}
-
-Tareas:
-${tareas.value}
-
-Materiales: $${materiales.value}
-Mano de Obra: $${mano.value}
-Viáticos: $${viaticos.value}
-Flete: $${flete.value}
-
-TOTAL: $${total.innerText}`;
-
-location.href="https://api.whatsapp.com/send?text="+encodeURIComponent(mensaje);
-
-}
-
-function generarPDF(){
-
-window.print();
-
-}
-
-</script>
-
-</div>
-
-</body>
-
-</html>
+ALBE Servicios Generales
