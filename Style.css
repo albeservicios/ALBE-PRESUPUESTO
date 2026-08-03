@@ -1,1 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALBE Presupuestos</title>
 
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>ALBE SERVICIOS GENERALES</h1>
+
+<p>Sistema de Presupuestos</p>
+
+</header>
+
+<div class="container">
+
+<h2>Datos del Cliente</h2>
+
+<label>N° Agenda</label>
+<input id="agenda" type="text">
+
+<label>Fecha</label>
+<input id="fecha" type="date">
+
+<label>Cliente</label>
+<input id="cliente" type="text">
+
+<label>Sucursal</label>
+<input id="sucursal" type="text">
+
+<label>Provincia</label>
+<input id="provincia" type="text">
+
+<label>Localidad</label>
+<input id="localidad" type="text">
+
+<label>Lugar del Servicio</label>
+<input id="lugar" type="text">
+
+<label>Tareas</label>
+<textarea id="tareas"></textarea>
+
+<h2>Materiales</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Material</th>
+
+<th>Cant.</th>
+
+<th>Precio</th>
+
+<th>Subtotal</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="cuerpoMateriales">
+
+</tbody>
+
+</table>
+
+<button onclick="agregarMaterial()">
+
+➕ Agregar Material
+
+</button>
+
+<input id="materiales" type="hidden" value="0">
+
+<h2>Costos</h2>
+
+<label>Mano de Obra</label>
+
+<input id="mano" type="number" value="0">
+
+<label>Viáticos</label>
+
+<input id="viaticos" type="number" value="0">
+
+<label>Flete</label>
+
+<input id="flete" type="number" value="0">
+
+<div class="total">
+
+TOTAL
+
+<br>
+
+$
+
+<span id="total">
+
+0
+
+</span>
+
+</div>
+
+<button onclick="calcular()">
+
+💰 Calcular
+
+</button>
+
+<button onclick="compartirWhatsApp()">
+
+📲 WhatsApp
+
+</button>
+
+<button onclick="generarPDF()">
+
+📄 PDF
+
+</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
