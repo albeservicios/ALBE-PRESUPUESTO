@@ -1,92 +1,104 @@
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALBE Presupuestos</title>
 
-body{
-background:#f2f2f2;
-padding:20px;
-}
+<link rel="stylesheet" href="style.css">
 
-header{
-background:#0057A8;
-color:#fff;
-padding:20px;
-text-align:center;
-border-radius:10px;
-margin-bottom:20px;
-}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-.container{
-max-width:900px;
-margin:auto;
-background:#fff;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,.15);
-}
+</head>
 
-h2{
-margin-top:20px;
-margin-bottom:10px;
-color:#0057A8;
-}
+<body>
 
-label{
-display:block;
-margin-top:15px;
-font-weight:bold;
-}
+<header>
+<h1>ALBE SERVICIOS GENERALES</h1>
+<p>Sistema de Presupuestos</p>
+</header>
 
-input,
-textarea{
-width:100%;
-padding:10px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:5px;
-font-size:15px;
-}
+<div class="container">
 
-textarea{
-height:120px;
-resize:vertical;
-}
+<h2>Datos del Cliente</h2>
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
+<label>N° Agenda</label>
+<input type="text" id="agenda">
 
-th{
-background:#0057A8;
-color:#fff;
-padding:10px;
-}
+<label>Fecha</label>
+<input type="date" id="fecha">
 
-td{
-border:1px solid #ddd;
-padding:8px;
-}
+<label>Cliente</label>
+<input type="text" id="cliente">
 
-button{
-width:100%;
-padding:14px;
-margin-top:15px;
-background:#0057A8;
-color:white;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-}
+<label>Sucursal</label>
+<input type="text" id="sucursal">
 
-button:hover{
-background:#003f7a;
-}
+<label>Provincia</label>
+<input type="text" id="provincia">
 
-.total{
-margin-top:20px;>
+<label>Localidad</label>
+<input type="text" id="localidad">
+
+<label>Lugar del Servicio</label>
+<input type="text" id="lugar">
+
+<label>Tareas a realizar</label>
+<textarea id="tareas"></textarea>
+
+<h2>Materiales</h2>
+
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Cantidad</th>
+<th>Precio</th>
+<th>Subtotal</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody id="cuerpoMateriales">
+</tbody>
+</table>
+
+<button type="button" id="btnAgregar">
+➕ Agregar Material
+</button>
+
+<input type="hidden" id="materiales" value="0">
+
+<h2>Costos</h2>
+
+<label>Mano de Obra</label>
+<input type="number" id="mano" value="0">
+
+<label>Viáticos</label>
+<input type="number" id="viaticos" value="0">
+
+<label>Flete</label>
+<input type="number" id="flete" value="0">
+
+<div class="total">
+TOTAL: $<span id="total">0</span>
+</div>
+
+<button type="button" id="btnCalcular">
+💰 Calcular
+</button>
+
+<button type="button" id="btnWhatsApp">
+📲 Compartir por WhatsApp
+</button>
+
+<button type="button" id="btnPDF">
+📄 Generar PDF
+</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
