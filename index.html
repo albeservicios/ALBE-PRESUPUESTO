@@ -757,3 +757,63 @@ l.appendChild(op);
 </body>
 
     </html>
+<section class="totales">
+
+<h2>Total General</h2>
+
+<div class="totalGeneral">
+
+<input
+type="text"
+id="totalGeneral"
+value="$ 0"
+readonly>
+
+</div>
+
+</section>
+
+<section class="acciones">
+
+<button id="btnGuardar" class="guardar">
+💾 Guardar Presupuesto
+</button>
+
+<button id="btnBuscar" class="buscar">
+🔍 Buscar Presupuesto
+</button>
+
+<button id="btnPDF" class="pdf">
+📄 Generar PDF
+</button>
+
+<button id="btnWhatsapp" class="whatsapp">
+📲 Compartir por WhatsApp
+</button>
+
+<button id="btnNuevo" class="nuevo">
+➕ Nuevo Presupuesto
+</button>
+
+</section>
+
+<footer>
+
+<p>
+ALBE SERVICIOS GENERALES © 2026
+</p>
+
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js");
+}
+</script>
+
+</body>
+</html>
