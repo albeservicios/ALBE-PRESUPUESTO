@@ -1,3 +1,6 @@
+<button id="btnOncity">ON CITY</button>
+
+<button id="btnCredito">CRÉDITO ARGENTINO</button>
 function agregarMaterial() {
     const tbody = document.getElementById("materialesBody");
 
