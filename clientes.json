@@ -1,0 +1,316 @@
+{
+  "ON CITY": [
+    {
+      "sucursal": "ON CITY Neuquén",
+      "provincia": "Neuquén",
+      "localidad": "Neuquén Capital",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY Cipolletti",
+      "provincia": "Río Negro",
+      "localidad": "Cipolletti",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY General Roca",
+      "provincia": "Río Negro",
+      "localidad": "General Roca",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY Bariloche",
+      "provincia": "Río Negro",
+      "localidad": "San Carlos de Bariloche",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY Puerto Madryn",
+      "provincia": "Chubut",
+      "localidad": "Puerto Madryn",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY Comodoro Rivadavia",
+      "provincia": "Chubut",
+      "localidad": "Comodoro Rivadavia",
+      "direccion": ""
+    },
+    {
+      "sucursal": "ON CITY Río Gallegos",
+      "provincia": "Santa Cruz",
+      "localidad": "Río Gallegos",
+      "direccion": ""
+    }
+  ],
+{
+  "sucursal": "ON CITY Córdoba Capital",
+  "provincia": "Córdoba",
+  "localidad": "Córdoba Capital",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY Rosario",
+  "provincia": "Santa Fe",
+  "localidad": "Rosario",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY Santa Fe",
+  "provincia": "Santa Fe",
+  "localidad": "Santa Fe Capital",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY Mendoza",
+  "provincia": "Mendoza",
+  "localidad": "Mendoza Capital",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY San Juan",
+  "provincia": "San Juan",
+  "localidad": "San Juan Capital",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY Salta",
+  "provincia": "Salta",
+  "localidad": "Salta Capital",
+  "direccion": ""
+},
+{
+  "sucursal": "ON CITY Tucumán",
+  "provincia": "Tucumán",
+  "localidad": "San Miguel de Tucumán",
+  "direccion": ""
+}let datosClientes = {};
+
+fetch("clientes.json")
+.then(res => res.json())
+.then(data => {
+
+    datosClientes = data;
+
+});
+
+
+function cargarSucursales(){
+
+let clienteSeleccionado="";
+
+if(document.getElementById("btnOncity").classList.contains("activo")){
+    clienteSeleccionado="ON CITY";
+}
+
+
+let sucursal=document.getElementById("sucursal");
+
+sucursal.innerHTML =
+"<option>Seleccione...</option>";
+
+
+let provincia =
+document.getElementById("provincia").value;
+
+
+let localidad =
+document.getElementById("localidad").value;
+
+
+
+(datosClientes[clienteSeleccionado] || [])
+.forEach(function(item){
+
+
+if(item.provincia==provincia &&
+item.localidad==localidad){
+
+
+let op=document.createElement("option");
+
+op.value=item.sucursal;
+
+op.textContent=item.sucursal;
+
+
+sucursal.appendChild(op);
+
+
+}
+
+
+});
+
+
+},
+
+"CRÉDITO ARGENTINO": [
+
+{
+"sucursal":"Crédito Argentino Neuquén",
+"provincia":"Neuquén",
+"localidad":"Neuquén Capital",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Cipolletti",
+"provincia":"Río Negro",
+"localidad":"Cipolletti",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino General Roca",
+"provincia":"Río Negro",
+"localidad":"General Roca",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Bariloche",
+"provincia":"Río Negro",
+"localidad":"San Carlos de Bariloche",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Córdoba",
+"provincia":"Córdoba",
+"localidad":"Córdoba Capital",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Rosario",
+"provincia":"Santa Fe",
+"localidad":"Rosario",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Mendoza",
+"provincia":"Mendoza",
+"localidad":"Mendoza Capital",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Salta",
+"provincia":"Salta",
+"localidad":"Salta Capital",
+"direccion":""
+}
+
+]<label>Dirección Sucursal</label>
+
+<input 
+id="direccionSucursal"
+readonly>
+,
+{
+"sucursal":"ON CITY Mar del Plata",
+"provincia":"Buenos Aires",
+"localidad":"Mar del Plata",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY Bahía Blanca",
+"provincia":"Buenos Aires",
+"localidad":"Bahía Blanca",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY La Plata",
+"provincia":"Buenos Aires",
+"localidad":"La Plata",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY Avellaneda",
+"provincia":"Buenos Aires",
+"localidad":"Avellaneda",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY Morón",
+"provincia":"Buenos Aires",
+"localidad":"Morón",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY San Justo",
+"provincia":"Buenos Aires",
+"localidad":"San Justo",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY Paraná",
+"provincia":"Entre Ríos",
+"localidad":"Paraná",
+"direccion":""
+},
+
+{
+"sucursal":"ON CITY Resistencia",
+"provincia":"Chaco",
+"localidad":"Resistencia",
+"direccion":"",
+{
+"sucursal":"Crédito Argentino Mar del Plata",
+"provincia":"Buenos Aires",
+"localidad":"Mar del Plata",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Bahía Blanca",
+"provincia":"Buenos Aires",
+"localidad":"Bahía Blanca",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino La Plata",
+"provincia":"Buenos Aires",
+"localidad":"La Plata",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Santa Rosa",
+"provincia":"La Pampa",
+"localidad":"Santa Rosa",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Paraná",
+"provincia":"Entre Ríos",
+"localidad":"Paraná",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Salta",
+"provincia":"Salta",
+"localidad":"Salta Capital",
+"direccion":""
+},
+
+{
+"sucursal":"Crédito Argentino Tucumán",
+"provincia":"Tucumán",
+"localidad":"San Miguel de Tucumán",
+"direccion":""
+}
+}
+
+
