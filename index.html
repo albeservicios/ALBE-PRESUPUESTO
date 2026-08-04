@@ -4,129 +4,92 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ALBE PRESUPUESTOS </title>
+<title>ALBE PRESUPUESTOS PRO</title>
+
+<link rel="stylesheet" href="Estilo.css">
 
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="style.css">
 
-<meta name="theme-color" content="#0b5ed7">
+<meta name="theme-color" content="#005baa">
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="contenedor">
 
-<header class="header">
+<header>
 
-<div class="logo">
-<img src="logo.png" alt="ALBE">
-</div>
+<img src="logo.png" class="logo">
 
-<div class="empresa">
+<h1>ALBE SERVICIOS GENERALES</h1>
 
-<h1> ALBE SERVICIOS GENERALES </h1>
-
-<h2>PRESUPUESTO DE SERVICIOS</h2>
-
-</div>
+<h2>Sistema de Presupuestos</h2>
 
 </header>
 
+<section class="clientes">
 
-<section>
+<h3>Seleccione Cliente</h3>
 
-<h2>Seleccionar Cliente</h2>
+<button id="btnOncity" class="oncity">
 
-<button id="btnOncity">
 ON CITY
+
 </button>
 
-<button id="btnCredito">
+<button id="btnCredito" class="credito">
+
 CRÉDITO ARGENTINO
+
 </button>
 
 </section>
 
-
-
 <section>
 
-<h2>Datos del Proveedor</h2>
+<h3>Datos del Presupuesto</h3>
 
 <div class="grid">
 
 <div>
-<label>Empresa</label>
-<input value="BATTAUZ JULIÁN EZEQUIEL" readonly>
-</div>
 
+<label>N° Agenda</label>
+
+<input type="text" id="agenda">
+
+</div>
 
 <div>
-<label>CUIT</label>
-<input id="cuitProveedor">
-</div>
 
+<label>Fecha</label>
+
+<input type="date" id="fecha">
+
+</div>
 
 <div>
-<label>Correo</label>
-<input type="email" id="correoProveedor">
-</div>
 
-
-<div>
-<label>Teléfono</label>
-<input id="telefonoProveedor">
-</div>
-
-</div>
-
-</section>
-
-
-
-<section>
-
-<h2>Datos del Cliente</h2>
-
-
-<div class="grid">
-
-
-<div>
 <label>Cliente</label>
-<input id="cliente" readonly>
+
+<input type="text" id="cliente" readonly>
+
 </div>
 
-
 <div>
+
 <label>Sucursal</label>
 
 <select id="sucursal">
 
-<option>
-Seleccione...
-</option>
+<option value="">Seleccione...</option>
 
 </select>
 
 </div>
-
-
-<div>
-<label>N° Agenda</label>
-<input id="agenda">
-</div>
-
-
-<div>
-<label>Fecha</label>
-<input type="date" id="fecha">
-</div>
-
-
 
 <div>
 
@@ -134,15 +97,11 @@ Seleccione...
 
 <select id="provincia">
 
-<option>
-Seleccione...
-</option>
+<option value="">Seleccione...</option>
 
 </select>
 
 </div>
-
-
 
 <div>
 
@@ -150,670 +109,132 @@ Seleccione...
 
 <select id="localidad">
 
-<option>
-Seleccione...
-</option>
+<option value="">Seleccione...</option>
 
 </select>
 
 </div>
 
-
-
 <div>
 
-<label>Lugar del Servicio</label>
+<label>Dirección</label>
 
-<input id="lugar">
+<input type="text" id="direccion" readonly>
 
 </div>
 
+<div>
 
+<label>Lugar del Trabajo</label>
+
+<input type="text" id="lugar">
+
+</div>
 
 <div>
 
 <label>Supervisor</label>
 
-<input id="supervisor">
+<input type="text" id="supervisor">
 
 </div>
 
-
 </div>
-
 
 </section>
 
-
-
 <section>
 
-<h2>Descripción del Trabajo</h2>
-
+<h3>Descripción del Trabajo</h3>
 
 <textarea
 id="descripcion"
-rows="6"
-placeholder="Describa los trabajos a realizar">
-</textarea>
-
+rows="6"></textarea>
 
 </section>
 <section>
 
-<h2>Materiales</h2>
+<h3>Materiales</h3>
 
-
-<button 
-type="button"
-onclick="agregarMaterial()">
-
-➕ Agregar Material
-
+<button type="button" id="agregarMaterial">
++ Agregar Material
 </button>
-
 
 <table>
 
 <thead>
 
 <tr>
-
 <th>Descripción</th>
 <th>Cantidad</th>
 <th>Precio Unitario</th>
 <th>Subtotal</th>
 <th></th>
-
 </tr>
 
 </thead>
 
-
-<tbody id="tablaMateriales">
+<tbody id="materialesBody">
 
 </tbody>
-
 
 <tfoot>
 
 <tr>
 
-<td colspan="3">
-<strong>Total Materiales</strong>
-</td>
+<td colspan="3"><strong>Total Materiales</strong></td>
 
+<td id="totalMateriales">$0</td>
 
-<td>
-
-<input 
-id="totalMateriales"
-value="0"
-readonly>
-
-</td>
-
+<td></td>
 
 </tr>
 
 </tfoot>
 
-
 </table>
 
-
 </section>
-
-
-
-
 <section>
 
-<h2>Mano de Obra</h2>
+<h3>Mano de Obra</h3>
 
-
-<button 
-type="button"
-onclick="agregarManoObra()">
-
-➕ Agregar Trabajo
-
+<button type="button" id="agregarMano">
++ Agregar Trabajo
 </button>
 
-
-
 <table>
-
 
 <thead>
 
 <tr>
-
 <th>Descripción</th>
 <th>Cantidad</th>
 <th>Precio Unitario</th>
 <th>Subtotal</th>
 <th></th>
-
 </tr>
 
 </thead>
 
-
-
-<tbody id="tablaManoObra">
+<tbody id="manoBody">
 
 </tbody>
-
-
 
 <tfoot>
 
 <tr>
 
-<td colspan="3">
+<td colspan="3"><strong>Total Mano de Obra</strong></td>
 
-<strong>Total Mano de Obra</strong>
+<td id="totalMano">$0</td>
 
-</td>
-
-
-<td>
-
-<input 
-id="totalManoObra"
-value="0"
-readonly>
-
-</td>
-
+<td></td>
 
 </tr>
 
-
 </tfoot>
-
 
 </table>
 
-
 </section>
-<section>
-
-<h2>Viáticos</h2>
-
-<div class="grid">
-
-<div>
-<label>Kilómetros</label>
-<input type="number" id="km" value="0">
-</div>
-
-
-<div>
-<label>Valor por Km</label>
-<input type="number" id="valorKm" value="570">
-</div>
-
-
-<div>
-<label>Flete</label>
-<input type="number" id="flete" value="0">
-</div>
-
-
-<div>
-<label>Total Viáticos</label>
-<input id="totalViaticos" value="0" readonly>
-</div>
-
-</div>
-
-</section>
-
-
-
-<section class="total">
-
-<h2>TOTAL GENERAL</h2>
-
-<h1>$ <span id="total">0</span></h1>
-
-</section>
-
-
-
-<button onclick="calcular()">
-💰 CALCULAR
-</button>
-
-Sucursal:
-${sucursal.value}
-
-Dirección:
-${direccionSucursal.value}
-<button onclick="compartirWhatsApp()">
-📲 WHATSAPP
-</button>
-
-
-<button onclick="generarPDF()">
-📄 GENERAR PDF
-</button>
-
-
-</div>
-
-
-
-<script>
-
-
-document.getElementById("fecha").value =
-new Date().toISOString().split("T")[0];
-
-
-
-// MATERIAL
-
-function agregarMaterial(){
-
-let fila=document.createElement("tr");
-
-
-fila.innerHTML=`
-
-<td>
-<input class="matDesc">
-</td>
-
-<td>
-<input type="number" class="matCant" value="1">
-</td>
-
-<td>
-<input type="number" class="matPrecio" value="0">
-</td>
-
-<td>
-<input class="matSub" value="0" readonly>
-</td>
-
-<td>
-<button onclick="this.parentElement.parentElement.remove();calcular();">
-🗑
-</button>
-</td>
-
-`;
-
-
-document.getElementById("tablaMateriales")
-.appendChild(fila);
-
-
-}
-
-
-
-function totalMaterial(){
-
-let total=0;
-
-
-document.querySelectorAll("#tablaMateriales tr")
-.forEach(f=>{
-
-
-let c=Number(f.querySelector(".matCant").value)||0;
-
-let p=Number(f.querySelector(".matPrecio").value)||0;
-
-
-let s=c*p;
-
-
-f.querySelector(".matSub").value=s;
-
-
-total+=s;
-
-
-});
-
-
-document.getElementById("totalMateriales").value=total;
-
-
-return total;
-
-}
-
-
-
-
-// MANO DE OBRA
-
-
-function agregarManoObra(){
-
-
-let fila=document.createElement("tr");
-
-
-fila.innerHTML=`
-
-<td>
-<input class="moDesc">
-</td>
-
-
-<td>
-<input type="number" class="moCant" value="1">
-</td>
-
-
-<td>
-<input type="number" class="moPrecio" value="0">
-</td>
-
-
-<td>
-<input class="moSub" value="0" readonly>
-</td>
-
-
-<td>
-<button onclick="this.parentElement.parentElement.remove();calcular();">
-🗑
-</button>
-</td>
-
-`;
-
-
-document.getElementById("tablaManoObra")
-.appendChild(fila);
-
-
-}
-
-
-
-function totalMano(){
-
-
-let total=0;
-
-
-document.querySelectorAll("#tablaManoObra tr")
-.forEach(f=>{
-
-
-let c=Number(f.querySelector(".moCant").value)||0;
-
-let p=Number(f.querySelector(".moPrecio").value)||0;
-
-
-let s=c*p;
-
-
-f.querySelector(".moSub").value=s;
-
-
-total+=s;
-
-
-});
-
-
-document.getElementById("totalManoObra").value=total;
-
-
-return total;
-
-}
-
-
-
-
-// TOTAL GENERAL
-
-
-function calcular(){
-
-
-let materiales=totalMaterial();
-
-let mano=totalMano();
-
-
-let viatico=
-(Number(document.getElementById("km").value)||0)
-*
-(Number(document.getElementById("valorKm").value)||0);
-
-
-let flete=
-Number(document.getElementById("flete").value)||0;
-
-
-
-document.getElementById("totalViaticos").value=
-viatico;
-
-
-
-let total=
-materiales+
-mano+
-viatico+
-flete;
-
-
-
-document.getElementById("total").innerText=
-total.toLocaleString("es-AR");
-
-
-}
-
-
-
-// WHATSAPP
-
-
-function compartirWhatsApp(){
-
-
-calcular();
-
-
-let mensaje=`PRESUPUESTO ALBE SERVICIOS GENERALES
-
-Cliente: ${cliente.value}
-
-Lugar:
-${lugar.value}
-
-Descripción:
-${descripcion.value}
-
-
-Materiales:
-$${totalMateriales.value}
-
-
-Mano de Obra:
-$${totalManoObra.value}
-
-
-Viáticos:
-$${totalViaticos.value}
-
-
-TOTAL:
-$${total.innerText}
-`;
-
-
-
-window.open(
-"https://api.whatsapp.com/send?text="
-+encodeURIComponent(mensaje)
-);
-
-
-}
-
-
-
-// PDF
-
-
-function generarPDF(){
-
-window.print();
-
-}
-
-
-
-
-// LOCALIDADES
-
-
-let datosLocalidades={};
-
-
-fetch("localidades.json")
-
-.then(r=>r.json())
-
-.then(data=>{
-
-
-datosLocalidades=data;
-
-
-let p=document.getElementById("provincia");
-
-
-Object.keys(data).forEach(x=>{
-
-
-let op=document.createElement("option");
-
-op.value=x;
-
-op.textContent=x;
-
-
-p.appendChild(op);
-
-
-});
-
-
-});
-
-
-
-document.getElementById("provincia")
-.addEventListener("change",function(){
-
-
-let l=document.getElementById("localidad");
-
-
-l.innerHTML="<option>Seleccione...</option>";
-
-
-
-(datosLocalidades[this.value]||[])
-.forEach(x=>{
-
-
-let op=document.createElement("option");
-
-
-op.value=x;
-
-op.textContent=x;
-
-
-l.appendChild(op);
-
-
-});
-
-
-});
-
-
-</script>
-
-
-</body>
-
-    </html>
-<section class="totales">
-
-<h2>Total General</h2>
-
-<div class="totalGeneral">
-
-<input
-type="text"
-id="totalGeneral"
-value="$ 0"
-readonly>
-
-</div>
-
-</section>
-
-<section class="acciones">
-
-<button id="btnGuardar" class="guardar">
-💾 Guardar Presupuesto
-</button>
-
-<button id="btnBuscar" class="buscar">
-🔍 Buscar Presupuesto
-</button>
-
-<button id="btnPDF" class="pdf">
-📄 Generar PDF
-</button>
-
-<button id="btnWhatsapp" class="whatsapp">
-📲 Compartir por WhatsApp
-</button>
-
-<button id="btnNuevo" class="nuevo">
-➕ Nuevo Presupuesto
-</button>
-
-</section>
-
-<footer>
-
-<p>
-ALBE SERVICIOS GENERALES © 2026
-</p>
-
-</footer>
-
-</div>
-
-<script src="script.js"></script>
-
-<script>
-if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./sw.js");
-}
-</script>
-
-</body>
-</html>
