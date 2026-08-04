@@ -418,7 +418,63 @@ function generarPDF(){
 window.print();
 
 }
+// Cargar Provincias y Localidades desde localidades.json
 
+let datosLocalidades = {};
+
+fetch("localidades.json")
+.then(res => res.json())
+.then(data => {
+
+    datosLocalidades = data;
+
+    let provincia = document.getElementById("provincia");
+
+    Object.keys(data).forEach(function(nombreProvincia){
+
+        let opcion = document.createElement("option");
+        opcion.value = nombreProvincia;
+        opcion.textContent = nombreProvincia;
+
+        provincia.appendChild(opcion);
+
+    });
+
+})
+.catch(error => {
+    console.log("Error cargando localidades:", error);
+});
+
+
+// Cuando cambia la provincia carga localidades
+
+document.getElementById("provincia")
+.addEventListener("change", function(){
+
+    let localidad = document.getElementById("localidad");
+
+    localidad.innerHTML =
+    '<option>Seleccione...</option>';
+
+    let lista = datosLocalidades[this.value];
+
+
+    if(lista){
+
+        lista.forEach(function(nombre){
+
+            let opcion = document.createElement("option");
+
+            opcion.value = nombre;
+            opcion.textContent = nombre;
+
+            localidad.appendChild(opcion);
+
+        });
+
+    }
+
+});
 </script>
 
 </div>
