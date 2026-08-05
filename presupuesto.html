@@ -73,7 +73,178 @@
 <input type="email" value="julianbattauz006@gmail.com" readonly>
 
 <hr>
+<hr>
 
+<h2>Descripción del Trabajo</h2>
+
+<label>Trabajo a realizar</label>
+
+<textarea id="descripcion" rows="5"
+placeholder="Describa el trabajo..."></textarea>
+
+<hr>
+
+<h2>Materiales</h2>
+
+<button id="agregarMaterial">
+➕ Agregar Material
+</button>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Descripción</th>
+<th>Cant.</th>
+<th>Precio</th>
+<th>Subtotal</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="materialesBody">
+
+</tbody>
+
+<tfoot>
+
+<tr>
+
+<th colspan="3">
+
+TOTAL MATERIALES
+
+</th>
+
+<th id="totalMateriales">
+
+$ 0
+
+</th>
+
+<th></th>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+<hr>
+
+<h2>Mano de Obra</h2>
+
+<button id="agregarMano">
+➕ Agregar Mano de Obra
+</button>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Trabajo</th>
+<th>Cant.</th>
+<th>Precio</th>
+<th>Subtotal</th>
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="manoBody">
+
+</tbody>
+
+<tfoot>
+
+<tr>
+
+<th colspan="3">
+
+TOTAL MANO DE OBRA
+
+</th>
+
+<th id="totalMano">
+
+$ 0
+
+</th>
+
+<th></th>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+<hr>
+  <hr>
+
+<h2>Viáticos y Hospedaje</h2>
+
+<label>Kilómetros desde Catriel</label>
+<input type="number" id="km" value="0">
+
+<label>Tarifa por Km ($)</label>
+<input type="number" id="tarifa" value="570">
+
+<label>Total Viáticos</label>
+<input type="number" id="viaticos" readonly>
+
+<br><br>
+
+<label>Días de Hospedaje</label>
+<input type="number" id="dias" value="0">
+
+<label>Valor por Día ($)</label>
+<input type="number" id="valorDia" value="60000">
+
+<label>Total Hospedaje</label>
+<input type="number" id="hospedajeTotal" readonly>
+
+<hr>
+
+<h2>Total General</h2>
+
+<h1 id="totalGeneral">$ 0</h1>
+
+<hr>
+
+<h2>Observaciones</h2>
+
+<textarea id="observaciones" rows="5"
+placeholder="Escriba observaciones del presupuesto..."></textarea>
+
+<hr>
+
+<div class="acciones">
+
+<button id="btnGuardar">
+💾 Guardar
+</button>
+
+<button id="btnPDF">
+📄 Generar PDF
+</button>
+
+<button id="btnWhatsapp">
+📲 WhatsApp
+</button>
+
+<button onclick="location.href='index.html'">
+🏠 Volver al Inicio
+</button>
+
+</div>
 <script src="presupuesto.js"></script>
 
 </div>
