@@ -1,1 +1,117 @@
+/* =====================================
+   ALBE SERVICIOS GENERALES
+   ESTILO PRINCIPAL
+===================================== */
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+
+    background:#f2f4f8;
+
+}
+
+.dashboard{
+
+    max-width:900px;
+
+    margin:20px auto;
+
+    background:white;
+
+    border-radius:15px;
+
+    box-shadow:0 0 15px rgba(0,0,0,.15);
+
+    padding:25px;
+
+}
+
+.encabezado{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.logo{
+
+    width:120px;
+
+    margin-bottom:15px;
+
+}
+
+.encabezado h1{
+
+    color:#0B3D91;
+
+    margin-bottom:10px;
+
+}
+
+.encabezado p{
+
+    color:#666;
+
+    font-size:18px;
+
+}
+
+.fecha{
+
+    text-align:center;
+
+    margin:20px 0;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#333;
+
+}
+
+.menu{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+
+    gap:15px;
+
+}
+
+.menu button{
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#0B3D91;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.menu button:hover{
+
+    background:#1565C0;
+
+    transform:scale(1.03);
+
+}
