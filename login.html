@@ -1,1 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Login | ALBE SERVICIOS GENERALES</title>
+
+<link rel="stylesheet" href="Estilo.css">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="encabezado">
+
+<img src="logo.png" class="logo">
+
+<h1>ALBE SERVICIOS GENERALES</h1>
+
+<p>Ingreso al Sistema</p>
+
+</div>
+
+<div style="max-width:400px;margin:auto;">
+
+<label>Usuario</label>
+
+<input type="text" id="usuario" placeholder="Usuario">
+
+<br><br>
+
+<label>Contraseña</label>
+
+<input type="password" id="clave" placeholder="Contraseña">
+
+<br><br>
+
+<button id="btnIngresar">
+🔐 INGRESAR
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("btnIngresar").onclick=function(){
+
+const usuario=document.getElementById("usuario").value;
+const clave=document.getElementById("clave").value;
+
+if(usuario==="admin" && clave==="1234"){
+
+localStorage.setItem("login","SI");
+
+location.href="index.html";
+
+}else{
+
+alert("Usuario o contraseña incorrectos");
+
+}
+
+}
+
+</script>
+
+</body>
+
+</html>
