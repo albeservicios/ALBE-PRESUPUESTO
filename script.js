@@ -364,7 +364,21 @@ function nuevoPresupuesto(){
 
 }
 
-// Eventos
-document.getElementById("btnPDF").onclick=generarPDF;
-document.getElementById("btnWhatsapp").onclick=enviarWhatsApp;
-document.getElement
+//==========================================
+// EVENTOS
+//==========================================
+
+const btnPDF = document.getElementById("btnPDF");
+if (btnPDF) btnPDF.onclick = generarPDF;
+
+const btnWhatsapp = document.getElementById("btnWhatsapp");
+if (btnWhatsapp) btnWhatsapp.onclick = enviarWhatsApp;
+
+const btnGuardar = document.getElementById("btnGuardar");
+if (btnGuardar) btnGuardar.onclick = guardarPresupuesto;
+
+const btnBuscar = document.getElementById("btnBuscar");
+if (btnBuscar) btnBuscar.onclick = buscarPresupuesto;
+
+const btnNuevo = document.getElementById("btnNuevo");
+if (btnNuevo) btnNuevo.onclick = nuevoPresupuesto;
