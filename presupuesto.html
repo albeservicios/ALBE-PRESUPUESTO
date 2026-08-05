@@ -4,336 +4,67 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ALBE PRESUPUESTOS PRO</title>
+<title>ALBE SERVICIOS GENERALES</title>
 
-<link rel="stylesheet" href="Estilo.css">
+<link rel="stylesheet" href="style.css">
 
 <link rel="manifest" href="manifest.json">
 
-<meta name="theme-color" content="#005baa">
+<meta name="theme-color" content="#0B3D91">
 
 </head>
 
 <body>
 
-<div class="contenedor">
+<div class="inicio">
 
-<header>
+    <img src="logo.png" class="logo">
 
-<img src="logo.png" class="logo">
+    <h1>ALBE SERVICIOS GENERALES</h1>
 
-<h1>ALBE SERVICIOS GENERALES</h1>
+    <h2>Sistema Profesional de Presupuestos</h2>
 
-<h2>Sistema de Presupuestos</h2>
+    <div id="fechaHora"></div>
 
-</header>
+    <br>
 
-<section class="clientes">
+    <button onclick="location.href='presupuesto.html'">
+        📝 NUEVO PRESUPUESTO
+    </button>
 
-<h3>Seleccione Cliente</h3>
+    <button onclick="location.href='historial.html'">
+        📂 HISTORIAL
+    </button>
 
-<button id="btnOncity" class="oncity">
+    <button onclick="location.href='clientes.html'">
+        👥 CLIENTES
+    </button>
 
-ON CITY
-
-</button>
-
-<button id="btnCredito" class="credito">
-
-CRÉDITO ARGENTINO
-
-</button>
-
-</section>
-
-<section>
-
-<h3>Datos del Presupuesto</h3>
-
-<div class="grid">
-
-<div>
-
-<label>N° Agenda</label>
-
-<input type="text" id="agenda">
+    <button onclick="location.href='configuracion.html'">
+        ⚙ CONFIGURACIÓN
+    </button>
 
 </div>
-
-<div>
-
-<label>Fecha</label>
-
-<input type="date" id="fecha">
-
-</div>
-
-<div>
-
-<label>Cliente</label>
-
-<input type="text" id="cliente" readonly>
-
-</div>
-
-<div>
-
-<label>Sucursal</label>
-
-<select id="sucursal">
-
-<option value="">Seleccione...</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Provincia</label>
-
-<select id="provincia">
-
-<option value="">Seleccione...</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Localidad</label>
-
-<select id="localidad">
-
-<option value="">Seleccione...</option>
-
-</select>
-
-</div>
-
-<div>
-
-<label>Dirección</label>
-
-<input type="text" id="direccion" readonly>
-
-</div>
-
-<div>
-
-<label>Lugar del Trabajo</label>
-
-<input type="text" id="lugar">
-
-</div>
-
-<div>
-
-<label>Supervisor</label>
-
-<input type="text" id="supervisor">
-
-</div>
-
-</div>
-
-</section>
-
-<section>
-
-<h3>Descripción del Trabajo</h3>
-
-<textarea
-id="descripcion"
-rows="6"></textarea>
-
-</section>
-<section>
-
-<h3>Materiales</h3>
-
-<button type="button" id="agregarMaterial">
-+ Agregar Material
-</button>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Descripción</th>
-<th>Cantidad</th>
-<th>Precio Unitario</th>
-<th>Subtotal</th>
-<th></th>
-</tr>
-
-</thead>
-
-<tbody id="materialesBody">
-
-</tbody>
-
-<tfoot>
-
-<tr>
-
-<td colspan="3"><strong>Total Materiales</strong></td>
-
-<td id="totalMateriales">$0</td>
-
-<td></td>
-
-</tr>
-
-</tfoot>
-
-</table>
-
-</section>
-<section>
-
-<h3>Mano de Obra</h3>
-
-<button type="button" id="agregarMano">
-+ Agregar Trabajo
-</button>
-
-<table>
-
-<thead>
-
-<tr>
-<th>Descripción</th>
-<th>Cantidad</th>
-<th>Precio Unitario</th>
-<th>Subtotal</th>
-<th></th>
-</tr>
-
-</thead>
-
-<tbody id="manoBody">
-
-</tbody>
-
-<tfoot>
-
-<tr>
-
-<td colspan="3"><strong>Total Mano de Obra</strong></td>
-
-<td id="totalMano">$0</td>
-
-<td></td>
-
-</tr>
-
-</tfoot>
-
-</table>
-  <section>
-
-<h3>Viáticos y Hospedaje</h3>
-
-<div class="grid">
-
-<div>
-<label>Kilómetros</label>
-<input type="number" id="km" value="0">
-</div>
-
-<div>
-<label>Tarifa por Km</label>
-<input type="number" id="tarifa" value="570">
-</div>
-
-<div>
-<label>Total Viáticos</label>
-<input type="number" id="viaticos" value="0" readonly>
-</div>
-
-<div>
-<label>Días de Hospedaje</label>
-<input type="number" id="dias" value="0">
-</div>
-
-<div>
-<label>Valor por Día</label>
-<input type="number" id="valorDia" value="60000">
-</div>
-
-<div>
-<label>Total Hospedaje</label>
-<input type="number" id="hospedajeTotal" value="0" readonly>
-</div>
-
-</div>
-
-</section>
-
-<section>
-
-<h3>Total General</h3>
-
-<div class="total">
-
-<h1 id="totalGeneral">$0</h1>
-
-</div>
-
-</section>
-
-</section>
-<section class="acciones">
-
-<button id="btnGuardar">
-💾 Guardar
-</button>
-
-<button id="btnBuscar">
-🔍 Buscar
-</button>
-
-<button id="btnPDF">
-📄 Generar PDF
-</button>
-
-<button id="btnWhatsapp">
-📲 WhatsApp
-</button>
-
-<button id="btnNuevo">
-🆕 Nuevo
-</button>
-
-</section>
-
-<footer>
-
-<p>
-ALBE SERVICIOS GENERALES © 2026
-</p>
-
-</footer>
-
-</div>
-
-<script src="script.js"></script>
 
 <script>
 
-if("serviceWorker" in navigator){
+function actualizarHora(){
 
-navigator.serviceWorker.register("sw.js");
+const ahora = new Date();
+
+document.getElementById("fechaHora").innerHTML =
+ahora.toLocaleString("es-AR");
 
 }
+
+setInterval(actualizarHora,1000);
+
+actualizarHora();
 
 </script>
 
 </body>
+
 </html>
