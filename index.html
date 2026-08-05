@@ -236,5 +236,104 @@ rows="6"></textarea>
 </tfoot>
 
 </table>
+  <section>
+
+<h3>Viáticos y Hospedaje</h3>
+
+<div class="grid">
+
+<div>
+<label>Kilómetros</label>
+<input type="number" id="km" value="0">
+</div>
+
+<div>
+<label>Tarifa por Km</label>
+<input type="number" id="tarifa" value="570">
+</div>
+
+<div>
+<label>Total Viáticos</label>
+<input type="number" id="viaticos" value="0" readonly>
+</div>
+
+<div>
+<label>Días de Hospedaje</label>
+<input type="number" id="dias" value="0">
+</div>
+
+<div>
+<label>Valor por Día</label>
+<input type="number" id="valorDia" value="60000">
+</div>
+
+<div>
+<label>Total Hospedaje</label>
+<input type="number" id="hospedajeTotal" value="0" readonly>
+</div>
+
+</div>
 
 </section>
+
+<section>
+
+<h3>Total General</h3>
+
+<div class="total">
+
+<h1 id="totalGeneral">$0</h1>
+
+</div>
+
+</section>
+
+</section>
+<section class="acciones">
+
+<button id="btnGuardar">
+💾 Guardar
+</button>
+
+<button id="btnBuscar">
+🔍 Buscar
+</button>
+
+<button id="btnPDF">
+📄 Generar PDF
+</button>
+
+<button id="btnWhatsapp">
+📲 WhatsApp
+</button>
+
+<button id="btnNuevo">
+🆕 Nuevo
+</button>
+
+</section>
+
+<footer>
+
+<p>
+ALBE SERVICIOS GENERALES © 2026
+</p>
+
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register("sw.js");
+
+}
+
+</script>
+
+</body>
+</html>
