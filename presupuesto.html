@@ -145,9 +145,59 @@ ahora.toLocaleString("es-AR");
 setInterval(actualizarHora,1000);
 
 actualizarHora();
+function cargarPanel(){
 
+    const presupuestos =
+        JSON.parse(localStorage.getItem("presupuestos")) || [];
+
+    document.getElementById("cantPresupuestos").innerHTML =
+        presupuestos.length;
+
+    fetch("clientes.json")
+    .then(r=>r.json())
+    .then(datos=>{
+
+        document.getElementById("cantClientes").innerHTML =
+            datos.length;
+
+    });
+
+}
+
+cargarPanel();
 </script>
 
 </body>
+.panel{
 
+display:flex;
+gap:15px;
+justify-content:center;
+margin:20px 0;
+
+}
+
+.card{
+
+flex:1;
+background:#0B3D91;
+color:white;
+padding:15px;
+border-radius:12px;
+text-align:center;
+
+}
+
+.card h2{
+
+font-size:32px;
+margin-bottom:5px;
+
+}
+
+.card p{
+
+font-size:14px;
+
+}
 </html>
