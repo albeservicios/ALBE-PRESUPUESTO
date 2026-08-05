@@ -128,8 +128,11 @@ Versión 2.0 PRO
     <button onclick="location.href='configuracion.html'">
         ⚙ CONFIGURACIÓN
     </button>
+    if(localStorage.getItem("login")!="SI"){
 
-</div>
+location.href="login.html";
+
+}
 
 <script>
 
@@ -165,6 +168,13 @@ function cargarPanel(){
 }
 
 cargarPanel();
+    function cerrarSesion(){
+
+localStorage.removeItem("login");
+
+location.href="login.html";
+
+    }
 </script>
 
 </body>
@@ -200,4 +210,6 @@ margin-bottom:5px;
 font-size:14px;
 
 }
-</html>
+<button onclick="cerrarSesion()">
+🚪 CERRAR SESIÓN
+</button>
