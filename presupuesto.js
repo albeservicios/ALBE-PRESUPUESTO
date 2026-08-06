@@ -298,12 +298,39 @@ function guardarPresupuesto(){
 }
 
 // PDF
-function generarPDF(){
+async function generarPDF() {
 
-    window.print();
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF("p", "mm", "a4");
+
+    // Logo
+    doc.addImage("img/logo.png", "PNG", 10, 8, 30, 30);
+
+    // Empresa
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(18);
+    doc.text("ALBE SERVICIOS GENERALES", 105, 18, { align: "center" });
+
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "normal");
+    doc.text("PRESUPUESTO", 105, 26, { align: "center" });
+
+    // Línea
+    doc.line(10, 40, 200, 40);
+
+    // Datos
+    doc.text("N°: " + document.getElementById("agenda").value, 10, 50);
+    doc.text("Fecha: " + document.getElementById("fecha").value, 140, 50);
+
+    doc.text("Empresa: " + document.getElementById("empresa").value, 10, 60);
+    doc.text("Sucursal: " + document.getElementById("sucursal").value, 10, 68);
+    doc.text("Provincia: " + document.getElementById("provincia").value, 10, 76);
+    doc.text("Localidad: " + document.getElementById("localidad").value, 10, 84);
+
+    doc.save(document.getElementById("agenda").value + ".pdf");
 
 }
-
 // WhatsApp
 function enviarWhatsApp(){
 
