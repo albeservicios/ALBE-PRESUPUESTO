@@ -1,32 +1,94 @@
-// ===========================================
+// ==========================================
 // ALBE SERVICIOS GENERALES
-// PRESUPUESTO.JS
+// PRESUPUESTO.JS V2.0
 // PARTE 1
-// Materiales y Mano de Obra
-// ===========================================
+// ==========================================
+
+// Datos
+let clientes = [];
+let materiales = [];
+let manoObra = [];
+
+// Cargar clientes
+function cargarClientes(){
+
+    clientes =
+    JSON.parse(localStorage.getItem("clientes")) || [];
+
+    const combo =
+    document.getElementById("cliente");
+
+    if(!combo) return;
+
+    combo.innerHTML =
+    '<option value="">Seleccione un cliente...</option>';
+
+    clientes.forEach((c,i)=>{
+
+        combo.innerHTML +=
+        `<option value="${i}">
+        ${c.empresa} - ${c.sucursal}
+        </option>`;
+
+    });
+
+}
+
+// Completar datos
+function seleccionarCliente(){
+
+    const indice =
+    document.getElementById("cliente").value;
+
+    if(indice==="") return;
+
+    const c = clientes[indice];
+
+    document.getElementById("empresa").value = c.empresa;
+    document.getElementById("sucursal").value = c.sucursal;
+    document.getElementById("contacto").value = c.contacto;
+    document.getElementById("provincia").value = c.provincia;
+    document.getElementById("localidad").value = c.localidad;
+    document.getElementById("direccion").value = c.direccion;
+
+}
+
+// Inicio
+window.onload=function(){
+
+    cargarClientes();
+
+    const cliente =
+    document.getElementById("cliente");
+
+    if(cliente){
+
+        cliente.addEventListener(
+            "change",
+            seleccionarCliente
+        );
+
+    }
+
+};
+// ==========================================
+// PARTE 2
+// MATERIALES Y MANO DE OBRA
+// ==========================================
 
 function agregarMaterial(){
 
-    const tbody=document.getElementById("materialesBody");
+    const tbody =
+    document.getElementById("materialesBody");
 
-    const fila=tbody.insertRow();
+    const fila = tbody.insertRow();
 
-    fila.innerHTML=`
-    <td><input type="text" placeholder="Descripción"></td>
-
-    <td><input type="number" value="1" min="1"
-    oninput="calcularTodo()"></td>
-
-    <td><input type="number" value="0" min="0"
-    oninput="calcularTodo()"></td>
-
-    <td class="subtotal">$ 0</td>
-
-    <td>
-    <button onclick="eliminarFila(this)">
-    ❌
-    </button>
-    </td>
+    fila.innerHTML = `
+        <td><input type="text" placeholder="Descripción"></td>
+        <td><input type="number" value="1" min="1" oninput="calcularTodo()"></td>
+        <td><input type="number" value="0" min="0" oninput="calcularTodo()"></td>
+        <td class="subtotal">$ 0</td>
+        <td><button onclick="eliminarFila(this)">❌</button></td>
     `;
 
     calcularTodo();
@@ -35,26 +97,17 @@ function agregarMaterial(){
 
 function agregarMano(){
 
-    const tbody=document.getElementById("manoBody");
+    const tbody =
+    document.getElementById("manoBody");
 
-    const fila=tbody.insertRow();
+    const fila = tbody.insertRow();
 
-    fila.innerHTML=`
-    <td><input type="text" placeholder="Trabajo"></td>
-
-    <td><input type="number" value="1" min="1"
-    oninput="calcularTodo()"></td>
-
-    <td><input type="number" value="0" min="0"
-    oninput="calcularTodo()"></td>
-
-    <td class="subtotal">$ 0</td>
-
-    <td>
-    <button onclick="eliminarFila(this)">
-    ❌
-    </button>
-    </td>
+    fila.innerHTML = `
+        <td><input type="text" placeholder="Trabajo"></td>
+        <td><input type="number" value="1" min="1" oninput="calcularTodo()"></td>
+        <td><input type="number" value="0" min="0" oninput="calcularTodo()"></td>
+        <td class="subtotal">$ 0</td>
+        <td><button onclick="eliminarFila(this)">❌</button></td>
     `;
 
     calcularTodo();
@@ -69,24 +122,24 @@ function eliminarFila(boton){
 
 }
 
-function calcularTabla(id){
+function calcularTabla(idTabla){
 
-    let total=0;
+    let total = 0;
 
-    document.querySelectorAll(`#${id} tr`).forEach(fila=>{
+    document.querySelectorAll(`#${idTabla} tr`).forEach(fila=>{
 
-        const cantidad=
+        const cantidad =
         Number(fila.cells[1].querySelector("input").value);
 
-        const precio=
+        const precio =
         Number(fila.cells[2].querySelector("input").value);
 
-        const subtotal=cantidad*precio;
+        const subtotal = cantidad * precio;
 
-        fila.cells[3].innerHTML=
-        "$ "+subtotal.toLocaleString("es-AR");
+        fila.cells[3].innerHTML =
+        "$ " + subtotal.toLocaleString("es-AR");
 
-        total+=subtotal;
+        total += subtotal;
 
     });
 
@@ -94,25 +147,39 @@ function calcularTabla(id){
 
 }
 
-window.onload=function(){
+window.addEventListener("load",()=>{
+
+    const btnMaterial =
+    document.getElementById("agregarMaterial");
+
+    if(btnMaterial){
+
+        btnMaterial.onclick = agregarMaterial;
+
+    }
+
+    const btnMano =
+    document.getElementById("agregarMano");
+
+    if(btnMano){
+
+        btnMano.onclick = agregarMano;
+
+    }
 
     agregarMaterial();
-
     agregarMano();
 
-}
-// ===========================================
-// PARTE 2
-// VIÁTICOS - HOSPEDAJE - TOTALES
-// ===========================================
+});
+// ==========================================
+// PARTE 3
+// TOTALES - VIÁTICOS - HOSPEDAJE
+// ==========================================
 
 function calcularTodo(){
 
-    const totalMateriales =
-        calcularTabla("materialesBody");
-
-    const totalMano =
-        calcularTabla("manoBody");
+    const totalMateriales = calcularTabla("materialesBody");
+    const totalMano = calcularTabla("manoBody");
 
     document.getElementById("totalMateriales").innerHTML =
         "$ " + totalMateriales.toLocaleString("es-AR");
@@ -120,28 +187,19 @@ function calcularTodo(){
     document.getElementById("totalMano").innerHTML =
         "$ " + totalMano.toLocaleString("es-AR");
 
-    const km =
-        Number(document.getElementById("km").value || 0);
-
-    const tarifa =
-        Number(document.getElementById("tarifa").value || 570);
+    const km = Number(document.getElementById("km").value || 0);
+    const tarifa = Number(document.getElementById("tarifa").value || 570);
 
     const viaticos = km * tarifa;
 
-    document.getElementById("viaticos").value =
-        viaticos;
+    document.getElementById("viaticos").value = viaticos;
 
-    const dias =
-        Number(document.getElementById("dias").value || 0);
+    const dias = Number(document.getElementById("dias").value || 0);
+    const valorDia = Number(document.getElementById("valorDia").value || 60000);
 
-    const valorDia =
-        Number(document.getElementById("valorDia").value || 60000);
+    const hospedaje = dias * valorDia;
 
-    const hospedaje =
-        dias * valorDia;
-
-    document.getElementById("hospedajeTotal").value =
-        hospedaje;
+    document.getElementById("hospedajeTotal").value = hospedaje;
 
     const totalGeneral =
         totalMateriales +
@@ -155,7 +213,6 @@ function calcularTodo(){
 }
 
 // Recalcular automáticamente
-
 ["km","tarifa","dias","valorDia"].forEach(id=>{
 
     const campo = document.getElementById(id);
@@ -167,29 +224,29 @@ function calcularTodo(){
     }
 
 });
-// ===========================================
-// PARTE 3
-// GUARDAR PRESUPUESTOS
-// ===========================================
+// ==========================================
+// PARTE 4
+// GUARDAR - PDF - WHATSAPP
+// ==========================================
 
-// Número automático
-function generarNumeroPresupuesto(){
+// Número de presupuesto
+function generarNumero(){
 
     let numero =
-    Number(localStorage.getItem("ultimoPresupuesto")) || 1;
+    Number(localStorage.getItem("ultimoNumero")) || 1;
 
     document.getElementById("agenda").value =
     "ALBE-" + String(numero).padStart(6,"0");
 
 }
 
-// Fecha automática
+// Fecha actual
 function cargarFecha(){
 
     const hoy = new Date();
 
     document.getElementById("fecha").value =
-    hoy.toISOString().split("T")[0];
+    hoy.toISOString().substring(0,10);
 
 }
 
@@ -203,6 +260,7 @@ function guardarPresupuesto(){
 
         empresa:document.getElementById("empresa").value,
         sucursal:document.getElementById("sucursal").value,
+        contacto:document.getElementById("contacto").value,
         provincia:document.getElementById("provincia").value,
         localidad:document.getElementById("localidad").value,
         direccion:document.getElementById("direccion").value,
@@ -226,170 +284,70 @@ function guardarPresupuesto(){
     );
 
     let numero =
-    Number(localStorage.getItem("ultimoPresupuesto")) || 1;
-
-    numero++;
+    Number(localStorage.getItem("ultimoNumero")) || 1;
 
     localStorage.setItem(
-        "ultimoPresupuesto",
-        numero
+        "ultimoNumero",
+        numero + 1
     );
 
     alert("Presupuesto guardado correctamente.");
 
-    generarNumeroPresupuesto();
+    generarNumero();
 
 }
 
-// Al iniciar
-window.addEventListener("load",()=>{
-
-    generarNumeroPresupuesto();
-
-    cargarFecha();
-
-});
-
-// Botón guardar
-document.getElementById("btnGuardar")
-.addEventListener("click",guardarPresupuesto);
-// ===========================================
-// PARTE 4
-// PDF - WHATSAPP - NUEVO PRESUPUESTO
-// ===========================================
-
-// Generar PDF
+// PDF
 function generarPDF(){
 
     window.print();
 
 }
 
-// Enviar WhatsApp
+// WhatsApp
 function enviarWhatsApp(){
 
-    const empresa = document.getElementById("empresa").value;
-    const sucursal = document.getElementById("sucursal").value;
-    const total = document.getElementById("totalGeneral").innerText;
-
     const mensaje =
+
 `*ALBE SERVICIOS GENERALES*
 
-Presupuesto: ${document.getElementById("agenda").value}
-// =====================================
-// PARTE 4
-// PDF - WHATSAPP - BOTONES
-// =====================================
+Presupuesto:
+${document.getElementById("agenda").value}
 
-// Generar PDF
-function generarPDF(){
+Empresa:
+${document.getElementById("empresa").value}
 
-    window.print();
+Sucursal:
+${document.getElementById("sucursal").value}
 
-}
-
-// Enviar por WhatsApp
-function enviarWhatsApp(){
-
-    const agenda =
-        document.getElementById("agenda").value;
-
-    const empresa =
-        document.getElementById("empresa").value;
-
-    const sucursal =
-        document.getElementById("sucursal").value;
-
-    const total =
-        document.getElementById("totalGeneral").innerText;
-
-    const mensaje =
-`*ALBE SERVICIOS GENERALES*
-
-Presupuesto: ${agenda}
-
-Empresa: ${empresa}
-
-Sucursal: ${sucursal}
-
-Total: ${total}`;
+Total:
+${document.getElementById("totalGeneral").innerText}`;
 
     window.open(
+
         "https://wa.me/?text=" +
         encodeURIComponent(mensaje),
+
         "_blank"
+
     );
 
 }
 
-// Eventos de botones
+// Eventos
 window.addEventListener("load",()=>{
 
-    const btnPDF =
-        document.getElementById("btnPDF");
+    generarNumero();
 
-    if(btnPDF){
+    cargarFecha();
 
-        btnPDF.addEventListener("click",generarPDF);
+    document.getElementById("btnGuardar").onclick =
+    guardarPresupuesto;
 
-    }
+    document.getElementById("btnPDF").onclick =
+    generarPDF;
 
-    const btnWhatsapp =
-        document.getElementById("btnWhatsapp");
-
-    if(btnWhatsapp){
-// =====================================
-// PARTE 5
-// CARGAR CLIENTES EN PRESUPUESTO
-// =====================================
-
-let listaClientes = [];
-
-function cargarClientesPresupuesto(){
-
-    listaClientes =
-    JSON.parse(localStorage.getItem("clientes")) || [];
-
-    const select =
-    document.getElementById("cliente");
-
-    if(!select) return;
-
-    select.innerHTML =
-    '<option value="">Seleccione un cliente...</option>';
-
-    listaClientes.forEach((c,indice)=>{
-
-        select.innerHTML +=
-        `<option value="${indice}">
-        ${c.empresa} - ${c.sucursal}
-        </option>`;
-
-    });
-
-}
-
-document.getElementById("cliente")
-.addEventListener("change",function(){
-
-    const indice = this.value;
-
-    if(indice==="") return;
-
-    const c = listaClientes[indice];
-
-    document.getElementById("empresa").value = c.empresa;
-    document.getElementById("sucursal").value = c.sucursal;
-    document.getElementById("contacto").value = c.contacto;
-    document.getElementById("provincia").value = c.provincia;
-    document.getElementById("localidad").value = c.localidad;
-    document.getElementById("direccion").value = c.direccion;
-
-});
-
-window.addEventListener("load",cargarClientesPresupuesto);
-        btnWhatsapp.addEventListener("click",enviarWhatsApp);
-
-    }
+    document.getElementById("btnWhatsapp").onclick =
+    enviarWhatsApp;
 
 });
