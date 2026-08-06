@@ -276,3 +276,120 @@ function enviarWhatsApp(){
 `*ALBE SERVICIOS GENERALES*
 
 Presupuesto: ${document.getElementById("agenda").value}
+// =====================================
+// PARTE 4
+// PDF - WHATSAPP - BOTONES
+// =====================================
+
+// Generar PDF
+function generarPDF(){
+
+    window.print();
+
+}
+
+// Enviar por WhatsApp
+function enviarWhatsApp(){
+
+    const agenda =
+        document.getElementById("agenda").value;
+
+    const empresa =
+        document.getElementById("empresa").value;
+
+    const sucursal =
+        document.getElementById("sucursal").value;
+
+    const total =
+        document.getElementById("totalGeneral").innerText;
+
+    const mensaje =
+`*ALBE SERVICIOS GENERALES*
+
+Presupuesto: ${agenda}
+
+Empresa: ${empresa}
+
+Sucursal: ${sucursal}
+
+Total: ${total}`;
+
+    window.open(
+        "https://wa.me/?text=" +
+        encodeURIComponent(mensaje),
+        "_blank"
+    );
+
+}
+
+// Eventos de botones
+window.addEventListener("load",()=>{
+
+    const btnPDF =
+        document.getElementById("btnPDF");
+
+    if(btnPDF){
+
+        btnPDF.addEventListener("click",generarPDF);
+
+    }
+
+    const btnWhatsapp =
+        document.getElementById("btnWhatsapp");
+
+    if(btnWhatsapp){
+// =====================================
+// PARTE 5
+// CARGAR CLIENTES EN PRESUPUESTO
+// =====================================
+
+let listaClientes = [];
+
+function cargarClientesPresupuesto(){
+
+    listaClientes =
+    JSON.parse(localStorage.getItem("clientes")) || [];
+
+    const select =
+    document.getElementById("cliente");
+
+    if(!select) return;
+
+    select.innerHTML =
+    '<option value="">Seleccione un cliente...</option>';
+
+    listaClientes.forEach((c,indice)=>{
+
+        select.innerHTML +=
+        `<option value="${indice}">
+        ${c.empresa} - ${c.sucursal}
+        </option>`;
+
+    });
+
+}
+
+document.getElementById("cliente")
+.addEventListener("change",function(){
+
+    const indice = this.value;
+
+    if(indice==="") return;
+
+    const c = listaClientes[indice];
+
+    document.getElementById("empresa").value = c.empresa;
+    document.getElementById("sucursal").value = c.sucursal;
+    document.getElementById("contacto").value = c.contacto;
+    document.getElementById("provincia").value = c.provincia;
+    document.getElementById("localidad").value = c.localidad;
+    document.getElementById("direccion").value = c.direccion;
+
+});
+
+window.addEventListener("load",cargarClientesPresupuesto);
+        btnWhatsapp.addEventListener("click",enviarWhatsApp);
+
+    }
+
+});
