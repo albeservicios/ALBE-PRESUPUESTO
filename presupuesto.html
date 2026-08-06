@@ -4,106 +4,104 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Nuevo Presupuesto</title>
+<title>ALBE PRESUPUESTOS V3.0</title>
 
 <link rel="stylesheet" href="Estilo.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 </head>
 
 <body>
 
-<div class="dashboard">
+<div class="contenedor">
 
-<h1>📄 Nuevo Presupuesto</h1>
+<header class="encabezado">
 
-<button onclick="location.href='index.html'">
-🏠 Volver al Inicio
-</button>
+<div class="logo">
 
-<hr>
+<img src="img/logo.png" alt="ALBE SERVICIOS GENERALES">
 
-<h2>Datos Generales</h2>
+</div>
 
-<label>N° Agenda</label>
+<div class="titulo">
+
+<h1>ALBE SERVICIOS GENERALES</h1>
+
+<h2>Sistema Profesional de Presupuestos</h2>
+
+</div>
+
+</header>
+
+<section class="datos-superiores">
+
+<div>
+
+<label>N° Presupuesto</label>
+
 <input type="text" id="agenda" readonly>
 
+</div>
+
+<div>
+
 <label>Fecha</label>
+
 <input type="date" id="fecha">
 
-<label>Cliente</label>
+</div>
 
-<select id="cliente">
+<div>
 
-<option value="">Seleccione un cliente...</option>
+<label>Estado</label>
+
+<select id="estado">
+
+<option>Pendiente</option>
+
+<option>Aprobado</option>
+
+<option>Rechazado</option>
+
+<option>Finalizado</option>
 
 </select>
 
-<label>Empresa</label>
-<input type="text" id="empresa" readonly>
+</div>
 
-<label>Sucursal</label>
-<input type="text" id="sucursal" readonly>
+</section>
 
-<label>Contacto</label>
-<input type="text" id="contacto" readonly>
+<nav class="menu">
 
-<label>Provincia</label>
-<input type="text" id="provincia" readonly>
+<button class="tablink" onclick="abrirPestana('cliente')">
+👤 Cliente
+</button>
 
-<label>Localidad</label>
-<input type="text" id="localidad" readonly>
+<button class="tablink" onclick="abrirPestana('proveedor')">
+🏢 Proveedor
+</button>
 
-<label>Dirección</label>
-<input type="text" id="direccion" readonly>
-</select>
+<button class="tablink" onclick="abrirPestana('materiales')">
+📦 Materiales
+</button>
 
-<label>Sucursal</label>
-<input type="text" id="sucursal">
+<button class="tablink" onclick="abrirPestana('mano')">
+👷 Mano de Obra
+</button>
 
-<label>Provincia</label>
-<input type="text" id="provincia">
+<button class="tablink" onclick="abrirPestana('viaticos')">
+🚚 Viáticos
+</button>
 
-<label>Localidad</label>
-<input type="text" id="localidad">
+<button class="tablink" onclick="abrirPestana('resumen')">
+📄 Resumen
+</button>
 
-<label>Dirección</label>
-<input type="text" id="direccion">
-
-<label>Supervisor</label>
-<input type="text" id="supervisor">
-
-<hr>
-
-<h2>Datos del Contratista</h2>
-
-<label>Nombre y Apellido</label>
-<input type="text" value="Julian Ezequiel Battauz" readonly>
-
-<label>CUIT</label>
-<input type="text" value="20-37470547-5" readonly>
-
-<label>Teléfono</label>
-<input type="text" value="2993263793" readonly>
-
-<label>Correo</label>
-<input type="email" value="julianbattauz006@gmail.com" readonly>
-
-<hr>
-<hr>
-
-<h2>Descripción del Trabajo</h2>
-
-<label>Trabajo a realizar</label>
-
-<textarea id="descripcion" rows="5"
-placeholder="Describa el trabajo..."></textarea>
-
-<hr>
-
-<h2>Materiales</h2>
-
+</nav>
 <button id="agregarMaterial">
 ➕ Agregar Material
 </button>
@@ -271,3 +269,267 @@ placeholder="Escriba observaciones del presupuesto..."></textarea>
 </body>
 
 </html>
+<!-- ========================= -->
+<!-- PESTAÑA CLIENTE -->
+<!-- ========================= -->
+
+<section id="cliente" class="tabcontent">
+
+<h2>Datos del Cliente</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Cliente</label>
+
+<select id="clienteSelect">
+
+<option value="">Seleccione...</option>
+
+</select>
+
+</div>
+
+<div>
+
+<label>Empresa</label>
+
+<input type="text" id="empresa" readonly>
+
+</div>
+
+<div>
+
+<label>Sucursal</label>
+
+<input type="text" id="sucursal" readonly>
+
+</div>
+
+<div>
+
+<label>Contacto</label>
+
+<input type="text" id="contacto">
+
+</div>
+
+<div>
+
+<label>Teléfono</label>
+
+<input type="text" id="telefono">
+
+</div>
+
+<div>
+
+<label>Correo</label>
+
+<input type="email" id="correo">
+
+</div>
+
+<div>
+
+<label>Provincia</label>
+
+<input type="text" id="provincia" readonly>
+
+</div>
+
+<div>
+
+<label>Localidad</label>
+
+<input type="text" id="localidad" readonly>
+
+</div>
+
+<div class="ancho-completo">
+
+<label>Dirección</label>
+
+<input type="text" id="direccion" readonly>
+
+</div>
+
+</div>
+
+</section>
+<!-- ========================= -->
+<!-- PESTAÑA PROVEEDOR -->
+<!-- ========================= -->
+
+<section id="proveedor" class="tabcontent" style="display:none;">
+
+<h2>Datos del Proveedor</h2>
+
+<div class="grid">
+
+<div>
+
+<label>Empresa</label>
+
+<input
+type="text"
+id="proveedorEmpresa"
+value="ALBE SERVICIOS GENERALES">
+
+</div>
+
+<div>
+
+<label>CUIT</label>
+
+<input
+type="text"
+id="proveedorCuit"
+placeholder="20-XXXXXXXX-X">
+
+</div>
+
+<div>
+
+<label>Responsable</label>
+
+<input
+type="text"
+id="proveedorResponsable"
+placeholder="Julian Battauz">
+
+</div>
+
+<div>
+
+<label>Supervisor</label>
+
+<input
+type="text"
+id="supervisor">
+
+</div>
+
+<div>
+
+<label>Teléfono</label>
+
+<input
+type="text"
+id="proveedorTelefono">
+
+</div>
+
+<div>
+
+<label>Correo</label>
+
+<input
+type="email"
+id="proveedorCorreo">
+
+</div>
+
+<div class="ancho-completo">
+
+<label>Dirección Comercial</label>
+
+<input
+type="text"
+id="proveedorDireccion">
+
+</div>
+
+<div>
+
+<label>Lugar del Trabajo</label>
+
+<input
+type="text"
+id="lugar">
+
+</div>
+
+<div>
+
+<label>Validez del Presupuesto</label>
+
+<select id="validez">
+
+<option>7 días</option>
+<option>15 días</option>
+<option>30 días</option>
+
+</select>
+
+</div>
+
+<div class="ancho-completo">
+
+<label>Condiciones de Pago</label>
+
+<textarea
+id="condicionesPago"
+rows="4"
+placeholder="Ej.: 30% de anticipo y saldo contra entrega."></textarea>
+
+</div>
+
+</div>
+
+</section>
+<!-- ========================= -->
+<!-- PESTAÑA MATERIALES -->
+<!-- ========================= -->
+
+<section id="materiales" class="tabcontent" style="display:none;">
+
+<h2>Materiales</h2>
+
+<button type="button" id="agregarMaterial">
+➕ Agregar Material
+</button>
+
+<table id="tablaMateriales">
+
+<thead>
+
+<tr>
+
+<th>Descripción</th>
+<th>Unidad</th>
+<th>Cantidad</th>
+<th>Precio Unitario</th>
+<th>Subtotal</th>
+<th>Acción</th>
+
+</tr>
+
+</thead>
+
+<tbody id="materialesBody">
+
+</tbody>
+
+<tfoot>
+
+<tr>
+
+<th colspan="4" style="text-align:right;">
+TOTAL MATERIALES
+</th>
+
+<th id="totalMateriales">
+$ 0
+</th>
+
+<th></th>
+
+</tr>
+
+</tfoot>
+
+</table>
+
+</section>
