@@ -427,5 +427,5 @@ if(btnNuevo){
         }
 
     });
-
+alert("JavaScript cargó correctamente");
 }
