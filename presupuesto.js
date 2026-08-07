@@ -378,3 +378,54 @@ window.addEventListener("load",()=>{
     enviarWhatsApp;
 
 });
+// ==========================================
+// PARTE 8
+// PESTAÑAS DEL SISTEMA
+// ==========================================
+
+function abrirPestana(nombre){
+
+    const pestañas =
+    document.querySelectorAll(".tabcontent");
+
+    pestañas.forEach(p=>{
+
+        p.style.display = "none";
+
+    });
+
+    const actual =
+    document.getElementById(nombre);
+
+    if(actual){
+
+        actual.style.display = "block";
+
+    }
+
+}
+
+// Mostrar la primera pestaña
+window.addEventListener("load",()=>{
+
+    abrirPestana("cliente");
+
+});
+
+// Nuevo presupuesto
+const btnNuevo =
+document.getElementById("btnNuevo");
+
+if(btnNuevo){
+
+    btnNuevo.addEventListener("click",()=>{
+
+        if(confirm("¿Desea crear un nuevo presupuesto?")){
+
+            location.reload();
+
+        }
+
+    });
+
+}
