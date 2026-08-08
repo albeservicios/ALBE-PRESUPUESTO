@@ -1,1 +1,37 @@
-
+{
+  "version": "4.0",
+  "clientes": [
+    {
+      "id": "credito-argentino",
+      "empresa": "CRÉDITO ARGENTINO",
+      "razonSocial": "CFN S.R.L.",
+      "sucursales": [
+  {
+    "provincia": "Neuquén",
+    "localidad": "Cutral-Co",
+    "sucursal": "Cutral-Co",
+    "direccion": "Avenida del Trabajador 769",
+    "telefono": ""
+  },
+  {
+    "provincia": "Neuquén",
+    "localidad": "Neuquén",
+    "sucursal": "Neuquén",
+    "direccion": "Ministro Amancio Alcorta 118",
+    "telefono": ""
+  },
+  {
+    "provincia": "Río Negro",
+    "localidad": "Cipolletti",
+    "sucursal": "Cipolletti",
+    "direccion": "Miguel Muñoz 165",
+    "telefono": ""
+  },
+  {
+    "provincia": "Río Negro",
+    "localidad": "General Roca",
+    "sucursal": "General Roca",
+    "direccion": "Avenida Roca 1457",
+    "telefono": ""
+  }
+      ]
