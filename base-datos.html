@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Base de Datos ALBE</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#ececec;
+    padding:15px;
+    color:#222;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+}
+
+.header{
+    background:#111;
+    color:white;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.header h1{
+    font-size:24px;
+}
+
+.header p{
+    margin-top:6px;
+    opacity:.8;
+}
+
+.tabs{
+    display:flex;
+    gap:8px;
+    margin-bottom:15px;
+    flex-wrap:wrap;
+}
+
+.tab{
+    border:0;
+    padding:13px 18px;
+    border-radius:8px;
+    background:#ddd;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.tab.active{
+    background:#111;
+    color:white;
+}
+
+.section{
+    display:none;
+}
+
+.section.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+}
+
+.field{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.field.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-weight:bold;
+    font-size:14px;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    border:0;
+    padding:11px 15px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.btn-primary{
+    background:#111;
+    color:white;
+}
+
+.btn-edit{
+    background:#e5e5e5;
+}
+
+.btn-delete{
+    background:#d93025;
+    color:white;
+}
+
+.btn-export{
+    background:#1976d2;
+    color:white;
+}
+
+.btn-import{
+    background:#388e3c;
+    color:white;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.result{
+    background:#f1f1f1;
+    padding:12px;
+    border-radius:8px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.search{
+    margin-bottom:15px;
+}
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:750px;
+}
+
+th,
+td{
+    padding:11px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+}
+
+th{
+    background:#f4f4f4;
+}
+
+.price{
+    font-weight:bold;
+}
+
+.price-final{
+    color:#111;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 8px;
+    border-radius:20px;
+    background:#eee;
+    font-size:12px;
+}
+
+.config{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.config input{
+    max-width:120px;
+}
+
+.backup{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+@media(max-width:700px){
+
+    body{
+        padding:8px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+        grid-column:auto;
+    }
+
+    .header h1{
+        font-size:21px;
+    }
+
+    table{
+        min-width:700px;
+    }
+
+    .tab{
+        flex:1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="header">
+    <h1>📊 BASE DE DATOS ALBE</h1>
+    <p>Materiales · Mano de obra · Servicios</p>
+</header>
+
+<div class="tabs">
+
+    <button class="tab active" onclick="mostrarSeccion('materiales',this)">
+        📦 Materiales
+    </button>
+
+    <button class="tab" onclick="mostrarSeccion('manoObra',this)">
+        🔧 Mano de obra
+    </button>
+
+    <button class="tab" onclick="mostrarSeccion('servicios',this)">
+        🚚 Servicios
+    </button>
+
+    <button class="tab" onclick="mostrarSeccion('configuracion',this)">
+        ⚙️ Configuración
+    </button>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- MATERIALES -->
+<!-- ========================= -->
+
+<section id="materiales" class="section active">
+
+<div class="card">
+
+<h2>📦 Agregar material</h2>
+
+<div class="grid">
+
+<div class="field full">
+<label>Nombre del material</label>
+<input id="materialNombre" type="text"
+placeholder="Ej: Placa Durlock 12,5 mm">
+</div>
+
+<div class="field">
+<label>Categoría</label>
+
+<select id="materialCategoria">
+
+<option value="Durlock">Durlock</option>
+<option value="Construcción">Construcción</option>
+<option value="Pintura">Pintura</option>
+<option value="Electricidad">Electricidad</option>
+<option value="Plomería">Plomería</option>
+<option value="Herramientas">Herramientas</option>
+<option value="Ferretería">Ferretería</option>
+<option value="Otros">Otros</option>
+
+</select>
+</div>
+
+<div class="field">
+
+<label>Unidad</label>
+
+<select id="materialUnidad">
+
+<option value="unidad">Unidad</option>
+<option value="m²">m²</option>
+<option value="m³">m³</option>
+<option value="metro">Metro</option>
+<option value="kg">Kg</option>
+<option value="litro">Litro</option>
+<option value="bolsa">Bolsa</option>
+<option value="caja">Caja</option>
+<option value="rollo">Rollo</option>
+<option value="par">Par</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Precio base</label>
+
+<input id="materialPrecio"
+type="number"
+min="0"
+step="0.01"
+placeholder="0">
+
+</div>
+
+<div class="field">
+
+<label>Margen ALBE (%)</label>
+
+<input id="materialMargen"
+type="number"
+min="0"
+step="0.01"
+value="35">
+
+</div>
+
+<div class="field full">
+
+<div class="result">
+
+Precio ALBE:
+$ <span id="materialPrecioFinal">0,00</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="btn-primary"
+onclick="guardarMaterial()">
+
+💾 Guardar material
+
+</button>
+
+<button
+onclick="limpiarMaterial()">
+
+Limpiar
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Materiales registrados</h2>
+
+<div class="search">
+
+<input
+id="buscarMaterial"
+type="text"
+placeholder="🔎 Buscar material..."
+oninput="mostrarMateriales()">
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Material</th>
+<th>Categoría</th>
+<th>Unidad</th>
+<th>Precio base</th>
+<th>Margen</th>
+<th>Precio ALBE</th>
+<th>Acciones</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaMateriales"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- MANO DE OBRA -->
+<!-- ========================= -->
+
+<section id="manoObra" class="section">
+
+<div class="card">
+
+<h2>🔧 Agregar mano de obra</h2>
+
+<div class="grid">
+
+<div class="field full">
+
+<label>Descripción del trabajo</label>
+
+<input
+id="obraNombre"
+type="text"
+placeholder="Ej: Instalación de Durlock">
+
+</div>
+
+<div class="field">
+
+<label>Categoría</label>
+
+<select id="obraCategoria">
+
+<option>Durlock</option>
+<option>Pintura</option>
+<option>Mantenimiento</option>
+<option>Construcción</option>
+<option>Electricidad</option>
+<option>Plomería</option>
+<option>Otros</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Unidad</label>
+
+<select id="obraUnidad">
+
+<option>m²</option>
+<option>m³</option>
+<option>metro</option>
+<option>hora</option>
+<option>día</option>
+<option>unidad</option>
+<option>trabajo</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Precio</label>
+
+<input
+id="obraPrecio"
+type="number"
+min="0"
+step="0.01"
+placeholder="0">
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="btn-primary"
+onclick="guardarObra()">
+
+💾 Guardar mano de obra
+
+</button>
+
+<button onclick="limpiarObra()">
+
+Limpiar
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Mano de obra registrada</h2>
+
+<div class="search">
+
+<input
+id="buscarObra"
+type="text"
+placeholder="🔎 Buscar trabajo..."
+oninput="mostrarObras()">
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Trabajo</th>
+<th>Categoría</th>
+<th>Unidad</th>
+<th>Precio</th>
+<th>Acciones</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaObra"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- SERVICIOS -->
+<!-- ========================= -->
+
+<section id="servicios" class="section">
+
+<div class="card">
+
+<h2>🚚 Agregar servicio / adicional</h2>
+
+<div class="grid">
+
+<div class="field full">
+
+<label>Nombre del servicio</label>
+
+<input
+id="servicioNombre"
+type="text"
+placeholder="Ej: Flete">
+
+</div>
+
+<div class="field">
+
+<label>Unidad</label>
+
+<select id="servicioUnidad">
+
+<option>unidad</option>
+<option>km</option>
+<option>día</option>
+<option>noche</option>
+<option>hora</option>
+<option>servicio</option>
+<option>m²</option>
+<option>m³</option>
+
+</select>
+
+</div>
+
+<div class="field">
+
+<label>Precio</label>
+
+<input
+id="servicioPrecio"
+type="number"
+min="0"
+step="0.01"
+placeholder="0">
+
+</div>
+
+<div class="field full">
+
+<label>Tipo de cálculo</label>
+
+<select id="servicioTipo">
+
+<option value="cantidad">
+Cantidad × precio
+</option>
+
+<option value="fijo">
+Precio fijo
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+class="btn-primary"
+onclick="guardarServicio()">
+
+💾 Guardar servicio
+
+</button>
+
+<button onclick="limpiarServicio()">
+
+Limpiar
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>📋 Servicios registrados</h2>
+
+<div class="search">
+
+<input
+id="buscarServicio"
+type="text"
+placeholder="🔎 Buscar servicio..."
+oninput="mostrarServicios()">
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Servicio</th>
+<th>Unidad</th>
+<th>Precio</th>
+<th>Tipo</th>
+<th>Acciones</th>
+
+</tr>
+
+</thead>
+
+<tbody id="tablaServicios"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- CONFIGURACIÓN -->
+<!-- ========================= -->
+
+<section id="configuracion" class="section">
+
+<div class="card">
+
+<h2>⚙️ Configuración ALBE</h2>
+
+<div class="config">
+
+<label>
+
+Margen predeterminado de materiales:
+
+</label>
+
+<input
+id="margenGeneral"
+type="number"
+min="0"
+step="0.01">
+
+<span>%</span>
+
+<button
+class="btn-primary"
+onclick="guardarConfiguracion()">
+
+Guardar
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>💾 Copia de seguridad</h2>
+
+<p>
+Guardá una copia de tus bases para poder recuperarlas
+si cambiás de teléfono o navegador.
+</p>
+
+<div class="actions">
+
+<button
+class="btn-export"
+onclick="exportarBase()">
+
+📥 Exportar base ALBE
+
+</button>
+
+<button
+class="btn-import"
+onclick="document.getElementById('archivoImportar').click()">
+
+📤 Importar base ALBE
+
+</button>
+
+<input
+id="archivoImportar"
+type="file"
+accept=".json"
+style="display:none"
+onchange="importarBase(event)">
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<script>
+
+/* =====================================
+   BASE DE DATOS
+===================================== */
+
+let materiales =
+JSON.parse(localStorage.getItem("albe_materiales")) || [];
+
+let manoObra =
+JSON.parse(localStorage.getItem("albe_mano_obra")) || [];
+
+let servicios =
+JSON.parse(localStorage.getItem("albe_servicios")) || [];
+
+let configuracion =
+JSON.parse(localStorage.getItem("albe_configuracion")) || {
+    margenMateriales:35
+};
+
+let editandoMaterial = null;
+let editandoObra = null;
+let editandoServicio = null;
+
+
+/* =====================================
+   UTILIDADES
+===================================== */
+
+function dinero(valor){
+
+    return Number(valor || 0).toLocaleString(
+        "es-AR",
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    );
+
+}
+
+
+function generarId(){
+
+    return Date.now().toString(36)
+        + Math.random().toString(36).substring(2);
+
+}
+
+
+/* =====================================
+   NAVEGACIÓN
+===================================== */
+
+function mostrarSeccion(id,boton){
+
+    document.querySelectorAll(".section")
+        .forEach(s => s.classList.remove("active"));
+
+    document.querySelectorAll(".tab")
+        .forEach(b => b.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    boton.classList.add("active");
+
+}
+
+
+/* =====================================
+   MATERIAL
+===================================== */
+
+document.getElementById("materialPrecio")
+.addEventListener("input",calcularPrecioMaterial);
+
+document.getElementById("materialMargen")
+.addEventListener("input",calcularPrecioMaterial);
+
+
+function calcularPrecioMaterial(){
+
+    const precio =
+    Number(document.getElementById("materialPrecio").value) || 0;
+
+    const margen =
+    Number(document.getElementById("materialMargen").value) || 0;
+
+    const final =
+    precio * (1 + margen / 100);
+
+    document.getElementById("materialPrecioFinal")
+    .textContent = dinero(final);
+
+}
+
+
+function guardarMaterial(){
+
+    const nombre =
+    document.getElementById("materialNombre").value.trim();
+
+    const categoria =
+    document.getElementById("materialCategoria").value;
+
+    const unidad =
+    document.getElementById("materialUnidad").value;
+
+    const precio =
+    Number(document.getElementById("materialPrecio").value);
+
+    const margen =
+    Number(document.getElementById("materialMargen").value);
+
+    if(!nombre){
+
+        alert("Ingresá el nombre del material.");
+        return;
+
+    }
+
+    if(!precio || precio < 0){
+
+        alert("Ingresá un precio válido.");
+        return;
+
+    }
+
+    const precioFinal =
+    precio * (1 + margen / 100);
+
+    const material = {
+
+        id: editandoMaterial || generarId(),
+
+        nombre,
+        categoria,
+        unidad,
+        precioBase:precio,
+        margen,
+        precioALBE:precioFinal,
+
+        activo:true
+
+    };
+
+
+    if(editandoMaterial){
+
+        const indice =
+        materiales.findIndex(
+            m => m.id === editandoMaterial
+        );
+
+        if(indice !== -1){
+
+            materiales[indice] = material;
+
+        }
+
+        editandoMaterial = null;
+
+    }else{
+
+        materiales.push(material);
+
+    }
+
+
+    guardarDatos();
+
+    limpiarMaterial();
+
+    mostrarMateriales();
+
+}
+
+
+function mostrarMateriales(){
+
+    const buscar =
+    document.getElementById("buscarMaterial")
+    .value
+    .toLowerCase();
+
+    const tabla =
+    document.getElementById("tablaMateriales");
+
+    tabla.innerHTML = "";
+
+
+    const lista =
+    materiales.filter(m =>
+        m.nombre.toLowerCase().includes(buscar) ||
+        m.categoria.toLowerCase().includes(buscar)
+    );
+
+
+    if(lista.length === 0){
+
+        tabla.innerHTML =
+        `<tr>
+            <td colspan="7" class="empty">
+                No hay materiales registrados.
+            </td>
+        </tr>`;
+
+        return;
+
+    }
+
+
+    lista.forEach(m => {
+
+        tabla.innerHTML += `
+
+        <tr>
+
+        <td>
+            <strong>${escapeHTML(m.nombre)}</strong>
+        </td>
+
+        <td>
+            <span class="badge">
+            ${escapeHTML(m.categoria)}
+            </span>
+        </td>
+
+        <td>${escapeHTML(m.unidad)}</td>
+
+        <td>
+            $${dinero(m.precioBase)}
+        </td>
+
+        <td>
+            ${dinero(m.margen)}%
+        </td>
+
+        <td class="price-final">
+            $${dinero(m.precioALBE)}
+        </td>
+
+        <td>
+
+        <button
+        class="btn-edit"
+        onclick="editarMaterial('${m.id}')">
+
+        ✏️
+
+        </button>
+
+        <button
+        class="btn-delete"
+        onclick="eliminarMaterial('${m.id}')">
+
+        🗑️
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function editarMaterial(id){
+
+    const m =
+    materiales.find(x => x.id === id);
+
+    if(!m) return;
+
+    document.getElementById("materialNombre").value =
+    m.nombre;
+
+    document.getElementById("materialCategoria").value =
+    m.categoria;
+
+    document.getElementById("materialUnidad").value =
+    m.unidad;
+
+    document.getElementById("materialPrecio").value =
+    m.precioBase;
+
+    document.getElementById("materialMargen").value =
+    m.margen;
+
+    editandoMaterial = id;
+
+    calcularPrecioMaterial();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function eliminarMaterial(id){
+
+    if(!confirm("¿Eliminar este material?")) return;
+
+    materiales =
+    materiales.filter(m => m.id !== id);
+
+    guardarDatos();
+
+    mostrarMateriales();
+
+}
+
+
+function limpiarMaterial(){
+
+    document.getElementById("materialNombre").value = "";
+
+    document.getElementById("materialPrecio").value = "";
+
+    document.getElementById("materialMargen").value =
+    configuracion.margenMateriales;
+
+    editandoMaterial = null;
+
+    calcularPrecioMaterial();
+
+}
+
+
+/* =====================================
+   MANO DE OBRA
+===================================== */
+
+function guardarObra(){
+
+    const nombre =
+    document.getElementById("obraNombre").value.trim();
+
+    const categoria =
+    document.getElementById("obraCategoria").value;
+
+    const unidad =
+    document.getElementById("obraUnidad").value;
+
+    const precio =
+    Number(document.getElementById("obraPrecio").value);
+
+
+    if(!nombre){
+
+        alert("Ingresá la descripción del trabajo.");
+        return;
+
+    }
+
+    if(!precio || precio < 0){
+
+        alert("Ingresá un precio válido.");
+        return;
+
+    }
+
+
+    const obra = {
+
+        id:editandoObra || generarId(),
+
+        nombre,
+        categoria,
+        unidad,
+        precio,
+
+        activo:true
+
+    };
+
+
+    if(editandoObra){
+
+        const indice =
+        manoObra.findIndex(
+            x => x.id === editandoObra
+        );
+
+        if(indice !== -1){
+
+            manoObra[indice] = obra;
+
+        }
+
+        editandoObra = null;
+
+    }else{
+
+        manoObra.push(obra);
+
+    }
+
+
+    guardarDatos();
+
+    limpiarObra();
+
+    mostrarObras();
+
+}
+
+
+function mostrarObras(){
+
+    const buscar =
+    document.getElementById("buscarObra")
+    .value
+    .toLowerCase();
+
+    const tabla =
+    document.getElementById("tablaObra");
+
+    tabla.innerHTML = "";
+
+
+    const lista =
+    manoObra.filter(x =>
+        x.nombre.toLowerCase().includes(buscar) ||
+        x.categoria.toLowerCase().includes(buscar)
+    );
+
+
+    if(lista.length === 0){
+
+        tabla.innerHTML =
+        `<tr>
+            <td colspan="5" class="empty">
+                No hay mano de obra registrada.
+            </td>
+        </tr>`;
+
+        return;
+
+    }
+
+
+    lista.forEach(o => {
+
+        tabla.innerHTML += `
+
+        <tr>
+
+        <td>
+            <strong>${escapeHTML(o.nombre)}</strong>
+        </td>
+
+        <td>
+            ${escapeHTML(o.categoria)}
+        </td>
+
+        <td>
+            ${escapeHTML(o.unidad)}
+        </td>
+
+        <td class="price">
+            $${dinero(o.precio)}
+        </td>
+
+        <td>
+
+        <button
+        class="btn-edit"
+        onclick="editarObra('${o.id}')">
+
+        ✏️
+
+        </button>
+
+        <button
+        class="btn-delete"
+        onclick="eliminarObra('${o.id}')">
+
+        🗑️
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function editarObra(id){
+
+    const o =
+    manoObra.find(x => x.id === id);
+
+    if(!o) return;
+
+    document.getElementById("obraNombre").value =
+    o.nombre;
+
+    document.getElementById("obraCategoria").value =
+    o.categoria;
+
+    document.getElementById("obraUnidad").value =
+    o.unidad;
+
+    document.getElementById("obraPrecio").value =
+    o.precio;
+
+    editandoObra = id;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function eliminarObra(id){
+
+    if(!confirm("¿Eliminar este trabajo?")) return;
+
+    manoObra =
+    manoObra.filter(x => x.id !== id);
+
+    guardarDatos();
+
+    mostrarObras();
+
+}
+
+
+function limpiarObra(){
+
+    document.getElementById("obraNombre").value = "";
+
+    document.getElementById("obraPrecio").value = "";
+
+    editandoObra = null;
+
+}
+
+
+/* =====================================
+   SERVICIOS
+===================================== */
+
+function guardarServicio(){
+
+    const nombre =
+    document.getElementById("servicioNombre").value.trim();
+
+    const unidad =
+    document.getElementById("servicioUnidad").value;
+
+    const precio =
+    Number(document.getElementById("servicioPrecio").value);
+
+    const tipo =
+    document.getElementById("servicioTipo").value;
+
+
+    if(!nombre){
+
+        alert("Ingresá el nombre del servicio.");
+        return;
+
+    }
+
+    if(!precio || precio < 0){
+
+        alert("Ingresá un precio válido.");
+        return;
+
+    }
+
+
+    const servicio = {
+
+        id:editandoServicio || generarId(),
+
+        nombre,
+        unidad,
+        precio,
+        tipo,
+
+        activo:true
+
+    };
+
+
+    if(editandoServicio){
+
+        const indice =
+        servicios.findIndex(
+            x => x.id === editandoServicio
+        );
+
+        if(indice !== -1){
+
+            servicios[indice] = servicio;
+
+        }
+
+        editandoServicio = null;
+
+    }else{
+
+        servicios.push(servicio);
+
+    }
+
+
+    guardarDatos();
+
+    limpiarServicio();
+
+    mostrarServicios();
+
+}
+
+
+function mostrarServicios(){
+
+    const buscar =
+    document.getElementById("buscarServicio")
+    .value
+    .toLowerCase();
+
+    const tabla =
+    document.getElementById("tablaServicios");
+
+    tabla.innerHTML = "";
+
+
+    const lista =
+    servicios.filter(x =>
+        x.nombre.toLowerCase().includes(buscar)
+    );
+
+
+    if(lista.length === 0){
+
+        tabla.innerHTML =
+        `<tr>
+            <td colspan="5" class="empty">
+                No hay servicios registrados.
+            </td>
+        </tr>`;
+
+        return;
+
+    }
+
+
+    lista.forEach(s => {
+
+        tabla.innerHTML += `
+
+        <tr>
+
+        <td>
+            <strong>${escapeHTML(s.nombre)}</strong>
+        </td>
+
+        <td>
+            ${escapeHTML(s.unidad)}
+        </td>
+
+        <td class="price">
+            $${dinero(s.precio)}
+        </td>
+
+        <td>
+            ${s.tipo === "fijo"
+                ? "Precio fijo"
+                : "Cantidad × precio"}
+        </td>
+
+        <td>
+
+        <button
+        class="btn-edit"
+        onclick="editarServicio('${s.id}')">
+
+        ✏️
+
+        </button>
+
+        <button
+        class="btn-delete"
+        onclick="eliminarServicio('${s.id}')">
+
+        🗑️
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+
+function editarServicio(id){
+
+    const s =
+    servicios.find(x => x.id === id);
+
+    if(!s) return;
+
+    document.getElementById("servicioNombre").value =
+    s.nombre;
+
+    document.getElementById("servicioUnidad").value =
+    s.unidad;
+
+    document.getElementById("servicioPrecio").value =
+    s.precio;
+
+    document.getElementById("servicioTipo").value =
+    s.tipo;
+
+    editandoServicio = id;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+function eliminarServicio(id){
+
+    if(!confirm("¿Eliminar este servicio?")) return;
+
+    servicios =
+    servicios.filter(x => x.id !== id);
+
+    guardarDatos();
+
+    mostrarServicios();
+
+}
+
+
+function limpiarServicio(){
+
+    document.getElementById("servicioNombre").value = "";
+
+    document.getElementById("servicioPrecio").value = "";
+
+    editandoServicio = null;
+
+}
+
+
+/* =====================================
+   CONFIGURACIÓN
+===================================== */
+
+function cargarConfiguracion(){
+
+    document.getElementById("margenGeneral").value =
+    configuracion.margenMateriales;
+
+    document.getElementById("materialMargen").value =
+    configuracion.margenMateriales;
+
+}
+
+
+function guardarConfiguracion(){
+
+    const margen =
+    Number(document.getElementById("margenGeneral").value);
+
+    if(margen < 0){
+
+        alert("El margen no puede ser negativo.");
+        return;
+
+    }
+
+    configuracion.margenMateriales = margen;
+
+    guardarDatos();
+
+    document.getElementById("materialMargen").value =
+    margen;
+
+    calcularPrecioMaterial();
+
+    alert("Configuración guardada.");
+
+}
+
+
+/* =====================================
+   GUARDAR DATOS
+===================================== */
+
+function guardarDatos(){
+
+    localStorage.setItem(
+        "albe_materiales",
+        JSON.stringify(materiales)
+    );
+
+    localStorage.setItem(
+        "albe_mano_obra",
+        JSON.stringify(manoObra)
+    );
+
+    localStorage.setItem(
+        "albe_servicios",
+        JSON.stringify(servicios)
+    );
+
+    localStorage.setItem(
+        "albe_configuracion",
+        JSON.stringify(configuracion)
+    );
+
+}
+
+
+/* =====================================
+   EXPORTAR
+===================================== */
+
+function exportarBase(){
+
+    const datos = {
+
+        version:"ALBE-BASE-1.0",
+
+        fecha:new Date().toISOString(),
+
+        materiales,
+
+        manoObra,
+
+        servicios,
+
+        configuracion
+
+    };
+
+
+    const archivo =
+    new Blob(
+        [
+            JSON.stringify(datos,null,2)
+        ],
+        {
+            type:"application/json"
+        }
+    );
+
+
+    const url =
+    URL.createObjectURL(archivo);
+
+    const enlace =
+    document.createElement("a");
+
+    enlace.href = url;
+
+    enlace.download =
+    "ALBE-BASE-DATOS.json";
+
+    enlace.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+
+/* =====================================
+   IMPORTAR
+===================================== */
+
+function importarBase(event){
+
+    const archivo =
+    event.target.files[0];
+
+    if(!archivo) return;
+
+
+    const lector =
+    new FileReader();
+
+
+    lector.onload = function(e){
+
+        try{
+
+            const datos =
+            JSON.parse(e.target.result);
+
+
+            if(!datos.version){
+
+                alert("Archivo no válido.");
+                return;
+
+            }
+
+
+            if(!confirm(
+                "Esto reemplazará las bases actuales. ¿Continuar?"
+            )) return;
+
+
+            materiales =
+            Array.isArray(datos.materiales)
+            ? datos.materiales
+            : [];
+
+            manoObra =
+            Array.isArray(datos.manoObra)
+            ? datos.manoObra
+            : [];
+
+            servicios =
+            Array.isArray(datos.servicios)
+            ? datos.servicios
+            : [];
+
+            configuracion =
+            datos.configuracion || {
+                margenMateriales:35
+            };
+
+
+            guardarDatos();
+
+            cargarConfiguracion();
+
+            mostrarMateriales();
+
+            mostrarObras();
+
+            mostrarServicios();
+
+
+            alert("Base ALBE importada correctamente.");
+
+        }catch(error){
+
+            alert(
+                "No se pudo importar el archivo."
+            );
+
+        }
+
+    };
+
+
+    lector.readAsText(archivo);
+
+}
+
+
+/* =====================================
+   SEGURIDAD HTML
+===================================== */
+
+function escapeHTML(text){
+
+    return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================
+   INICIO
+===================================== */
+
+cargarConfiguracion();
+
+mostrarMateriales();
+
+mostrarObras();
+
+mostrarServicios();
+
+calcularPrecioMaterial();
+
+</script>
+
+</body>
+  </html>
