@@ -807,6 +807,187 @@ placeholder="Observaciones, condiciones comerciales, garantía, tiempos de ejecu
 
 <!-- BASE DE CLIENTES V4 -->
 <script src="clientes.js"></script>
+<!-- ==========================================
+     ALBE PRESUPUESTOS V4.0
+     PARTE 7
+     CLIENTE → PRESUPUESTO
+========================================== -->
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const empresaCliente =
+        document.getElementById("empresaCliente");
+
+    const provinciaCliente =
+        document.getElementById("provinciaCliente");
+
+    const localidadCliente =
+        document.getElementById("localidadCliente");
+
+    const sucursalCliente =
+        document.getElementById("sucursalCliente");
+
+
+    if (!empresaCliente) {
+        console.log("No existe empresaCliente");
+        return;
+    }
+
+
+    // ======================================
+    // EMPRESA
+    // ======================================
+
+    empresaCliente.addEventListener("change", function () {
+
+        const empresa =
+            empresaCliente.options[
+                empresaCliente.selectedIndex
+            ]?.textContent || "";
+
+        const campoEmpresa =
+            document.getElementById("empresa");
+
+        if (campoEmpresa) {
+            campoEmpresa.value =
+                empresa.trim();
+        }
+
+    });
+
+
+    // ======================================
+    // PROVINCIA
+    // ======================================
+
+    if (provinciaCliente) {
+
+        provinciaCliente.addEventListener(
+            "change",
+            function () {
+
+                const campo =
+                    document.getElementById("provincia");
+
+                if (campo) {
+                    campo.value =
+                        provinciaCliente.value;
+                }
+
+            }
+        );
+
+    }
+
+
+    // ======================================
+    // LOCALIDAD
+    // ======================================
+
+    if (localidadCliente) {
+
+        localidadCliente.addEventListener(
+            "change",
+            function () {
+
+                const campo =
+                    document.getElementById("localidad");
+
+                if (campo) {
+                    campo.value =
+                        localidadCliente.value;
+                }
+
+            }
+        );
+
+    }
+
+
+    // ======================================
+    // SUCURSAL
+    // ======================================
+
+    if (sucursalCliente) {
+
+        sucursalCliente.addEventListener(
+            "change",
+            function () {
+
+                const opcion =
+                    sucursalCliente.options[
+                        sucursalCliente.selectedIndex
+                    ];
+
+                if (!opcion) return;
+
+
+                const campoSucursal =
+                    document.getElementById("sucursal");
+
+                if (campoSucursal) {
+
+                    campoSucursal.value =
+                        opcion.textContent.trim();
+
+                }
+
+
+                // Datos de sucursal
+                if (opcion.dataset.datos) {
+
+                    try {
+
+                        const datos =
+                            JSON.parse(
+                                opcion.dataset.datos
+                            );
+
+
+                        const direccion =
+                            document.getElementById(
+                                "direccion"
+                            );
+
+                        const telefono =
+                            document.getElementById(
+                                "telefono"
+                            );
+
+
+                        if (direccion) {
+
+                            direccion.value =
+                                datos.direccion || "";
+
+                        }
+
+
+                        if (telefono) {
+
+                            telefono.value =
+                                datos.telefono || "";
+
+                        }
+
+                    } catch (error) {
+
+                        console.error(
+                            "Error leyendo datos de sucursal:",
+                            error
+                        );
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+});
+</script>
 </body>
 </html>
