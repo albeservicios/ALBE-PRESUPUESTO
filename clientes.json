@@ -2,9 +2,9 @@
   "version": "4.0",
   "clientes": [
     {
-      "id": "credito-argentino",
+      "identificacion": "credito-argentino",
       "empresa": "CRÉDITO ARGENTINO",
-      "razonSocial": "CFN S.R.L.",
+      "razonSocial": "CFN SRL",
       "sucursales": [
         {
           "provincia": "Neuquén",
