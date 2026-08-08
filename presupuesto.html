@@ -1370,6 +1370,482 @@ button:hover {
 <script src="clientes.js"></script>
 
 <script src="presupuesto.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const btnPDF = document.getElementById("btnPDF");
+
+    if (!btnPDF) {
+        console.error("No existe el botón btnPDF");
+        return;
+    }
+
+    btnPDF.addEventListener("click", function () {
+
+        try {
+
+            if (
+                typeof window.jspdf === "undefined" ||
+                typeof window.jspdf.jsPDF === "undefined"
+            ) {
+                alert(
+                    "No se pudo cargar el generador PDF."
+                );
+                return;
+            }
+
+            const {
+                jsPDF
+            } = window.jspdf;
+
+            const doc =
+                new jsPDF({
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "a4"
+                });
+
+
+            /* =================================
+               DATOS
+            ================================= */
+
+            const numero =
+                document.getElementById("agenda")?.value ||
+                "SIN-NUMERO";
+
+            const fecha =
+                document.getElementById("fecha")?.value ||
+                "";
+
+            const empresa =
+                document.getElementById("empresa")?.value ||
+                "";
+
+            const sucursal =
+                document.getElementById("sucursal")?.value ||
+                "";
+
+            const provincia =
+                document.getElementById("provincia")?.value ||
+                "";
+
+            const localidad =
+                document.getElementById("localidad")?.value ||
+                "";
+
+            const direccion =
+                document.getElementById("direccion")?.value ||
+                "";
+
+            const lugar =
+                document.getElementById("lugar")?.value ||
+                "";
+
+            const tareas =
+                document.getElementById("tareas")?.value ||
+                "";
+
+            const validez =
+                document.getElementById("validez")?.value ||
+                "30 días";
+
+            const condiciones =
+                document.getElementById("condicionesPago")?.value ||
+                "";
+
+            const observaciones =
+                document.getElementById("observaciones")?.value ||
+                "";
+
+
+            /* =================================
+               ENCABEZADO
+            ================================= */
+
+            let y = 18;
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+
+            doc.text(
+                "PEDIDO DE PRESUPUESTO",
+                105,
+                y,
+                { align: "center" }
+            );
+
+            y += 10;
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+
+            doc.text(
+                "JULIÁN BATTAUZ - AGENDA",
+                15,
+                y
+            );
+
+            doc.text(
+                "Presupuesto N.º: " + numero,
+                195,
+                y,
+                { align: "right" }
+            );
+
+            y += 6;
+
+            doc.text(
+                "Fecha: " + fecha,
+                15,
+                y
+            );
+
+            y += 12;
+
+
+            /* =================================
+               CONTRATISTA
+            ================================= */
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(
+                "DATOS DEL CONTRATISTA",
+                15,
+                y
+            );
+
+            y += 7;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            doc.text(
+                "Nombre y Apellido: Julian Ezequiel Battauz",
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "CUIT: 20-37470547-5",
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Tel./Cel: 2993263793",
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Mail: julianbattauz006@gmail.com",
+                15,
+                y
+            );
+
+            y += 10;
+
+
+            /* =================================
+               CLIENTE
+            ================================= */
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(
+                "DATOS DEL CLIENTE",
+                15,
+                y
+            );
+
+            y += 7;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            doc.text(
+                "Empresa: " + empresa,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Sucursal: " + sucursal,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Provincia: " + provincia,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Localidad: " + localidad,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Dirección: " + direccion,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Lugar de prestación: " + lugar,
+                15,
+                y
+            );
+
+            y += 10;
+
+
+            /* =================================
+               DETALLE
+            ================================= */
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(
+                "DETALLE DEL PRESUPUESTO",
+                15,
+                y
+            );
+
+            y += 7;
+
+            doc.setFontSize(10);
+
+            doc.text(
+                "TAREAS A REALIZAR",
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.setFont("helvetica", "normal");
+
+            const lineasTareas =
+                doc.splitTextToSize(
+                    tareas || "Sin tareas cargadas.",
+                    180
+                );
+
+            doc.text(
+                lineasTareas,
+                15,
+                y
+            );
+
+            y +=
+                lineasTareas.length * 5 +
+                8;
+
+
+            /* =================================
+               IMPORTES
+            ================================= */
+
+            const materiales =
+                document.getElementById(
+                    "totalMateriales"
+                )?.textContent || "0,00";
+
+            const mano =
+                document.getElementById(
+                    "totalMano"
+                )?.textContent || "0,00";
+
+            const viaticos =
+                document.getElementById(
+                    "viaticos"
+                )?.value || "0";
+
+            const hospedaje =
+                document.getElementById(
+                    "hospedajeTotal"
+                )?.value || "0";
+
+            const otros =
+                document.getElementById(
+                    "otrosGastos"
+                )?.value || "0";
+
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+
+            doc.text(
+                "IMPORTES",
+                15,
+                y
+            );
+
+            y += 7;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            doc.text(
+                "Materiales: $ " + materiales,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Mano de obra: $ " + mano,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Viáticos: $ " + viaticos,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Hospedaje: $ " + hospedaje,
+                15,
+                y
+            );
+
+            y += 5;
+
+            doc.text(
+                "Otros / Flete: $ " + otros,
+                15,
+                y
+            );
+
+            y += 8;
+
+
+            /* =================================
+               TOTAL
+            ================================= */
+
+            const total =
+                document.getElementById(
+                    "totalGeneral"
+                )?.value || "0,00";
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
+
+            doc.text(
+                "PRESUPUESTO: $ " + total,
+                195,
+                y,
+                { align: "right" }
+            );
+
+            y += 12;
+
+
+            /* =================================
+               CONSIDERACIONES
+            ================================= */
+
+            doc.setFontSize(12);
+
+            doc.text(
+                "OTRAS CONSIDERACIONES",
+                15,
+                y
+            );
+
+            y += 7;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+
+            const consideraciones =
+                "Validez del presupuesto: " +
+                validez +
+                ". " +
+                (condiciones
+                    ? "Condiciones de pago: " +
+                      condiciones +
+                      ". "
+                    : "") +
+                (observaciones
+                    ? "Observaciones: " +
+                      observaciones
+                    : "");
+
+            const lineasConsideraciones =
+                doc.splitTextToSize(
+                    consideraciones,
+                    180
+                );
+
+            doc.text(
+                lineasConsideraciones,
+                15,
+                y
+            );
+
+
+            /* =================================
+               DESCARGAR
+            ================================= */
+
+            const nombreArchivo =
+                "JULIAN BATTAUZ - AGENDA - " +
+                numero +
+                ".pdf";
+
+            doc.save(nombreArchivo);
+
+        } catch (error) {
+
+            console.error(
+                "ERROR GENERANDO PDF:",
+                error
+            );
+
+            alert(
+                "No se pudo generar el PDF.\n\n" +
+                error.message
+            );
+
+        }
+
+    });
+
+});
+    </script>
 
 
 <!-- ==========================================
