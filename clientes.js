@@ -1,338 +1,306 @@
-// =====================================
-// ALBE SERVICIOS GENERALES
+// ==========================================
+// ALBE PRESUPUESTOS V4.0
 // CLIENTES.JS
-// PARTE 1
-// =====================================
-
-let clientes = [];
-
-function cargarClientes(){
-
-    clientes =
-    JSON.parse(localStorage.getItem("clientes")) || [];
-
-    mostrarClientes();
-
-}
-
-function guardarClientes(){
-
-    localStorage.setItem(
-        "clientes",
-        JSON.stringify(clientes)
-    );
-
-}
-
-function mostrarClientes(){
-
-    const tbody =
-    document.getElementById("clientesBody");
-
-    tbody.innerHTML = "";
-
-    clientes.forEach((c, indice)=>{
-
-        tbody.innerHTML += `
-        <tr onclick="seleccionarCliente(${indice})">
-
-            <td>${c.empresa}</td>
-            <td>${c.sucursal}</td>
-            <td>${c.contacto}</td>
-            <td>${c.telefono}</td>
-            <td>${c.provincia}</td>
-            <td>${c.localidad}</td>
-
-        </tr>
-        `;
-
-    });
-
-}
-
-window.addEventListener("load",cargarClientes);
-// =====================================
-// PARTE 2
-// GUARDAR - EDITAR - LIMPIAR
-// =====================================
-
-let clienteSeleccionado = -1;
-
-function obtenerDatosFormulario(){
-
-    return {
-
-        empresa: document.getElementById("empresa").value,
-        sucursal: document.getElementById("sucursal").value,
-        contacto: document.getElementById("contacto").value,
-        telefono: document.getElementById("telefono").value,
-        correo: document.getElementById("correo").value,
-        provincia: document.getElementById("provincia").value,
-        localidad: document.getElementById("localidad").value,
-        direccion: document.getElementById("direccion").value,
-        observaciones: document.getElementById("observaciones").value
-
-    };
-
-}
-
-function seleccionarCliente(indice){
-
-    clienteSeleccionado = indice;
-
-    const c = clientes[indice];
-
-    document.getElementById("empresa").value = c.empresa;
-    document.getElementById("sucursal").value = c.sucursal;
-    document.getElementById("contacto").value = c.contacto;
-    document.getElementById("telefono").value = c.telefono;
-    document.getElementById("correo").value = c.correo;
-    document.getElementById("provincia").value = c.provincia;
-    document.getElementById("localidad").value = c.localidad;
-    document.getElementById("direccion").value = c.direccion;
-    document.getElementById("observaciones").value = c.observaciones;
-
-}
-
-function limpiarFormulario(){
-
-    document.getElementById("empresa").value = "";
-    document.getElementById("sucursal").value = "";
-    document.getElementById("contacto").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("correo").value = "";
-    document.getElementById("provincia").value = "";
-    document.getElementById("localidad").value = "";
-    document.getElementById("direccion").value = "";
-    document.getElementById("observaciones").value = "";
-
-    clienteSeleccionado = -1;
-
-}
-
-document.getElementById("btnGuardar").addEventListener("click",()=>{
-
-    const datos = obtenerDatosFormulario();
-
-    if(clienteSeleccionado >= 0){
-
-        clientes[clienteSeleccionado] = datos;
-
-    }else{
-
-        clientes.push(datos);
-
-    }
-
-    guardarClientes();
-
-    mostrarClientes();
-
-    limpiarFormulario();
-
-    alert("Cliente guardado correctamente.");
-
-});
-
-document.getElementById("btnNuevo").addEventListener("click",limpiarFormulario);
-// =====================================
-// PARTE 2
-// GUARDAR - EDITAR - LIMPIAR
-// =====================================
-
-let clienteSeleccionado = -1;
-
-function obtenerDatosFormulario(){
-
-    return {
-
-        empresa: document.getElementById("empresa").value,
-        sucursal: document.getElementById("sucursal").value,
-        contacto: document.getElementById("contacto").value,
-        telefono: document.getElementById("telefono").value,
-        correo: document.getElementById("correo").value,
-        provincia: document.getElementById("provincia").value,
-        localidad: document.getElementById("localidad").value,
-        direccion: document.getElementById("direccion").value,
-        observaciones: document.getElementById("observaciones").value
-
-    };
-
-}
-
-function seleccionarCliente(indice){
-
-    clienteSeleccionado = indice;
-
-    const c = clientes[indice];
-
-    document.getElementById("empresa").value = c.empresa;
-    document.getElementById("sucursal").value = c.sucursal;
-    document.getElementById("contacto").value = c.contacto;
-    document.getElementById("telefono").value = c.telefono;
-    document.getElementById("correo").value = c.correo;
-    document.getElementById("provincia").value = c.provincia;
-    document.getElementById("localidad").value = c.localidad;
-    document.getElementById("direccion").value = c.direccion;
-    document.getElementById("observaciones").value = c.observaciones;
-
-}
-
-function limpiarFormulario(){
-
-    document.getElementById("empresa").value = "";
-    document.getElementById("sucursal").value = "";
-    document.getElementById("contacto").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("correo").value = "";
-    document.getElementById("provincia").value = "";
-    document.getElementById("localidad").value = "";
-    document.getElementById("direccion").value = "";
-    document.getElementById("observaciones").value = "";
-
-    clienteSeleccionado = -1;
-
-}
-
-document.getElementById("btnGuardar").addEventListener("click",()=>{
-
-    const datos = obtenerDatosFormulario();
-
-    if(clienteSeleccionado >= 0){
-
-        clientes[clienteSeleccionado] = datos;
-
-    }else{
-
-        clientes.push(datos);
-
-    }
-
-    guardarClientes();
-
-    mostrarClientes();
-
-    limpiarFormulario();
-
-    alert("Cliente guardado correctamente.");
-
-});
-
-document.getElementById("btnNuevo").addEventListener("click",limpiarFormulario);
-// =====================================
 // PARTE 3
-// ELIMINAR - BUSCAR
-// =====================================
+// ==========================================
 
-// Eliminar cliente
-document.getElementById("btnEliminar").addEventListener("click",()=>{
+let baseClientes = [];
 
-    if(clienteSeleccionado < 0){
+// ==========================================
+// CARGAR BASE JSON
+// ==========================================
 
-        alert("Seleccione un cliente.");
+async function cargarBaseClientes() {
 
-        return;
+    try {
 
-    }
+        const respuesta = await fetch("clientes.json");
 
-    if(confirm("¿Desea eliminar este cliente?")){
+        if (!respuesta.ok) {
+            throw new Error("No se pudo cargar clientes.json");
+        }
 
-        clientes.splice(clienteSeleccionado,1);
+        const datos = await respuesta.json();
 
-        guardarClientes();
+        baseClientes = datos.clientes || [];
 
         mostrarClientes();
 
-        limpiarFormulario();
+        cargarEmpresas();
+
+        console.log("Base de clientes V4 cargada.");
+
+    } catch (error) {
+
+        console.error("Error cargando clientes:", error);
+
+        alert(
+            "No se pudo cargar la base de clientes."
+        );
 
     }
 
-});
+}
 
-// Buscar cliente
-document.getElementById("buscarCliente").addEventListener("input",function(){
+// ==========================================
+// MOSTRAR CLIENTES
+// ==========================================
 
-    const texto=this.value.toLowerCase();
+function mostrarClientes() {
 
-    const tbody=document.getElementById("clientesBody");
+    const lista =
+        document.getElementById("listaClientes");
 
-    tbody.innerHTML="";
+    if (!lista) return;
 
-    clientes
-    .filter(c=>
+    lista.innerHTML = "";
 
-        c.empresa.toLowerCase().includes(texto) ||
+    baseClientes.forEach(cliente => {
 
-        c.sucursal.toLowerCase().includes(texto) ||
+        const div =
+            document.createElement("div");
 
-        c.contacto.toLowerCase().includes(texto) ||
+        div.className = "cliente-item";
 
-        c.localidad.toLowerCase().includes(texto)
-
-    )
-    .forEach((c,indice)=>{
-
-        tbody.innerHTML+=`
-
-        <tr onclick="seleccionarCliente(${indice})">
-
-            <td>${c.empresa}</td>
-            <td>${c.sucursal}</td>
-            <td>${c.contacto}</td>
-            <td>${c.telefono}</td>
-            <td>${c.provincia}</td>
-            <td>${c.localidad}</td>
-
-        </tr>
-
+        div.innerHTML = `
+            <strong>${cliente.empresa}</strong>
+            <span>${cliente.razonSocial || ""}</span>
+            <small>
+                ${cliente.sucursales.length} sucursales
+            </small>
         `;
+
+        lista.appendChild(div);
 
     });
 
-});
-// =====================================
-// PARTE 4
-// SELECCIÓN PARA PRESUPUESTOS
-// =====================================
-
-// Obtener un cliente por índice
-function obtenerCliente(indice){
-
-    if(indice < 0 || indice >= clientes.length){
-        return null;
-    }
-
-    return clientes[indice];
-
 }
 
-// Obtener todos los clientes
-function obtenerListaClientes(){
+// ==========================================
+// CARGAR EMPRESAS EN SELECT
+// ==========================================
 
-    return clientes;
+function cargarEmpresas() {
 
-}
+    const select =
+        document.getElementById("empresaCliente");
 
-// Exportar a localStorage para el presupuesto
-function actualizarClientesPresupuesto(){
+    if (!select) return;
 
-    localStorage.setItem(
-        "clientesPresupuesto",
-        JSON.stringify(clientes)
+    select.innerHTML =
+        `<option value="">Seleccione empresa...</option>`;
+
+    baseClientes.forEach((cliente, indice) => {
+
+        const option =
+            document.createElement("option");
+
+        option.value = indice;
+
+        option.textContent =
+            cliente.empresa;
+
+        select.appendChild(option);
+
+    });
+
+    select.addEventListener(
+        "change",
+        cargarProvincias
     );
 
 }
 
-// Actualizar automáticamente cada vez que cambia la lista
-const guardarOriginal = guardarClientes;
+// ==========================================
+// PROVINCIAS
+// ==========================================
 
-guardarClientes = function(){
+function cargarProvincias() {
 
-    guardarOriginal();
+    const empresa =
+        baseClientes[
+            document.getElementById("empresaCliente").value
+        ];
 
-    actualizarClientesPresupuesto();
+    const provincia =
+        document.getElementById("provinciaCliente");
+
+    const localidad =
+        document.getElementById("localidadCliente");
+
+    const sucursal =
+        document.getElementById("sucursalCliente");
+
+    if (!provincia) return;
+
+    provincia.innerHTML =
+        `<option value="">Seleccione provincia...</option>`;
+
+    localidad.innerHTML =
+        `<option value="">Seleccione localidad...</option>`;
+
+    sucursal.innerHTML =
+        `<option value="">Seleccione sucursal...</option>`;
+
+    if (!empresa) return;
+
+    const provincias = [
+        ...new Set(
+            empresa.sucursales.map(
+                s => s.provincia
+            )
+        )
+    ];
+
+    provincias.forEach(nombre => {
+
+        provincia.innerHTML +=
+            `<option value="${nombre}">
+                ${nombre}
+            </option>`;
+
+    });
+
+    provincia.onchange =
+        cargarLocalidades;
 
 }
 
-// Crear el almacenamiento si no existe
-actualizarClientesPresupuesto();
+// ==========================================
+// LOCALIDADES
+// ==========================================
+
+function cargarLocalidades() {
+
+    const indice =
+        document.getElementById("empresaCliente").value;
+
+    const empresa =
+        baseClientes[indice];
+
+    const provincia =
+        document.getElementById("provinciaCliente").value;
+
+    const localidad =
+        document.getElementById("localidadCliente");
+
+    const sucursal =
+        document.getElementById("sucursalCliente");
+
+    localidad.innerHTML =
+        `<option value="">Seleccione localidad...</option>`;
+
+    sucursal.innerHTML =
+        `<option value="">Seleccione sucursal...</option>`;
+
+    const localidades = [
+        ...new Set(
+            empresa.sucursales
+                .filter(s => s.provincia === provincia)
+                .map(s => s.localidad)
+        )
+    ];
+
+    localidades.forEach(nombre => {
+
+        localidad.innerHTML +=
+            `<option value="${nombre}">
+                ${nombre}
+            </option>`;
+
+    });
+
+    localidad.onchange =
+        cargarSucursales;
+
+}
+
+// ==========================================
+// SUCURSALES
+// ==========================================
+
+function cargarSucursales() {
+
+    const indice =
+        document.getElementById("empresaCliente").value;
+
+    const empresa =
+        baseClientes[indice];
+
+    const provincia =
+        document.getElementById("provinciaCliente").value;
+
+    const localidad =
+        document.getElementById("localidadCliente").value;
+
+    const sucursal =
+        document.getElementById("sucursalCliente");
+
+    sucursal.innerHTML =
+        `<option value="">Seleccione sucursal...</option>`;
+
+    empresa.sucursales
+        .filter(s =>
+            s.provincia === provincia &&
+            s.localidad === localidad
+        )
+        .forEach((s, i) => {
+
+            const option =
+                document.createElement("option");
+
+            option.value =
+                JSON.stringify(s);
+
+            option.textContent =
+                s.sucursal;
+
+            sucursal.appendChild(option);
+
+        });
+
+    sucursal.onchange =
+        completarSucursal;
+
+}
+
+// ==========================================
+// COMPLETAR DATOS
+// ==========================================
+
+function completarSucursal() {
+
+    const valor =
+        document.getElementById("sucursalCliente").value;
+
+    if (!valor) return;
+
+    const sucursal =
+        JSON.parse(valor);
+
+    const direccion =
+        document.getElementById("direccionCliente");
+
+    const telefono =
+        document.getElementById("telefonoCliente");
+
+    if (direccion) {
+        direccion.value =
+            sucursal.direccion || "";
+    }
+
+    if (telefono) {
+        telefono.value =
+            sucursal.telefono || "";
+    }
+
+}
+
+// ==========================================
+// INICIO
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    cargarBaseClientes
+);
