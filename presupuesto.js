@@ -548,5 +548,260 @@ document.addEventListener("DOMContentLoaded", () => {
     calcularTotales();
 
 });
+// ==========================================
+// ALBE PRESUPUESTOS V4.0
+// CONEXIÓN CLIENTE → PRESUPUESTO
+// PARTE 5B
+// ==========================================
 
+function conectarClientePresupuesto() {
+
+    const empresaCliente =
+        document.getElementById("empresaCliente");
+
+    const provinciaCliente =
+        document.getElementById("provinciaCliente");
+
+    const localidadCliente =
+        document.getElementById("localidadCliente");
+
+    const sucursalCliente =
+        document.getElementById("sucursalCliente");
+
+    if (!empresaCliente) return;
+
+    function actualizarEmpresa() {
+
+        const opcion =
+            empresaCliente.selectedOptions[0];
+
+        document.getElementById("empresa").value =
+            opcion ? opcion.textContent.trim() : "";
+
+        document.getElementById("provincia").value = "";
+        document.getElementById("localidad").value = "";
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarProvincia() {
+
+        document.getElementById("provincia").value =
+            provinciaCliente.value || "";
+
+        document.getElementById("localidad").value = "";
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarLocalidad() {
+
+        document.getElementById("localidad").value =
+            localidadCliente.value || "";
+
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarSucursal() {
+
+        if (!sucursalCliente.value) {
+
+            document.getElementById("sucursal").value = "";
+            document.getElementById("direccion").value = "";
+            document.getElementById("telefono").value = "";
+
+            return;
+        }
+
+        try {
+
+            const datos =
+                JSON.parse(sucursalCliente.value);
+
+            document.getElementById("sucursal").value =
+                datos.sucursal || "";
+
+            document.getElementById("direccion").value =
+                datos.direccion || "";
+
+            document.getElementById("telefono").value =
+                datos.telefono || "";
+
+        } catch (error) {
+
+            console.error(
+                "Error leyendo datos de sucursal:",
+                error
+            );
+
+        }
+
+    }
+
+    empresaCliente.addEventListener(
+        "change",
+        actualizarEmpresa
+    );
+
+    provinciaCliente.addEventListener(
+        "change",
+        actualizarProvincia
+    );
+
+    localidadCliente.addEventListener(
+        "change",
+        actualizarLocalidad
+    );
+
+    sucursalCliente.addEventListener(
+        "change",
+        actualizarSucursal
+    );
+
+}
+
+
+// ==========================================
+// INICIO CONEXIÓN CLIENTE
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    conectarClientePresupuesto
+);// ==========================================
+// ALBE PRESUPUESTOS V4.0
+// CONEXIÓN CLIENTE → PRESUPUESTO
+// PARTE 5B
+// ==========================================
+
+function conectarClientePresupuesto() {
+
+    const empresaCliente =
+        document.getElementById("empresaCliente");
+
+    const provinciaCliente =
+        document.getElementById("provinciaCliente");
+
+    const localidadCliente =
+        document.getElementById("localidadCliente");
+
+    const sucursalCliente =
+        document.getElementById("sucursalCliente");
+
+    if (!empresaCliente) return;
+
+    function actualizarEmpresa() {
+
+        const opcion =
+            empresaCliente.selectedOptions[0];
+
+        document.getElementById("empresa").value =
+            opcion ? opcion.textContent.trim() : "";
+
+        document.getElementById("provincia").value = "";
+        document.getElementById("localidad").value = "";
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarProvincia() {
+
+        document.getElementById("provincia").value =
+            provinciaCliente.value || "";
+
+        document.getElementById("localidad").value = "";
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarLocalidad() {
+
+        document.getElementById("localidad").value =
+            localidadCliente.value || "";
+
+        document.getElementById("sucursal").value = "";
+        document.getElementById("direccion").value = "";
+        document.getElementById("telefono").value = "";
+
+    }
+
+    function actualizarSucursal() {
+
+        if (!sucursalCliente.value) {
+
+            document.getElementById("sucursal").value = "";
+            document.getElementById("direccion").value = "";
+            document.getElementById("telefono").value = "";
+
+            return;
+        }
+
+        try {
+
+            const datos =
+                JSON.parse(sucursalCliente.value);
+
+            document.getElementById("sucursal").value =
+                datos.sucursal || "";
+
+            document.getElementById("direccion").value =
+                datos.direccion || "";
+
+            document.getElementById("telefono").value =
+                datos.telefono || "";
+
+        } catch (error) {
+
+            console.error(
+                "Error leyendo datos de sucursal:",
+                error
+            );
+
+        }
+
+    }
+
+    empresaCliente.addEventListener(
+        "change",
+        actualizarEmpresa
+    );
+
+    provinciaCliente.addEventListener(
+        "change",
+        actualizarProvincia
+    );
+
+    localidadCliente.addEventListener(
+        "change",
+        actualizarLocalidad
+    );
+
+    sucursalCliente.addEventListener(
+        "change",
+        actualizarSucursal
+    );
+
+}
+
+
+// ==========================================
+// INICIO CONEXIÓN CLIENTE
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    conectarClientePresupuesto
+);
 console.log("ALBE PRESUPUESTOS V3.0 cargado correctamente.");
+
