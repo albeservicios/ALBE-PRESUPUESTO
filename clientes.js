@@ -14,9 +14,9 @@ async function cargarBaseClientes() {
 
     try {
 
-        const respuesta = await fetch("clientes.json");
-
-        if (!respuesta.ok) {
+        const respuesta = await fetch(
+    "/ALBE-PRESUPUESTO/clientes.json?v=4"
+);
             throw new Error("No se pudo cargar clientes.json");
         }
 
