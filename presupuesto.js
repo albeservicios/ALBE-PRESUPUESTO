@@ -716,7 +716,7 @@ function agregarMaterial() {
 // ==========================================
 
 function mostrarMateriales() {
-
+actualizarTodosLosTotales();
     const body =
         document.getElementById(
             "materialesBody"
@@ -1000,7 +1000,7 @@ function actualizarTotalMateriales() {
 // ==========================================
 
 function agregarManoObra() {
-
+actualizarTodosLosTotales();
     const select =
         document.getElementById(
             "manoObraBase"
@@ -1445,4 +1445,167 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// ALBE PRESUPUESTOS V4.0
+// PARTE 3
+// CALCULOS AUTOMATICOS
+// ==========================================
 
+
+// ==========================================
+// TOTAL MATERIALES
+// ==========================================
+
+function actualizarTotalMateriales() {
+
+    let total = 0;
+    
+    materialesPresupuesto.forEach(material => {
+
+        const cantidad =
+            convertirNumero(material.cantidad);
+
+        const precio =
+            convertirNumero(material.precio);
+
+        total += cantidad * precio;
+
+    });
+
+    const elemento =
+        document.getElementById("totalMateriales");
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL MANO DE OBRA
+// ==========================================
+
+function actualizarTotalMano() {
+
+    let total = 0;
+
+    manoObraPresupuesto.forEach(trabajo => {
+
+        const cantidad =
+            convertirNumero(trabajo.cantidad);
+
+        const precio =
+            convertirNumero(trabajo.precio);
+
+        total += cantidad * precio;
+
+    });
+
+    const elemento =
+        document.getElementById("totalMano");
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL SERVICIOS
+// ==========================================
+
+function actualizarTotalServicios() {
+
+    let total = 0;
+
+    serviciosPresupuesto.forEach(servicio => {
+
+        const cantidad =
+            convertirNumero(servicio.cantidad);
+
+        const precio =
+            convertirNumero(servicio.precio);
+
+        total += cantidad * precio;
+
+    });
+
+    const elemento =
+        document.getElementById("totalServicios");
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL GENERAL
+// ==========================================
+
+function actualizarTotalGeneral() {
+
+    const materiales =
+        actualizarTotalMateriales();
+
+    const mano =
+        actualizarTotalMano();
+
+    const servicios =
+        actualizarTotalServicios();
+
+    const totalGeneral =
+        materiales +
+        mano +
+        servicios;
+
+
+    const elemento =
+        document.getElementById("totalGeneral");
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(totalGeneral);
+
+    }
+
+
+    console.log(
+        "Total general:",
+        totalGeneral
+    );
+
+}
+
+
+// ==========================================
+// ACTUALIZAR TODO
+// ==========================================
+
+function actualizarTodosLosTotales() {
+
+    actualizarTotalMateriales();
+
+    actualizarTotalMano();
+
+    actualizarTotalServicios();
+
+    actualizarTotalGeneral();
+
+}
