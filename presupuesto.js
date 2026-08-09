@@ -206,154 +206,11 @@ function cargarBasesALBE() {
 // MATERIAL → SELECT
 // ==========================================
 
-function cargarSelectMateriales() {
+mostrarMateriales();
 
-    const select =
-        document.getElementById(
-            "materialBase"
-        );
+actualizarTotalMateriales();
 
-    if (!select) {
-
-        console.warn(
-            "No existe #materialBase"
-        );
-
-        return;
-
-    }
-
-
-    select.innerHTML =
-        `
-        <option value="">
-            Seleccione un material...
-        </option>
-        `;
-
-
-    materialesBase.forEach(
-        (material, indice) => {
-
-            const nombre =
-                material.nombre ||
-                material.descripcion ||
-                material.material ||
-                "Material sin nombre";
-
-            const unidad =
-                material.unidad ||
-                "";
-
-            const precio =
-                convertirNumero(
-                    material.precioALBE ??
-                    material.precio ??
-                    material.precioUnitario
-                );
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                indice;
-
-
-            option.textContent =
-                `${nombre}` +
-                `${unidad ? " - " + unidad : ""}` +
-                ` - $ ${formatearDinero(precio)}`;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
-
-// ==========================================
-// MANO DE OBRA → SELECT
-// ==========================================
-
-function cargarSelectManoObra() {
-
-    const select =
-        document.getElementById(
-            "manoObraBase"
-        );
-
-    if (!select) {
-
-        console.warn(
-            "No existe #manoObraBase"
-        );
-
-        return;
-
-    }
-
-
-    select.innerHTML =
-        `
-        <option value="">
-            Seleccione un trabajo...
-        </option>
-        `;
-
-
-    manoObraBase.forEach(
-        (trabajo, indice) => {
-
-            const nombre =
-                trabajo.nombre ||
-                trabajo.descripcion ||
-                "Trabajo sin nombre";
-
-            const unidad =
-                trabajo.unidad ||
-                "";
-
-            const precio =
-                convertirNumero(
-                    trabajo.precio ??
-                    trabajo.precioALBE ??
-                    trabajo.precioUnitario
-                );
-
-
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                indice;
-
-
-            option.textContent =
-                `${nombre}` +
-                `${unidad ? " - " + unidad : ""}` +
-                ` - $ ${formatearDinero(precio)}`;
-
-
-            select.appendChild(
-                option
-            );
-
-        }
-    );
-
-}
-
+select.value = "";
 
 // ==========================================
 // SERVICIOS → SELECT
@@ -1493,13 +1350,21 @@ function actualizarTotalMano() {
 
     let total = 0;
 
-
     manoObraPresupuesto.forEach(
         trabajo => {
 
+            const cantidad =
+                convertirNumero(
+                    trabajo.cantidad
+                );
+
+            const precio =
+                convertirNumero(
+                    trabajo.precio
+                );
+
             total +=
-                trabajo.cantidad *
-                trabajo.precio;
+                cantidad * precio;
 
         }
     );
@@ -1538,7 +1403,6 @@ function actualizarTotalMano() {
     }
 
 }
-
 
 // ==========================================
 // CONECTAR BOTONES
