@@ -1099,8 +1099,96 @@ button:hover {
         Total mano de obra:
         $<span id="totalMano">0,00</span>
     </div>
+</section>
+<!-- ==========================================
+     SERVICIOS
+========================================== -->
+
+<section class="seccion">
+
+    <h2>🛠️ Servicios</h2>
+
+    <div class="campo ancho-completo">
+
+        <label for="servicioBase">
+            🛠️ Servicio desde Base ALBE
+        </label>
+
+        <select id="servicioBase">
+
+            <option value="">
+                Seleccione un servicio...
+            </option>
+
+        </select>
+
+    </div>
+
+    <div
+        id="infoServicioBase"
+        class="mensaje"
+        style="display:none;"
+    ></div>
+
+
+    <div class="tabla-contenedor">
+
+        <table>
+
+            <thead>
+                <tr>
+
+                    <th>
+                        Servicio
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                    <th>
+                        Precio unitario
+                    </th>
+
+                    <th>
+                        Subtotal
+                    </th>
+
+                    <th>
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody id="serviciosBody">
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="btn-agregar"
+        id="btnAgregarServicio"
+    >
+        ➕ Agregar servicio
+    </button>
+
+
+    <div class="total">
+
+        Total servicios:
+
+        $<span id="totalServicios">
+            0,00
+        </span>
+
+    </div>
 
 </section>
+
 
 
 <!-- ==========================================
