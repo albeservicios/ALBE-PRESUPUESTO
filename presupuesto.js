@@ -331,3 +331,545 @@ document.addEventListener(
 
     }
 );
+// ==========================================
+// ALBE PRESUPUESTOS V4.0
+// PARTE 2 — AGREGAR ITEMS
+// ==========================================
+
+
+// ==========================================
+// OBTENER PRECIO
+// ==========================================
+
+function obtenerPrecio(item) {
+
+    return convertirNumero(
+        item.precio ??
+        item.precioALBE ??
+        item.precioUnitario ??
+        item.valor ??
+        0
+    );
+
+}
+
+
+// ==========================================
+// AGREGAR MATERIAL
+// ==========================================
+
+function agregarMaterial() {
+
+    const select =
+        document.getElementById(
+            "materialBase"
+        );
+
+    if (!select) return;
+
+    const indice =
+        select.value;
+
+    if (indice === "") {
+
+        alert(
+            "Seleccione un material."
+        );
+
+        return;
+
+    }
+
+    const material =
+        materialesBase[
+            Number(indice)
+        ];
+
+    if (!material) return;
+
+    materialesPresupuesto.push({
+
+        nombre:
+            material.nombre ||
+            material.descripcion ||
+            "Material",
+
+        unidad:
+            material.unidad || "",
+
+        cantidad: 1,
+
+        precio:
+            obtenerPrecio(material)
+
+    });
+
+
+    mostrarMateriales();
+
+    select.value = "";
+
+}
+
+
+// ==========================================
+// MOSTRAR MATERIALES
+// ==========================================
+
+function mostrarMateriales() {
+
+    const body =
+        document.getElementById(
+            "materialesBody"
+        );
+
+    if (!body) return;
+
+    body.innerHTML = "";
+
+
+    materialesPresupuesto.forEach(
+        (material, indice) => {
+
+            const subtotal =
+                material.cantidad *
+                material.precio;
+
+
+            const fila =
+                document.createElement(
+                    "tr"
+                );
+
+
+            fila.innerHTML = `
+
+                <td>
+
+                    ${material.nombre}
+
+                    ${
+                        material.unidad
+                        ? " (" +
+                          material.unidad +
+                          ")"
+                        : ""
+                    }
+
+                </td>
+
+                <td>
+
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="${material.cantidad}"
+                        data-material-cantidad="${indice}"
+                    >
+
+                </td>
+
+                <td>
+
+                    $ ${formatearDinero(
+                        material.precio
+                    )}
+
+                </td>
+
+                <td>
+
+                    $ <span
+                        data-material-subtotal="${indice}"
+                    >
+                        ${formatearDinero(
+                            subtotal
+                        )}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <button
+                        type="button"
+                        class="btn-eliminar"
+                        data-eliminar-material="${indice}"
+                    >
+                        🗑️
+                    </button>
+
+                </td>
+
+            `;
+
+
+            body.appendChild(
+                fila
+            );
+
+        }
+    );
+
+
+    conectarEventosMateriales();
+
+}
+
+
+// ==========================================
+// EVENTOS MATERIALES
+// ==========================================
+
+function conectarEventosMateriales() {
+
+    const body =
+        document.getElementById(
+            "materialesBody"
+        );
+
+    if (!body) return;
+
+
+    body
+        .querySelectorAll(
+            "[data-material-cantidad]"
+        )
+        .forEach(input => {
+
+            input.addEventListener(
+                "input",
+                function () {
+
+                    const indice =
+                        Number(
+                            this.dataset
+                                .materialCantidad
+                        );
+
+                    const material =
+                        materialesPresupuesto[
+                            indice
+                        ];
+
+                    if (!material) return;
+
+                    material.cantidad =
+                        convertirNumero(
+                            this.value
+                        );
+
+
+                    const subtotal =
+                        material.cantidad *
+                        material.precio;
+
+
+                    const elemento =
+                        document.querySelector(
+                            `[data-material-subtotal="${indice}"]`
+                        );
+
+
+                    if (elemento) {
+
+                        elemento.textContent =
+                            formatearDinero(
+                                subtotal
+                            );
+
+                    }
+
+                }
+            );
+
+        });
+
+
+    body
+        .querySelectorAll(
+            "[data-eliminar-material]"
+        )
+        .forEach(boton => {
+
+            boton.addEventListener(
+                "click",
+                function () {
+
+                    const indice =
+                        Number(
+                            this.dataset
+                                .eliminarMaterial
+                        );
+
+                    materialesPresupuesto.splice(
+                        indice,
+                        1
+                    );
+
+                    mostrarMateriales();
+
+                }
+            );
+
+        });
+
+}
+
+
+// ==========================================
+// AGREGAR MANO DE OBRA
+// ==========================================
+
+function agregarManoObra() {
+
+    const select =
+        document.getElementById(
+            "manoObraBase"
+        );
+
+    if (!select) return;
+
+    const indice =
+        select.value;
+
+    if (indice === "") {
+
+        alert(
+            "Seleccione una mano de obra."
+        );
+
+        return;
+
+    }
+
+    const trabajo =
+        manoObraBase[
+            Number(indice)
+        ];
+
+    if (!trabajo) return;
+
+
+    manoObraPresupuesto.push({
+
+        nombre:
+            trabajo.nombre ||
+            trabajo.descripcion ||
+            "Mano de obra",
+
+        unidad:
+            trabajo.unidad || "",
+
+        cantidad: 1,
+
+        precio:
+            obtenerPrecio(trabajo)
+
+    });
+
+
+    mostrarManoObra();
+
+    select.value = "";
+
+}
+
+
+// ==========================================
+// MOSTRAR MANO DE OBRA
+// ==========================================
+
+function mostrarManoObra() {
+
+    const body =
+        document.getElementById(
+            "manoBody"
+        );
+
+    if (!body) return;
+
+    body.innerHTML = "";
+
+
+    manoObraPresupuesto.forEach(
+        (trabajo, indice) => {
+
+            const subtotal =
+                trabajo.cantidad *
+                trabajo.precio;
+
+
+            const fila =
+                document.createElement(
+                    "tr"
+                );
+
+
+            fila.innerHTML = `
+
+                <td>
+
+                    ${trabajo.nombre}
+
+                    ${
+                        trabajo.unidad
+                        ? " (" +
+// ==========================================
+// ALBE PRESUPUESTOS V4.0
+// PARTE 3 — TOTALES
+// ==========================================
+
+
+// ==========================================
+// TOTAL MATERIALES
+// ==========================================
+
+function actualizarTotalMateriales() {
+
+    let total = 0;
+
+    materialesPresupuesto.forEach(material => {
+
+        total +=
+            convertirNumero(material.cantidad) *
+            convertirNumero(material.precio);
+
+    });
+
+    const elemento =
+        document.getElementById(
+            "totalMateriales"
+        );
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL MANO DE OBRA
+// ==========================================
+
+function actualizarTotalMano() {
+
+    let total = 0;
+
+    manoObraPresupuesto.forEach(trabajo => {
+
+        total +=
+            convertirNumero(trabajo.cantidad) *
+            convertirNumero(trabajo.precio);
+
+    });
+
+    const elemento =
+        document.getElementById(
+            "totalMano"
+        );
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL SERVICIOS
+// ==========================================
+
+function actualizarTotalServicios() {
+
+    let total = 0;
+
+    serviciosPresupuesto.forEach(servicio => {
+
+        total +=
+            convertirNumero(servicio.cantidad) *
+            convertirNumero(servicio.precio);
+
+    });
+
+    const elemento =
+        document.getElementById(
+            "totalServicios"
+        );
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(total);
+
+    }
+
+    return total;
+}
+
+
+// ==========================================
+// TOTAL GENERAL
+// ==========================================
+
+function actualizarTotalGeneral() {
+
+    const totalMateriales =
+        actualizarTotalMateriales();
+
+    const totalMano =
+        actualizarTotalMano();
+
+    const totalServicios =
+        actualizarTotalServicios();
+
+
+    const totalGeneral =
+        totalMateriales +
+        totalMano +
+        totalServicios;
+
+
+    const elemento =
+        document.getElementById(
+            "totalGeneral"
+        );
+
+    if (elemento) {
+
+        elemento.textContent =
+            formatearDinero(
+                totalGeneral
+            );
+
+    }
+
+
+    console.log(
+        "TOTAL GENERAL:",
+        totalGeneral
+    );
+
+}
+
+
+// ==========================================
+// ACTUALIZAR TODOS
+// ==========================================
+
+function actualizarTodosLosTotales() {
+
+    actualizarTotalGeneral();
+
+                        }
+                        
