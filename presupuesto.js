@@ -872,4 +872,307 @@ function actualizarTodosLosTotales() {
     actualizarTotalGeneral();
 
                         }
-                        
+                        // ==========================================
+// ALBE PRESUPUESTOS V4.0
+// PARTE 4 — VIÁTICOS + HOSPEDAJE + TOTAL FINAL
+// ==========================================
+
+
+// ==========================================
+// ACTUALIZAR GASTOS ADICIONALES
+// ==========================================
+
+function actualizarGastosAdicionales() {
+
+    const viaticos =
+        convertirNumero(
+            document.getElementById(
+                "viaticos"
+            )?.value
+        );
+
+    const hospedaje =
+        convertirNumero(
+            document.getElementById(
+                "hospedajeTotal"
+            )?.value
+        );
+
+    const otros =
+        convertirNumero(
+            document.getElementById(
+                "otrosGastos"
+            )?.value
+        );
+
+
+    // -------------------------------
+    // RESUMEN VIÁTICOS
+    // -------------------------------
+
+    const resumenViaticos =
+        document.getElementById(
+            "resumenViaticos"
+        );
+
+    if (resumenViaticos) {
+
+        resumenViaticos.value =
+            "$ " +
+            formatearDinero(
+                viaticos
+            );
+
+    }
+
+
+    // -------------------------------
+    // RESUMEN HOSPEDAJE
+    // -------------------------------
+
+    const resumenHospedaje =
+        document.getElementById(
+            "resumenHospedaje"
+        );
+
+    if (resumenHospedaje) {
+
+        resumenHospedaje.value =
+            "$ " +
+            formatearDinero(
+                hospedaje
+            );
+
+    }
+
+
+    // -------------------------------
+    // RESUMEN OTROS
+    // -------------------------------
+
+    const resumenOtros =
+        document.getElementById(
+            "resumenOtros"
+        );
+
+    if (resumenOtros) {
+
+        resumenOtros.value =
+            "$ " +
+            formatearDinero(
+                otros
+            );
+
+    }
+
+
+    return (
+        viaticos +
+        hospedaje +
+        otros
+    );
+
+}
+
+
+// ==========================================
+// TOTAL FINAL
+// ==========================================
+
+function actualizarTotalFinal() {
+
+    const totalMateriales =
+        materialesPresupuesto.reduce(
+            (total, material) => {
+
+                return total +
+                    convertirNumero(
+                        material.cantidad
+                    ) *
+                    convertirNumero(
+                        material.precio
+                    );
+
+            },
+            0
+        );
+
+
+    const totalMano =
+        manoObraPresupuesto.reduce(
+            (total, trabajo) => {
+
+                return total +
+                    convertirNumero(
+                        trabajo.cantidad
+                    ) *
+                    convertirNumero(
+                        trabajo.precio
+                    );
+
+            },
+            0
+        );
+
+
+    const totalServicios =
+        serviciosPresupuesto.reduce(
+            (total, servicio) => {
+
+                return total +
+                    convertirNumero(
+                        servicio.cantidad
+                    ) *
+                    convertirNumero(
+                        servicio.precio
+                    );
+
+            },
+            0
+        );
+
+
+    const gastos =
+        actualizarGastosAdicionales();
+
+
+    const totalFinal =
+        totalMateriales +
+        totalMano +
+        totalServicios +
+        gastos;
+
+
+    // -------------------------------
+    // TOTAL GENERAL INPUT
+    // -------------------------------
+
+    const totalGeneral =
+        document.getElementById(
+            "totalGeneral"
+        );
+
+    if (totalGeneral) {
+
+        totalGeneral.value =
+            "$ " +
+            formatearDinero(
+                totalFinal
+            );
+
+    }
+
+
+    // -------------------------------
+    // TOTAL GENERAL TEXTO
+    // -------------------------------
+
+    const totalGeneralTexto =
+        document.getElementById(
+            "totalGeneralTexto"
+        );
+
+    if (totalGeneralTexto) {
+
+        totalGeneralTexto.textContent =
+            formatearDinero(
+                totalFinal
+            );
+
+    }
+
+
+    // -------------------------------
+    // RESUMEN MATERIALES
+    // -------------------------------
+
+    const resumenMateriales =
+        document.getElementById(
+            "resumenMateriales"
+        );
+
+    if (resumenMateriales) {
+
+        resumenMateriales.value =
+            "$ " +
+            formatearDinero(
+                totalMateriales
+            );
+
+    }
+
+
+    // -------------------------------
+    // RESUMEN MANO DE OBRA
+    // -------------------------------
+
+    const resumenMano =
+        document.getElementById(
+            "resumenMano"
+        );
+
+    if (resumenMano) {
+
+        resumenMano.value =
+            "$ " +
+            formatearDinero(
+                totalMano
+            );
+
+    }
+
+
+    console.log(
+        "TOTAL FINAL:",
+        totalFinal
+    );
+
+
+    return totalFinal;
+
+}
+
+
+// ==========================================
+// EVENTOS VIÁTICOS / HOSPEDAJE / OTROS
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const campos =
+            [
+                "viaticos",
+                "hospedajeTotal",
+                "otrosGastos"
+            ];
+
+
+        campos.forEach(
+            id => {
+
+                const campo =
+                    document.getElementById(
+                        id
+                    );
+
+                if (campo) {
+
+                    campo.addEventListener(
+                        "input",
+                        actualizarTotalFinal
+                    );
+
+                }
+
+            }
+        );
+
+
+        // Calcular al cargar
+
+        actualizarTotalFinal();
+
+    }
+);
