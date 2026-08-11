@@ -1,12 +1,7 @@
 // ==========================================
-// ALBE PRESUPUESTOS V4.0
+// ALBE PRESUPUESTOS
 // PRESUPUESTO.JS
-// PARTE 1 — BASES DE DATOS
-// ==========================================
-
-
-// ==========================================
-// VARIABLES
+// VERSION LIMPIA
 // ==========================================
 
 let materialesBase = [];
@@ -19,7 +14,7 @@ let serviciosPresupuesto = [];
 
 
 // ==========================================
-// LEER LOCALSTORAGE
+// LOCAL STORAGE
 // ==========================================
 
 function leerLocalStorage(clave) {
@@ -43,8 +38,7 @@ function leerLocalStorage(clave) {
     } catch (error) {
 
         console.error(
-            "Error leyendo:",
-            clave,
+            "Error leyendo " + clave,
             error
         );
 
@@ -70,7 +64,11 @@ function convertirNumero(valor) {
     }
 
     if (typeof valor === "number") {
-        return isNaN(valor) ? 0 : valor;
+
+        return isNaN(valor)
+            ? 0
+            : valor;
+
     }
 
     let texto =
@@ -79,9 +77,7 @@ function convertirNumero(valor) {
             .replace(/\$/g, "")
             .replace(/\s/g, "");
 
-    // Formato argentino:
-    // 20.800,50 → 20800.50
-
+    // 20.800,50
     if (
         texto.includes(".") &&
         texto.includes(",")
@@ -92,7 +88,10 @@ function convertirNumero(valor) {
                 .replace(/\./g, "")
                 .replace(",", ".");
 
-    } else if (
+    }
+
+    // 20800,50
+    else if (
         texto.includes(",")
     ) {
 
@@ -117,15 +116,34 @@ function convertirNumero(valor) {
 
 function formatearDinero(valor) {
 
-    const numero =
-        convertirNumero(valor);
+    return convertirNumero(valor)
+        .toLocaleString(
+            "es-AR",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        );
 
-    return numero.toLocaleString(
-        "es-AR",
-        {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
-        }
+}
+
+
+// ==========================================
+// OBTENER PRECIO
+// ==========================================
+
+function obtenerPrecio(item) {
+
+    if (!item) {
+        return 0;
+    }
+
+    return convertirNumero(
+        item.precio ??
+        item.precioALBE ??
+        item.precioUnitario ??
+        item.valor ??
+        0
     );
 
 }
@@ -154,17 +172,17 @@ function cargarBases() {
 
 
     console.log(
-        "ALBE — Materiales:",
+        "ALBE - Materiales:",
         materialesBase
     );
 
     console.log(
-        "ALBE — Mano de obra:",
+        "ALBE - Mano de obra:",
         manoObraBase
     );
 
     console.log(
-        "ALBE — Servicios:",
+        "ALBE - Servicios:",
         serviciosBase
     );
 
@@ -179,7 +197,7 @@ function cargarBases() {
 
 
 // ==========================================
-// SELECT MATERIALES
+// MATERIAL BASE
 // ==========================================
 
 function cargarSelectMateriales() {
@@ -189,7 +207,9 @@ function cargarSelectMateriales() {
             "materialBase"
         );
 
-    if (!select) return;
+    if (!select) {
+        return;
+    }
 
     select.innerHTML =
         `
@@ -226,7 +246,7 @@ function cargarSelectMateriales() {
 
 
 // ==========================================
-// SELECT MANO DE OBRA
+// MANO DE OBRA BASE
 // ==========================================
 
 function cargarSelectManoObra() {
@@ -236,12 +256,14 @@ function cargarSelectManoObra() {
             "manoObraBase"
         );
 
-    if (!select) return;
+    if (!select) {
+        return;
+    }
 
     select.innerHTML =
         `
         <option value="">
-            Seleccione un trabajo...
+            Seleccione mano de obra...
         </option>
         `;
 
@@ -273,7 +295,7 @@ function cargarSelectManoObra() {
 
 
 // ==========================================
-// SELECT SERVICIOS
+// SERVICIOS BASE
 // ==========================================
 
 function cargarSelectServicios() {
@@ -283,12 +305,14 @@ function cargarSelectServicios() {
             "servicioBase"
         );
 
-    if (!select) return;
+    if (!select) {
+        return;
+    }
 
     select.innerHTML =
         `
         <option value="">
-            Seleccione un servicio...
+            Seleccione servicio...
         </option>
         `;
 
@@ -330,28 +354,9 @@ document.addEventListener(
         cargarBases();
 
     }
-);
+);// ==========================================
+// PARTE 2 — AGREGAR Y MOSTRAR ITEMS
 // ==========================================
-// ALBE PRESUPUESTOS V4.0
-// PARTE 2 — AGREGAR ITEMS
-// ==========================================
-
-
-// ==========================================
-// OBTENER PRECIO
-// ==========================================
-
-function obtenerPrecio(item) {
-
-    return convertirNumero(
-        item.precio ??
-        item.precioALBE ??
-        item.precioUnitario ??
-        item.valor ??
-        0
-    );
-
-}
 
 
 // ==========================================
@@ -361,29 +366,19 @@ function obtenerPrecio(item) {
 function agregarMaterial() {
 
     const select =
-        document.getElementById(
-            "materialBase"
-        );
+        document.getElementById("materialBase");
 
     if (!select) return;
 
-    const indice =
-        select.value;
+    const indice = select.value;
 
     if (indice === "") {
-
-        alert(
-            "Seleccione un material."
-        );
-
+        alert("Seleccione un material.");
         return;
-
     }
 
     const material =
-        materialesBase[
-            Number(indice)
-        ];
+        materialesBase[Number(indice)];
 
     if (!material) return;
 
@@ -404,11 +399,9 @@ function agregarMaterial() {
 
     });
 
-
     mostrarMateriales();
 
     select.value = "";
-
 }
 
 
@@ -419,47 +412,34 @@ function agregarMaterial() {
 function mostrarMateriales() {
 
     const body =
-        document.getElementById(
-            "materialesBody"
-        );
+        document.getElementById("materialesBody");
 
     if (!body) return;
 
     body.innerHTML = "";
 
-
     materialesPresupuesto.forEach(
         (material, indice) => {
 
             const subtotal =
-                material.cantidad *
-                material.precio;
-
+                convertirNumero(material.cantidad) *
+                convertirNumero(material.precio);
 
             const fila =
-                document.createElement(
-                    "tr"
-                );
-
+                document.createElement("tr");
 
             fila.innerHTML = `
 
                 <td>
-
                     ${material.nombre}
-
                     ${
                         material.unidad
-                        ? " (" +
-                          material.unidad +
-                          ")"
+                        ? " (" + material.unidad + ")"
                         : ""
                     }
-
                 </td>
 
                 <td>
-
                     <input
                         type="number"
                         min="0"
@@ -467,31 +447,21 @@ function mostrarMateriales() {
                         value="${material.cantidad}"
                         data-material-cantidad="${indice}"
                     >
-
                 </td>
 
                 <td>
-
-                    $ ${formatearDinero(
-                        material.precio
-                    )}
-
+                    $ ${formatearDinero(material.precio)}
                 </td>
 
                 <td>
-
                     $ <span
                         data-material-subtotal="${indice}"
                     >
-                        ${formatearDinero(
-                            subtotal
-                        )}
+                        ${formatearDinero(subtotal)}
                     </span>
-
                 </td>
 
                 <td>
-
                     <button
                         type="button"
                         class="btn-eliminar"
@@ -499,22 +469,14 @@ function mostrarMateriales() {
                     >
                         🗑️
                     </button>
-
                 </td>
-
             `;
 
-
-            body.appendChild(
-                fila
-            );
-
+            body.appendChild(fila);
         }
     );
 
-
     conectarEventosMateriales();
-
 }
 
 
@@ -525,95 +487,78 @@ function mostrarMateriales() {
 function conectarEventosMateriales() {
 
     const body =
-        document.getElementById(
-            "materialesBody"
-        );
+        document.getElementById("materialesBody");
 
     if (!body) return;
 
 
-    body
-        .querySelectorAll(
-            "[data-material-cantidad]"
-        )
-        .forEach(input => {
+    body.querySelectorAll(
+        "[data-material-cantidad]"
+    ).forEach(input => {
 
-            input.addEventListener(
-                "input",
-                function () {
+        input.addEventListener(
+            "input",
+            function () {
 
-                    const indice =
-                        Number(
-                            this.dataset
-                                .materialCantidad
-                        );
-
-                    const material =
-                        materialesPresupuesto[
-                            indice
-                        ];
-
-                    if (!material) return;
-
-                    material.cantidad =
-                        convertirNumero(
-                            this.value
-                        );
-
-
-                    const subtotal =
-                        material.cantidad *
-                        material.precio;
-
-
-                    const elemento =
-                        document.querySelector(
-                            `[data-material-subtotal="${indice}"]`
-                        );
-
-
-                    if (elemento) {
-
-                        elemento.textContent =
-                            formatearDinero(
-                                subtotal
-                            );
-
-                    }
-
-                }
-            );
-
-        });
-
-
-    body
-        .querySelectorAll(
-            "[data-eliminar-material]"
-        )
-        .forEach(boton => {
-
-            boton.addEventListener(
-                "click",
-                function () {
-
-                    const indice =
-                        Number(
-                            this.dataset
-                                .eliminarMaterial
-                        );
-
-                    materialesPresupuesto.splice(
-                        indice,
-                        1
+                const indice =
+                    Number(
+                        this.dataset.materialCantidad
                     );
 
-                    mostrarMateriales();
+                const material =
+                    materialesPresupuesto[indice];
+
+                if (!material) return;
+
+                material.cantidad =
+                    convertirNumero(this.value);
+
+                const subtotal =
+                    material.cantidad *
+                    material.precio;
+
+                const elemento =
+                    body.querySelector(
+                        `[data-material-subtotal="${indice}"]`
+                    );
+
+                if (elemento) {
+
+                    elemento.textContent =
+                        formatearDinero(subtotal);
 
                 }
-            );
 
-        });
+            }
+        );
+
+    });
+
+
+    body.querySelectorAll(
+        "[data-eliminar-material]"
+    ).forEach(boton => {
+
+        boton.addEventListener(
+            "click",
+            function () {
+
+                const indice =
+                    Number(
+                        this.dataset.eliminarMaterial
+                    );
+
+                materialesPresupuesto.splice(
+                    indice,
+                    1
+                );
+
+                mostrarMateriales();
+
+            }
+        );
+
+    });
 
 }
 
@@ -625,32 +570,21 @@ function conectarEventosMateriales() {
 function agregarManoObra() {
 
     const select =
-        document.getElementById(
-            "manoObraBase"
-        );
+        document.getElementById("manoObraBase");
 
     if (!select) return;
 
-    const indice =
-        select.value;
+    const indice = select.value;
 
     if (indice === "") {
-
-        alert(
-            "Seleccione una mano de obra."
-        );
-
+        alert("Seleccione una mano de obra.");
         return;
-
     }
 
     const trabajo =
-        manoObraBase[
-            Number(indice)
-        ];
+        manoObraBase[Number(indice)];
 
     if (!trabajo) return;
-
 
     manoObraPresupuesto.push({
 
@@ -669,11 +603,9 @@ function agregarManoObra() {
 
     });
 
-
     mostrarManoObra();
 
     select.value = "";
-
 }
 
 
@@ -684,41 +616,418 @@ function agregarManoObra() {
 function mostrarManoObra() {
 
     const body =
-        document.getElementById(
-            "manoBody"
-        );
+        document.getElementById("manoBody");
 
     if (!body) return;
 
     body.innerHTML = "";
 
-
     manoObraPresupuesto.forEach(
         (trabajo, indice) => {
 
             const subtotal =
-                trabajo.cantidad *
-                trabajo.precio;
-
+                convertirNumero(trabajo.cantidad) *
+                convertirNumero(trabajo.precio);
 
             const fila =
-                document.createElement(
-                    "tr"
-                );
-
+                document.createElement("tr");
 
             fila.innerHTML = `
 
                 <td>
-
                     ${trabajo.nombre}
-
                     ${
                         trabajo.unidad
-                        ? " (" +
+                        ? " (" + trabajo.unidad + ")"
+                        : ""
+                    }
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="${trabajo.cantidad}"
+                        data-mano-cantidad="${indice}"
+                    >
+                </td>
+
+                <td>
+                    $ ${formatearDinero(trabajo.precio)}
+                </td>
+
+                <td>
+                    $ <span
+                        data-mano-subtotal="${indice}"
+                    >
+                        ${formatearDinero(subtotal)}
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="btn-eliminar"
+                        data-eliminar-mano="${indice}"
+                    >
+                        🗑️
+                    </button>
+                </td>
+            `;
+
+            body.appendChild(fila);
+        }
+    );
+
+    conectarEventosManoObra();
+}
+
+
 // ==========================================
-// ALBE PRESUPUESTOS V4.0
-// PARTE 3 — TOTALES
+// EVENTOS MANO DE OBRA
+// ==========================================
+
+function conectarEventosManoObra() {
+
+    const body =
+        document.getElementById("manoBody");
+
+    if (!body) return;
+
+
+    body.querySelectorAll(
+        "[data-mano-cantidad]"
+    ).forEach(input => {
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                const indice =
+                    Number(
+                        this.dataset.manoCantidad
+                    );
+
+                const trabajo =
+                    manoObraPresupuesto[indice];
+
+                if (!trabajo) return;
+
+                trabajo.cantidad =
+                    convertirNumero(this.value);
+
+                const subtotal =
+                    trabajo.cantidad *
+                    trabajo.precio;
+
+                const elemento =
+                    body.querySelector(
+                        `[data-mano-subtotal="${indice}"]`
+                    );
+
+                if (elemento) {
+
+                    elemento.textContent =
+                        formatearDinero(subtotal);
+
+                }
+
+            }
+        );
+
+    });
+
+
+    body.querySelectorAll(
+        "[data-eliminar-mano]"
+    ).forEach(boton => {
+
+        boton.addEventListener(
+            "click",
+            function () {
+
+                const indice =
+                    Number(
+                        this.dataset.eliminarMano
+                    );
+
+                manoObraPresupuesto.splice(
+                    indice,
+                    1
+                );
+
+                mostrarManoObra();
+
+            }
+        );
+
+    });
+
+}
+
+
+// ==========================================
+// AGREGAR SERVICIO
+// ==========================================
+
+function agregarServicio() {
+
+    const select =
+        document.getElementById("servicioBase");
+
+    if (!select) return;
+
+    const indice = select.value;
+
+    if (indice === "") {
+        alert("Seleccione un servicio.");
+        return;
+    }
+
+    const servicio =
+        serviciosBase[Number(indice)];
+
+    if (!servicio) return;
+
+    serviciosPresupuesto.push({
+
+        nombre:
+            servicio.nombre ||
+            servicio.descripcion ||
+            "Servicio",
+
+        unidad:
+            servicio.unidad || "",
+
+        cantidad: 1,
+
+        precio:
+            obtenerPrecio(servicio)
+
+    });
+
+    mostrarServicios();
+
+    select.value = "";
+}
+
+
+// ==========================================
+// MOSTRAR SERVICIOS
+// ==========================================
+
+function mostrarServicios() {
+
+    const body =
+        document.getElementById("serviciosBody");
+
+    if (!body) return;
+
+    body.innerHTML = "";
+
+    serviciosPresupuesto.forEach(
+        (servicio, indice) => {
+
+            const subtotal =
+                convertirNumero(servicio.cantidad) *
+                convertirNumero(servicio.precio);
+
+            const fila =
+                document.createElement("tr");
+
+            fila.innerHTML = `
+
+                <td>
+                    ${servicio.nombre}
+                    ${
+                        servicio.unidad
+                        ? " (" + servicio.unidad + ")"
+                        : ""
+                    }
+                </td>
+
+                <td>
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value="${servicio.cantidad}"
+                        data-servicio-cantidad="${indice}"
+                    >
+                </td>
+
+                <td>
+                    $ ${formatearDinero(servicio.precio)}
+                </td>
+
+                <td>
+                    $ <span
+                        data-servicio-subtotal="${indice}"
+                    >
+                        ${formatearDinero(subtotal)}
+                    </span>
+                </td>
+
+                <td>
+                    <button
+                        type="button"
+                        class="btn-eliminar"
+                        data-eliminar-servicio="${indice}"
+                    >
+                        🗑️
+                    </button>
+                </td>
+            `;
+
+            body.appendChild(fila);
+        }
+    );
+
+    conectarEventosServicios();
+}
+
+
+// ==========================================
+// EVENTOS SERVICIOS
+// ==========================================
+
+function conectarEventosServicios() {
+
+    const body =
+        document.getElementById("serviciosBody");
+
+    if (!body) return;
+
+
+    body.querySelectorAll(
+        "[data-servicio-cantidad]"
+    ).forEach(input => {
+
+        input.addEventListener(
+            "input",
+            function () {
+
+                const indice =
+                    Number(
+                        this.dataset.servicioCantidad
+                    );
+
+                const servicio =
+                    serviciosPresupuesto[indice];
+
+                if (!servicio) return;
+
+                servicio.cantidad =
+                    convertirNumero(this.value);
+
+                const subtotal =
+                    servicio.cantidad *
+                    servicio.precio;
+
+                const elemento =
+                    body.querySelector(
+                        `[data-servicio-subtotal="${indice}"]`
+                    );
+
+                if (elemento) {
+
+                    elemento.textContent =
+                        formatearDinero(subtotal);
+
+                }
+
+            }
+        );
+
+    });
+
+
+    body.querySelectorAll(
+        "[data-eliminar-servicio]"
+    ).forEach(boton => {
+
+        boton.addEventListener(
+            "click",
+            function () {
+
+                const indice =
+                    Number(
+                        this.dataset.eliminarServicio
+                    );
+
+                serviciosPresupuesto.splice(
+                    indice,
+                    1
+                );
+
+                mostrarServicios();
+
+            }
+        );
+
+    });
+
+}
+
+
+// ==========================================
+// CONECTAR BOTONES
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const btnMaterial =
+            document.getElementById(
+                "btnAgregarMaterial"
+            );
+
+        if (btnMaterial) {
+
+            btnMaterial.addEventListener(
+                "click",
+                agregarMaterial
+            );
+
+        }
+
+
+        const btnMano =
+            document.getElementById(
+                "btnAgregarMano"
+            );
+
+        if (btnMano) {
+
+            btnMano.addEventListener(
+                "click",
+                agregarManoObra
+            );
+
+        }
+
+
+        const btnServicio =
+            document.getElementById(
+                "btnAgregarServicio"
+            );
+
+        if (btnServicio) {
+
+            btnServicio.addEventListener(
+                "click",
+                agregarServicio
+            );
+
+        }
+
+    }
+);
+    
+// ==========================================
+// PARTE 3 FINAL — TOTALES
 // ==========================================
 
 
@@ -726,7 +1035,7 @@ function mostrarManoObra() {
 // TOTAL MATERIALES
 // ==========================================
 
-function actualizarTotalMateriales() {
+function calcularTotalMateriales() {
 
     let total = 0;
 
@@ -738,18 +1047,6 @@ function actualizarTotalMateriales() {
 
     });
 
-    const elemento =
-        document.getElementById(
-            "totalMateriales"
-        );
-
-    if (elemento) {
-
-        elemento.textContent =
-            formatearDinero(total);
-
-    }
-
     return total;
 }
 
@@ -758,7 +1055,7 @@ function actualizarTotalMateriales() {
 // TOTAL MANO DE OBRA
 // ==========================================
 
-function actualizarTotalMano() {
+function calcularTotalMano() {
 
     let total = 0;
 
@@ -770,18 +1067,6 @@ function actualizarTotalMano() {
 
     });
 
-    const elemento =
-        document.getElementById(
-            "totalMano"
-        );
-
-    if (elemento) {
-
-        elemento.textContent =
-            formatearDinero(total);
-
-    }
-
     return total;
 }
 
@@ -790,7 +1075,7 @@ function actualizarTotalMano() {
 // TOTAL SERVICIOS
 // ==========================================
 
-function actualizarTotalServicios() {
+function calcularTotalServicios() {
 
     let total = 0;
 
@@ -802,87 +1087,29 @@ function actualizarTotalServicios() {
 
     });
 
-    const elemento =
-        document.getElementById(
-            "totalServicios"
-        );
-
-    if (elemento) {
-
-        elemento.textContent =
-            formatearDinero(total);
-
-    }
-
     return total;
 }
 
 
 // ==========================================
-// TOTAL GENERAL
+// ACTUALIZAR TOTALES
 // ==========================================
 
-function actualizarTotalGeneral() {
+function actualizarTotales() {
 
     const totalMateriales =
-        actualizarTotalMateriales();
+        calcularTotalMateriales();
 
     const totalMano =
-        actualizarTotalMano();
+        calcularTotalMano();
 
     const totalServicios =
-        actualizarTotalServicios();
+        calcularTotalServicios();
 
 
-    const totalGeneral =
-        totalMateriales +
-        totalMano +
-        totalServicios;
-
-
-    const elemento =
-        document.getElementById(
-            "totalGeneral"
-        );
-
-    if (elemento) {
-
-        elemento.textContent =
-            formatearDinero(
-                totalGeneral
-            );
-
-    }
-
-
-    console.log(
-        "TOTAL GENERAL:",
-        totalGeneral
-    );
-
-}
-
-
-// ==========================================
-// ACTUALIZAR TODOS
-// ==========================================
-
-function actualizarTodosLosTotales() {
-
-    actualizarTotalGeneral();
-
-                        }
-                        // ==========================================
-// ALBE PRESUPUESTOS V4.0
-// PARTE 4 — VIÁTICOS + HOSPEDAJE + TOTAL FINAL
-// ==========================================
-
-
-// ==========================================
-// ACTUALIZAR GASTOS ADICIONALES
-// ==========================================
-
-function actualizarGastosAdicionales() {
+    // -------------------------------
+    // VIÁTICOS
+    // -------------------------------
 
     const viaticos =
         convertirNumero(
@@ -891,12 +1118,22 @@ function actualizarGastosAdicionales() {
             )?.value
         );
 
+
+    // -------------------------------
+    // HOSPEDAJE
+    // -------------------------------
+
     const hospedaje =
         convertirNumero(
             document.getElementById(
                 "hospedajeTotal"
             )?.value
         );
+
+
+    // -------------------------------
+    // OTROS GASTOS
+    // -------------------------------
 
     const otros =
         convertirNumero(
@@ -907,165 +1144,96 @@ function actualizarGastosAdicionales() {
 
 
     // -------------------------------
-    // RESUMEN VIÁTICOS
-    // -------------------------------
-
-    const resumenViaticos =
-        document.getElementById(
-            "resumenViaticos"
-        );
-
-    if (resumenViaticos) {
-
-        resumenViaticos.value =
-            "$ " +
-            formatearDinero(
-                viaticos
-            );
-
-    }
-
-
-    // -------------------------------
-    // RESUMEN HOSPEDAJE
-    // -------------------------------
-
-    const resumenHospedaje =
-        document.getElementById(
-            "resumenHospedaje"
-        );
-
-    if (resumenHospedaje) {
-
-        resumenHospedaje.value =
-            "$ " +
-            formatearDinero(
-                hospedaje
-            );
-
-    }
-
-
-    // -------------------------------
-    // RESUMEN OTROS
-    // -------------------------------
-
-    const resumenOtros =
-        document.getElementById(
-            "resumenOtros"
-        );
-
-    if (resumenOtros) {
-
-        resumenOtros.value =
-            "$ " +
-            formatearDinero(
-                otros
-            );
-
-    }
-
-
-    return (
-        viaticos +
-        hospedaje +
-        otros
-    );
-
-}
-
-
-// ==========================================
-// TOTAL FINAL
-// ==========================================
-
-function actualizarTotalFinal() {
-
-    const totalMateriales =
-        materialesPresupuesto.reduce(
-            (total, material) => {
-
-                return total +
-                    convertirNumero(
-                        material.cantidad
-                    ) *
-                    convertirNumero(
-                        material.precio
-                    );
-
-            },
-            0
-        );
-
-
-    const totalMano =
-        manoObraPresupuesto.reduce(
-            (total, trabajo) => {
-
-                return total +
-                    convertirNumero(
-                        trabajo.cantidad
-                    ) *
-                    convertirNumero(
-                        trabajo.precio
-                    );
-
-            },
-            0
-        );
-
-
-    const totalServicios =
-        serviciosPresupuesto.reduce(
-            (total, servicio) => {
-
-                return total +
-                    convertirNumero(
-                        servicio.cantidad
-                    ) *
-                    convertirNumero(
-                        servicio.precio
-                    );
-
-            },
-            0
-        );
-
-
-    const gastos =
-        actualizarGastosAdicionales();
-
-
-    const totalFinal =
-        totalMateriales +
-        totalMano +
-        totalServicios +
-        gastos;
-
-
-    // -------------------------------
-    // TOTAL GENERAL INPUT
+    // TOTAL GENERAL
     // -------------------------------
 
     const totalGeneral =
+        totalMateriales +
+        totalMano +
+        totalServicios +
+        viaticos +
+        hospedaje +
+        otros;
+
+
+    // -------------------------------
+    // MOSTRAR TOTALES
+    // -------------------------------
+
+    const totalMaterialesElemento =
+        document.getElementById(
+            "totalMateriales"
+        );
+
+    if (totalMaterialesElemento) {
+
+        totalMaterialesElemento.textContent =
+            formatearDinero(
+                totalMateriales
+            );
+
+    }
+
+
+    const totalManoElemento =
+        document.getElementById(
+            "totalMano"
+        );
+
+    if (totalManoElemento) {
+
+        totalManoElemento.textContent =
+            formatearDinero(
+                totalMano
+            );
+
+    }
+
+
+    const totalServiciosElemento =
+        document.getElementById(
+            "totalServicios"
+        );
+
+    if (totalServiciosElemento) {
+
+        totalServiciosElemento.textContent =
+            formatearDinero(
+                totalServicios
+            );
+
+    }
+
+
+    const totalGeneralElemento =
         document.getElementById(
             "totalGeneral"
         );
 
-    if (totalGeneral) {
+    if (totalGeneralElemento) {
 
-        totalGeneral.value =
-            "$ " +
-            formatearDinero(
-                totalFinal
-            );
+        if (
+            totalGeneralElemento.tagName ===
+            "INPUT"
+        ) {
+
+            totalGeneralElemento.value =
+                "$ " +
+                formatearDinero(
+                    totalGeneral
+                );
+
+        } else {
+
+            totalGeneralElemento.textContent =
+                formatearDinero(
+                    totalGeneral
+                );
+
+        }
 
     }
 
-
-    // -------------------------------
-    // TOTAL GENERAL TEXTO
-    // -------------------------------
 
     const totalGeneralTexto =
         document.getElementById(
@@ -1076,14 +1244,14 @@ function actualizarTotalFinal() {
 
         totalGeneralTexto.textContent =
             formatearDinero(
-                totalFinal
+                totalGeneral
             );
 
     }
 
 
     // -------------------------------
-    // RESUMEN MATERIALES
+    // RESUMEN
     // -------------------------------
 
     const resumenMateriales =
@@ -1102,10 +1270,6 @@ function actualizarTotalFinal() {
     }
 
 
-    // -------------------------------
-    // RESUMEN MANO DE OBRA
-    // -------------------------------
-
     const resumenMano =
         document.getElementById(
             "resumenMano"
@@ -1122,57 +1286,135 @@ function actualizarTotalFinal() {
     }
 
 
+    const resumenViaticos =
+        document.getElementById(
+            "resumenViaticos"
+        );
+
+    if (resumenViaticos) {
+
+        resumenViaticos.value =
+            "$ " +
+            formatearDinero(
+                viaticos
+            );
+
+    }
+
+
+    const resumenHospedaje =
+        document.getElementById(
+            "resumenHospedaje"
+        );
+
+    if (resumenHospedaje) {
+
+        resumenHospedaje.value =
+            "$ " +
+            formatearDinero(
+                hospedaje
+            );
+
+    }
+
+
+    const resumenOtros =
+        document.getElementById(
+            "resumenOtros"
+        );
+
+    if (resumenOtros) {
+
+        resumenOtros.value =
+            "$ " +
+            formatearDinero(
+                otros
+            );
+
+    }
+
+
     console.log(
-        "TOTAL FINAL:",
-        totalFinal
+        "TOTAL GENERAL:",
+        totalGeneral
     );
 
-
-    return totalFinal;
+    return totalGeneral;
 
 }
 
 
 // ==========================================
-// EVENTOS VIÁTICOS / HOSPEDAJE / OTROS
+// ACTUALIZAR AL CAMBIAR CANTIDADES
+// ==========================================
+
+document.addEventListener(
+    "input",
+    function (evento) {
+
+        if (
+            evento.target.matches(
+                'input[type="number"]'
+            )
+        ) {
+
+            actualizarTotales();
+
+        }
+
+    }
+);
+
+
+// ==========================================
+// ACTUALIZAR AL AGREGAR / ELIMINAR
+// ==========================================
+
+const mostrarMaterialesOriginal =
+    mostrarMateriales;
+
+mostrarMateriales = function () {
+
+    mostrarMaterialesOriginal();
+
+    actualizarTotales();
+
+};
+
+
+const mostrarManoObraOriginal =
+    mostrarManoObra;
+
+mostrarManoObra = function () {
+
+    mostrarManoObraOriginal();
+
+    actualizarTotales();
+
+};
+
+
+const mostrarServiciosOriginal =
+    mostrarServicios;
+
+mostrarServicios = function () {
+
+    mostrarServiciosOriginal();
+
+    actualizarTotales();
+
+};
+
+
+// ==========================================
+// INICIO DE TOTALES
 // ==========================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-        const campos =
-            [
-                "viaticos",
-                "hospedajeTotal",
-                "otrosGastos"
-            ];
-
-
-        campos.forEach(
-            id => {
-
-                const campo =
-                    document.getElementById(
-                        id
-                    );
-
-                if (campo) {
-
-                    campo.addEventListener(
-                        "input",
-                        actualizarTotalFinal
-                    );
-
-                }
-
-            }
-        );
-
-
-        // Calcular al cargar
-
-        actualizarTotalFinal();
+        actualizarTotales();
 
     }
 );
