@@ -1,8 +1,13 @@
-// ==========================================
-// ALBE PRESUPUESTOS
+// ==========================================================
+// ALBE PRESUPUESTOS V4.0
 // PRESUPUESTO.JS
-// VERSION LIMPIA
-// ==========================================
+// VERSION LIMPIA Y COMPLETA
+// ==========================================================
+
+
+// ==========================================================
+// VARIABLES
+// ==========================================================
 
 let materialesBase = [];
 let manoObraBase = [];
@@ -13,9 +18,9 @@ let manoObraPresupuesto = [];
 let serviciosPresupuesto = [];
 
 
-// ==========================================
+// ==========================================================
 // LOCAL STORAGE
-// ==========================================
+// ==========================================================
 
 function leerLocalStorage(clave) {
 
@@ -38,7 +43,8 @@ function leerLocalStorage(clave) {
     } catch (error) {
 
         console.error(
-            "Error leyendo " + clave,
+            "ALBE - Error leyendo:",
+            clave,
             error
         );
 
@@ -49,9 +55,9 @@ function leerLocalStorage(clave) {
 }
 
 
-// ==========================================
-// CONVERTIR NUMERO
-// ==========================================
+// ==========================================================
+// NUMEROS
+// ==========================================================
 
 function convertirNumero(valor) {
 
@@ -77,7 +83,6 @@ function convertirNumero(valor) {
             .replace(/\$/g, "")
             .replace(/\s/g, "");
 
-    // 20.800,50
     if (
         texto.includes(".") &&
         texto.includes(",")
@@ -88,10 +93,7 @@ function convertirNumero(valor) {
                 .replace(/\./g, "")
                 .replace(",", ".");
 
-    }
-
-    // 20800,50
-    else if (
+    } else if (
         texto.includes(",")
     ) {
 
@@ -110,9 +112,9 @@ function convertirNumero(valor) {
 }
 
 
-// ==========================================
-// FORMATEAR DINERO
-// ==========================================
+// ==========================================================
+// DINERO
+// ==========================================================
 
 function formatearDinero(valor) {
 
@@ -128,9 +130,9 @@ function formatearDinero(valor) {
 }
 
 
-// ==========================================
-// OBTENER PRECIO
-// ==========================================
+// ==========================================================
+// PRECIO DESDE LA BASE
+// ==========================================================
 
 function obtenerPrecio(item) {
 
@@ -149,9 +151,48 @@ function obtenerPrecio(item) {
 }
 
 
-// ==========================================
+// ==========================================================
+// NOMBRE
+// ==========================================================
+
+function obtenerNombre(item, defecto) {
+
+    if (!item) {
+        return defecto;
+    }
+
+    return (
+        item.nombre ||
+        item.descripcion ||
+        item.detalle ||
+        defecto
+    );
+
+}
+
+
+// ==========================================================
+// UNIDAD
+// ==========================================================
+
+function obtenerUnidad(item) {
+
+    if (!item) {
+        return "";
+    }
+
+    return (
+        item.unidad ||
+        item.unidadMedida ||
+        ""
+    );
+
+}
+
+
+// ==========================================================
 // CARGAR BASES
-// ==========================================
+// ==========================================================
 
 function cargarBases() {
 
@@ -172,17 +213,17 @@ function cargarBases() {
 
 
     console.log(
-        "ALBE - Materiales:",
+        "ALBE MATERIALes:",
         materialesBase
     );
 
     console.log(
-        "ALBE - Mano de obra:",
+        "ALBE MANO DE OBRA:",
         manoObraBase
     );
 
     console.log(
-        "ALBE - Servicios:",
+        "ALBE SERVICIOS:",
         serviciosBase
     );
 
@@ -196,9 +237,9 @@ function cargarBases() {
 }
 
 
-// ==========================================
-// MATERIAL BASE
-// ==========================================
+// ==========================================================
+// SELECT MATERIALES
+// ==========================================================
 
 function cargarSelectMateriales() {
 
@@ -211,12 +252,22 @@ function cargarSelectMateriales() {
         return;
     }
 
-    select.innerHTML =
-        `
-        <option value="">
-            Seleccione material...
-        </option>
-        `;
+
+    select.innerHTML = "";
+
+    const opcion =
+        document.createElement(
+            "option"
+        );
+
+    opcion.value = "";
+
+    opcion.textContent =
+        "Seleccione un material...";
+
+    select.appendChild(
+        opcion
+    );
 
 
     materialesBase.forEach(
@@ -231,9 +282,10 @@ function cargarSelectMateriales() {
                 indice;
 
             option.textContent =
-                material.nombre ||
-                material.descripcion ||
-                "Material";
+                obtenerNombre(
+                    material,
+                    "Material"
+                );
 
             select.appendChild(
                 option
@@ -245,9 +297,9 @@ function cargarSelectMateriales() {
 }
 
 
-// ==========================================
-// MANO DE OBRA BASE
-// ==========================================
+// ==========================================================
+// SELECT MANO DE OBRA
+// ==========================================================
 
 function cargarSelectManoObra() {
 
@@ -260,12 +312,22 @@ function cargarSelectManoObra() {
         return;
     }
 
-    select.innerHTML =
-        `
-        <option value="">
-            Seleccione mano de obra...
-        </option>
-        `;
+
+    select.innerHTML = "";
+
+    const opcion =
+        document.createElement(
+            "option"
+        );
+
+    opcion.value = "";
+
+    opcion.textContent =
+        "Seleccione un trabajo...";
+
+    select.appendChild(
+        opcion
+    );
 
 
     manoObraBase.forEach(
@@ -280,9 +342,10 @@ function cargarSelectManoObra() {
                 indice;
 
             option.textContent =
-                trabajo.nombre ||
-                trabajo.descripcion ||
-                "Mano de obra";
+                obtenerNombre(
+                    trabajo,
+                    "Mano de obra"
+                );
 
             select.appendChild(
                 option
@@ -294,9 +357,9 @@ function cargarSelectManoObra() {
 }
 
 
-// ==========================================
-// SERVICIOS BASE
-// ==========================================
+// ==========================================================
+// SELECT SERVICIOS
+// ==========================================================
 
 function cargarSelectServicios() {
 
@@ -309,12 +372,22 @@ function cargarSelectServicios() {
         return;
     }
 
-    select.innerHTML =
-        `
-        <option value="">
-            Seleccione servicio...
-        </option>
-        `;
+
+    select.innerHTML = "";
+
+    const opcion =
+        document.createElement(
+            "option"
+        );
+
+    opcion.value = "";
+
+    opcion.textContent =
+        "Seleccione un servicio...";
+
+    select.appendChild(
+        opcion
+    );
 
 
     serviciosBase.forEach(
@@ -329,9 +402,10 @@ function cargarSelectServicios() {
                 indice;
 
             option.textContent =
-                servicio.nombre ||
-                servicio.descripcion ||
-                "Servicio";
+                obtenerNombre(
+                    servicio,
+                    "Servicio"
+                );
 
             select.appendChild(
                 option
@@ -343,98 +417,370 @@ function cargarSelectServicios() {
 }
 
 
-// ==========================================
-// INICIO
-// ==========================================
+// ==========================================================
+// INFORMACION MATERIAL
+// ==========================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+function mostrarInfoMaterial() {
 
-        cargarBases();
+    const select =
+        document.getElementById(
+            "materialBase"
+        );
+
+    const info =
+        document.getElementById(
+            "infoMaterialBase"
+        );
+
+    if (!select || !info) {
+        return;
+    }
+
+
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        info.style.display =
+            "none";
+
+        info.innerHTML =
+            "";
+
+        return;
 
     }
-);// ==========================================
-// PARTE 2 — AGREGAR Y MOSTRAR ITEMS
-// ==========================================
 
 
-// ==========================================
+    const material =
+        materialesBase[
+            Number(indice)
+        ];
+
+
+    if (!material) {
+        return;
+    }
+
+
+    const nombre =
+        obtenerNombre(
+            material,
+            "Material"
+        );
+
+    const unidad =
+        obtenerUnidad(
+            material
+        );
+
+    const precio =
+        obtenerPrecio(
+            material
+        );
+
+
+    info.style.display =
+        "block";
+
+    info.innerHTML =
+        `
+        <strong>${nombre}</strong><br>
+        Unidad: ${unidad || "Sin unidad"}<br>
+        Precio: $ ${formatearDinero(precio)}
+        `;
+
+}
+
+
+// ==========================================================
+// INFORMACION MANO DE OBRA
+// ==========================================================
+
+function mostrarInfoManoObra() {
+
+    const select =
+        document.getElementById(
+            "manoObraBase"
+        );
+
+    const info =
+        document.getElementById(
+            "infoManoObraBase"
+        );
+
+    if (!select || !info) {
+        return;
+    }
+
+
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        info.style.display =
+            "none";
+
+        info.innerHTML =
+            "";
+
+        return;
+
+    }
+
+
+    const trabajo =
+        manoObraBase[
+            Number(indice)
+        ];
+
+
+    if (!trabajo) {
+        return;
+    }
+
+
+    const nombre =
+        obtenerNombre(
+            trabajo,
+            "Mano de obra"
+        );
+
+    const unidad =
+        obtenerUnidad(
+            trabajo
+        );
+
+    const precio =
+        obtenerPrecio(
+            trabajo
+        );
+
+
+    info.style.display =
+        "block";
+
+    info.innerHTML =
+        `
+        <strong>${nombre}</strong><br>
+        Unidad: ${unidad || "Sin unidad"}<br>
+        Precio: $ ${formatearDinero(precio)}
+        `;
+
+}
+
+
+// ==========================================================
+// INFORMACION SERVICIO
+// ==========================================================
+
+function mostrarInfoServicio() {
+
+    const select =
+        document.getElementById(
+            "servicioBase"
+        );
+
+    const info =
+        document.getElementById(
+            "infoServicioBase"
+        );
+
+    if (!select || !info) {
+        return;
+    }
+
+
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        info.style.display =
+            "none";
+
+        info.innerHTML =
+            "";
+
+        return;
+
+    }
+
+
+    const servicio =
+        serviciosBase[
+            Number(indice)
+        ];
+
+
+    if (!servicio) {
+        return;
+    }
+
+
+    const nombre =
+        obtenerNombre(
+            servicio,
+            "Servicio"
+        );
+
+    const unidad =
+        obtenerUnidad(
+            servicio
+        );
+
+    const precio =
+        obtenerPrecio(
+            servicio
+        );
+
+
+    info.style.display =
+        "block";
+
+    info.innerHTML =
+        `
+        <strong>${nombre}</strong><br>
+        Unidad: ${unidad || "Sin unidad"}<br>
+        Precio: $ ${formatearDinero(precio)}
+        `;
+
+}
+
+
+// ==========================================================
 // AGREGAR MATERIAL
-// ==========================================
+// ==========================================================
 
 function agregarMaterial() {
 
     const select =
-        document.getElementById("materialBase");
+        document.getElementById(
+            "materialBase"
+        );
 
-    if (!select) return;
-
-    const indice = select.value;
-
-    if (indice === "") {
-        alert("Seleccione un material.");
+    if (!select) {
         return;
     }
 
-    const material =
-        materialesBase[Number(indice)];
 
-    if (!material) return;
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        alert(
+            "Seleccione un material."
+        );
+
+        return;
+
+    }
+
+
+    const material =
+        materialesBase[
+            Number(indice)
+        ];
+
+
+    if (!material) {
+        return;
+    }
+
 
     materialesPresupuesto.push({
 
         nombre:
-            material.nombre ||
-            material.descripcion ||
-            "Material",
+            obtenerNombre(
+                material,
+                "Material"
+            ),
 
         unidad:
-            material.unidad || "",
+            obtenerUnidad(
+                material
+            ),
 
         cantidad: 1,
 
         precio:
-            obtenerPrecio(material)
+            obtenerPrecio(
+                material
+            )
 
     });
+
 
     mostrarMateriales();
 
     select.value = "";
+
+    mostrarInfoMaterial();
+
+    actualizarTotales();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // MOSTRAR MATERIALES
-// ==========================================
+// ==========================================================
 
 function mostrarMateriales() {
 
     const body =
-        document.getElementById("materialesBody");
+        document.getElementById(
+            "materialesBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
+
 
     body.innerHTML = "";
+
 
     materialesPresupuesto.forEach(
         (material, indice) => {
 
+            const cantidad =
+                convertirNumero(
+                    material.cantidad
+                );
+
+            const precio =
+                convertirNumero(
+                    material.precio
+                );
+
             const subtotal =
-                convertirNumero(material.cantidad) *
-                convertirNumero(material.precio);
+                cantidad * precio;
+
 
             const fila =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
-            fila.innerHTML = `
 
+            fila.innerHTML =
+                `
                 <td>
                     ${material.nombre}
                     ${
                         material.unidad
-                        ? " (" + material.unidad + ")"
+                        ? " (" +
+                          material.unidad +
+                          ")"
                         : ""
                     }
                 </td>
@@ -444,13 +790,13 @@ function mostrarMateriales() {
                         type="number"
                         min="0"
                         step="0.01"
-                        value="${material.cantidad}"
+                        value="${cantidad}"
                         data-material-cantidad="${indice}"
                     >
                 </td>
 
                 <td>
-                    $ ${formatearDinero(material.precio)}
+                    $ ${formatearDinero(precio)}
                 </td>
 
                 <td>
@@ -470,175 +816,263 @@ function mostrarMateriales() {
                         🗑️
                     </button>
                 </td>
-            `;
+                `;
 
-            body.appendChild(fila);
+
+            body.appendChild(
+                fila
+            );
+
         }
     );
 
+
     conectarEventosMateriales();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // EVENTOS MATERIALES
-// ==========================================
+// ==========================================================
 
 function conectarEventosMateriales() {
 
     const body =
-        document.getElementById("materialesBody");
+        document.getElementById(
+            "materialesBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
 
 
     body.querySelectorAll(
         "[data-material-cantidad]"
-    ).forEach(input => {
+    ).forEach(
+        input => {
 
-        input.addEventListener(
-            "input",
-            function () {
+            input.addEventListener(
+                "input",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.materialCantidad
-                    );
+                    const indice =
+                        Number(
+                            this.dataset
+                                .materialCantidad
+                        );
 
-                const material =
-                    materialesPresupuesto[indice];
 
-                if (!material) return;
+                    const material =
+                        materialesPresupuesto[
+                            indice
+                        ];
 
-                material.cantidad =
-                    convertirNumero(this.value);
 
-                const subtotal =
-                    material.cantidad *
-                    material.precio;
+                    if (!material) {
+                        return;
+                    }
 
-                const elemento =
-                    body.querySelector(
-                        `[data-material-subtotal="${indice}"]`
-                    );
 
-                if (elemento) {
+                    material.cantidad =
+                        convertirNumero(
+                            this.value
+                        );
 
-                    elemento.textContent =
-                        formatearDinero(subtotal);
+
+                    const subtotal =
+                        material.cantidad *
+                        material.precio;
+
+
+                    const elemento =
+                        body.querySelector(
+                            `[data-material-subtotal="${indice}"]`
+                        );
+
+
+                    if (elemento) {
+
+                        elemento.textContent =
+                            formatearDinero(
+                                subtotal
+                            );
+
+                    }
+
+
+                    actualizarTotales();
 
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 
     body.querySelectorAll(
         "[data-eliminar-material]"
-    ).forEach(boton => {
+    ).forEach(
+        boton => {
 
-        boton.addEventListener(
-            "click",
-            function () {
+            boton.addEventListener(
+                "click",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.eliminarMaterial
+                    const indice =
+                        Number(
+                            this.dataset
+                                .eliminarMaterial
+                        );
+
+
+                    materialesPresupuesto.splice(
+                        indice,
+                        1
                     );
 
-                materialesPresupuesto.splice(
-                    indice,
-                    1
-                );
 
-                mostrarMateriales();
+                    mostrarMateriales();
 
-            }
-        );
+                    actualizarTotales();
 
-    });
+                }
+            );
+
+        }
+    );
 
 }
 
 
-// ==========================================
+// ==========================================================
 // AGREGAR MANO DE OBRA
-// ==========================================
+// ==========================================================
 
 function agregarManoObra() {
 
     const select =
-        document.getElementById("manoObraBase");
+        document.getElementById(
+            "manoObraBase"
+        );
 
-    if (!select) return;
-
-    const indice = select.value;
-
-    if (indice === "") {
-        alert("Seleccione una mano de obra.");
+    if (!select) {
         return;
     }
 
-    const trabajo =
-        manoObraBase[Number(indice)];
 
-    if (!trabajo) return;
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        alert(
+            "Seleccione una mano de obra."
+        );
+
+        return;
+
+    }
+
+
+    const trabajo =
+        manoObraBase[
+            Number(indice)
+        ];
+
+
+    if (!trabajo) {
+        return;
+    }
+
 
     manoObraPresupuesto.push({
 
         nombre:
-            trabajo.nombre ||
-            trabajo.descripcion ||
-            "Mano de obra",
+            obtenerNombre(
+                trabajo,
+                "Mano de obra"
+            ),
 
         unidad:
-            trabajo.unidad || "",
+            obtenerUnidad(
+                trabajo
+            ),
 
         cantidad: 1,
 
         precio:
-            obtenerPrecio(trabajo)
+            obtenerPrecio(
+                trabajo
+            )
 
     });
+
 
     mostrarManoObra();
 
     select.value = "";
+
+    mostrarInfoManoObra();
+
+    actualizarTotales();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // MOSTRAR MANO DE OBRA
-// ==========================================
+// ==========================================================
 
 function mostrarManoObra() {
 
     const body =
-        document.getElementById("manoBody");
+        document.getElementById(
+            "manoBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
+
 
     body.innerHTML = "";
+
 
     manoObraPresupuesto.forEach(
         (trabajo, indice) => {
 
+            const cantidad =
+                convertirNumero(
+                    trabajo.cantidad
+                );
+
+            const precio =
+                convertirNumero(
+                    trabajo.precio
+                );
+
             const subtotal =
-                convertirNumero(trabajo.cantidad) *
-                convertirNumero(trabajo.precio);
+                cantidad * precio;
+
 
             const fila =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
-            fila.innerHTML = `
 
+            fila.innerHTML =
+                `
                 <td>
                     ${trabajo.nombre}
                     ${
                         trabajo.unidad
-                        ? " (" + trabajo.unidad + ")"
+                        ? " (" +
+                          trabajo.unidad +
+                          ")"
                         : ""
                     }
                 </td>
@@ -648,13 +1082,13 @@ function mostrarManoObra() {
                         type="number"
                         min="0"
                         step="0.01"
-                        value="${trabajo.cantidad}"
+                        value="${cantidad}"
                         data-mano-cantidad="${indice}"
                     >
                 </td>
 
                 <td>
-                    $ ${formatearDinero(trabajo.precio)}
+                    $ ${formatearDinero(precio)}
                 </td>
 
                 <td>
@@ -674,175 +1108,263 @@ function mostrarManoObra() {
                         🗑️
                     </button>
                 </td>
-            `;
+                `;
 
-            body.appendChild(fila);
+
+            body.appendChild(
+                fila
+            );
+
         }
     );
 
+
     conectarEventosManoObra();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // EVENTOS MANO DE OBRA
-// ==========================================
+// ==========================================================
 
 function conectarEventosManoObra() {
 
     const body =
-        document.getElementById("manoBody");
+        document.getElementById(
+            "manoBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
 
 
     body.querySelectorAll(
         "[data-mano-cantidad]"
-    ).forEach(input => {
+    ).forEach(
+        input => {
 
-        input.addEventListener(
-            "input",
-            function () {
+            input.addEventListener(
+                "input",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.manoCantidad
-                    );
+                    const indice =
+                        Number(
+                            this.dataset
+                                .manoCantidad
+                        );
 
-                const trabajo =
-                    manoObraPresupuesto[indice];
 
-                if (!trabajo) return;
+                    const trabajo =
+                        manoObraPresupuesto[
+                            indice
+                        ];
 
-                trabajo.cantidad =
-                    convertirNumero(this.value);
 
-                const subtotal =
-                    trabajo.cantidad *
-                    trabajo.precio;
+                    if (!trabajo) {
+                        return;
+                    }
 
-                const elemento =
-                    body.querySelector(
-                        `[data-mano-subtotal="${indice}"]`
-                    );
 
-                if (elemento) {
+                    trabajo.cantidad =
+                        convertirNumero(
+                            this.value
+                        );
 
-                    elemento.textContent =
-                        formatearDinero(subtotal);
+
+                    const subtotal =
+                        trabajo.cantidad *
+                        trabajo.precio;
+
+
+                    const elemento =
+                        body.querySelector(
+                            `[data-mano-subtotal="${indice}"]`
+                        );
+
+
+                    if (elemento) {
+
+                        elemento.textContent =
+                            formatearDinero(
+                                subtotal
+                            );
+
+                    }
+
+
+                    actualizarTotales();
 
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 
     body.querySelectorAll(
         "[data-eliminar-mano]"
-    ).forEach(boton => {
+    ).forEach(
+        boton => {
 
-        boton.addEventListener(
-            "click",
-            function () {
+            boton.addEventListener(
+                "click",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.eliminarMano
+                    const indice =
+                        Number(
+                            this.dataset
+                                .eliminarMano
+                        );
+
+
+                    manoObraPresupuesto.splice(
+                        indice,
+                        1
                     );
 
-                manoObraPresupuesto.splice(
-                    indice,
-                    1
-                );
 
-                mostrarManoObra();
+                    mostrarManoObra();
 
-            }
-        );
+                    actualizarTotales();
 
-    });
+                }
+            );
+
+        }
+    );
 
 }
 
 
-// ==========================================
+// ==========================================================
 // AGREGAR SERVICIO
-// ==========================================
+// ==========================================================
 
 function agregarServicio() {
 
     const select =
-        document.getElementById("servicioBase");
+        document.getElementById(
+            "servicioBase"
+        );
 
-    if (!select) return;
-
-    const indice = select.value;
-
-    if (indice === "") {
-        alert("Seleccione un servicio.");
+    if (!select) {
         return;
     }
 
-    const servicio =
-        serviciosBase[Number(indice)];
 
-    if (!servicio) return;
+    const indice =
+        select.value;
+
+
+    if (indice === "") {
+
+        alert(
+            "Seleccione un servicio."
+        );
+
+        return;
+
+    }
+
+
+    const servicio =
+        serviciosBase[
+            Number(indice)
+        ];
+
+
+    if (!servicio) {
+        return;
+    }
+
 
     serviciosPresupuesto.push({
 
         nombre:
-            servicio.nombre ||
-            servicio.descripcion ||
-            "Servicio",
+            obtenerNombre(
+                servicio,
+                "Servicio"
+            ),
 
         unidad:
-            servicio.unidad || "",
+            obtenerUnidad(
+                servicio
+            ),
 
         cantidad: 1,
 
         precio:
-            obtenerPrecio(servicio)
+            obtenerPrecio(
+                servicio
+            )
 
     });
+
 
     mostrarServicios();
 
     select.value = "";
+
+    mostrarInfoServicio();
+
+    actualizarTotales();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // MOSTRAR SERVICIOS
-// ==========================================
+// ==========================================================
 
 function mostrarServicios() {
 
     const body =
-        document.getElementById("serviciosBody");
+        document.getElementById(
+            "serviciosBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
+
 
     body.innerHTML = "";
+
 
     serviciosPresupuesto.forEach(
         (servicio, indice) => {
 
+            const cantidad =
+                convertirNumero(
+                    servicio.cantidad
+                );
+
+            const precio =
+                convertirNumero(
+                    servicio.precio
+                );
+
             const subtotal =
-                convertirNumero(servicio.cantidad) *
-                convertirNumero(servicio.precio);
+                cantidad * precio;
+
 
             const fila =
-                document.createElement("tr");
+                document.createElement(
+                    "tr"
+                );
 
-            fila.innerHTML = `
 
+            fila.innerHTML =
+                `
                 <td>
                     ${servicio.nombre}
                     ${
                         servicio.unidad
-                        ? " (" + servicio.unidad + ")"
+                        ? " (" +
+                          servicio.unidad +
+                          ")"
                         : ""
                     }
                 </td>
@@ -852,13 +1374,13 @@ function mostrarServicios() {
                         type="number"
                         min="0"
                         step="0.01"
-                        value="${servicio.cantidad}"
+                        value="${cantidad}"
                         data-servicio-cantidad="${indice}"
                     >
                 </td>
 
                 <td>
-                    $ ${formatearDinero(servicio.precio)}
+                    $ ${formatearDinero(precio)}
                 </td>
 
                 <td>
@@ -878,238 +1400,186 @@ function mostrarServicios() {
                         🗑️
                     </button>
                 </td>
-            `;
+                `;
 
-            body.appendChild(fila);
+
+            body.appendChild(
+                fila
+            );
+
         }
     );
 
+
     conectarEventosServicios();
+
 }
 
 
-// ==========================================
+// ==========================================================
 // EVENTOS SERVICIOS
-// ==========================================
+// ==========================================================
 
 function conectarEventosServicios() {
 
     const body =
-        document.getElementById("serviciosBody");
+        document.getElementById(
+            "serviciosBody"
+        );
 
-    if (!body) return;
+    if (!body) {
+        return;
+    }
 
 
     body.querySelectorAll(
         "[data-servicio-cantidad]"
-    ).forEach(input => {
+    ).forEach(
+        input => {
 
-        input.addEventListener(
-            "input",
-            function () {
+            input.addEventListener(
+                "input",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.servicioCantidad
-                    );
+                    const indice =
+                        Number(
+                            this.dataset
+                                .servicioCantidad
+                        );
 
-                const servicio =
-                    serviciosPresupuesto[indice];
 
-                if (!servicio) return;
+                    const servicio =
+                        serviciosPresupuesto[
+                            indice
+                        ];
 
-                servicio.cantidad =
-                    convertirNumero(this.value);
 
-                const subtotal =
-                    servicio.cantidad *
-                    servicio.precio;
+                    if (!servicio) {
+                        return;
+                    }
 
-                const elemento =
-                    body.querySelector(
-                        `[data-servicio-subtotal="${indice}"]`
-                    );
 
-                if (elemento) {
+                    servicio.cantidad =
+                        convertirNumero(
+                            this.value
+                        );
 
-                    elemento.textContent =
-                        formatearDinero(subtotal);
+
+                    const subtotal =
+                        servicio.cantidad *
+                        servicio.precio;
+
+
+                    const elemento =
+                        body.querySelector(
+                            `[data-servicio-subtotal="${indice}"]`
+                        );
+
+
+                    if (elemento) {
+
+                        elemento.textContent =
+                            formatearDinero(
+                                subtotal
+                            );
+
+                    }
+
+
+                    actualizarTotales();
 
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 
     body.querySelectorAll(
         "[data-eliminar-servicio]"
-    ).forEach(boton => {
+    ).forEach(
+        boton => {
 
-        boton.addEventListener(
-            "click",
-            function () {
+            boton.addEventListener(
+                "click",
+                function () {
 
-                const indice =
-                    Number(
-                        this.dataset.eliminarServicio
+                    const indice =
+                        Number(
+                            this.dataset
+                                .eliminarServicio
+                        );
+
+
+                    serviciosPresupuesto.splice(
+                        indice,
+                        1
                     );
 
-                serviciosPresupuesto.splice(
-                    indice,
-                    1
+
+                    mostrarServicios();
+
+                    actualizarTotales();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================================
+// CALCULAR TOTAL DE UNA LISTA
+// ==========================================================
+
+function calcularLista(lista) {
+
+    return lista.reduce(
+        (
+            total,
+            item
+        ) => {
+
+            return total +
+                (
+                    convertirNumero(
+                        item.cantidad
+                    ) *
+                    convertirNumero(
+                        item.precio
+                    )
                 );
 
-                mostrarServicios();
-
-            }
-        );
-
-    });
+        },
+        0
+    );
 
 }
 
 
-// ==========================================
-// CONECTAR BOTONES
-// ==========================================
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const btnMaterial =
-            document.getElementById(
-                "btnAgregarMaterial"
-            );
-
-        if (btnMaterial) {
-
-            btnMaterial.addEventListener(
-                "click",
-                agregarMaterial
-            );
-
-        }
-
-
-        const btnMano =
-            document.getElementById(
-                "btnAgregarMano"
-            );
-
-        if (btnMano) {
-
-            btnMano.addEventListener(
-                "click",
-                agregarManoObra
-            );
-
-        }
-
-
-        const btnServicio =
-            document.getElementById(
-                "btnAgregarServicio"
-            );
-
-        if (btnServicio) {
-
-            btnServicio.addEventListener(
-                "click",
-                agregarServicio
-            );
-
-        }
-
-    }
-);
-    
-// ==========================================
-// PARTE 3 FINAL — TOTALES
-// ==========================================
-
-
-// ==========================================
-// TOTAL MATERIALES
-// ==========================================
-
-function calcularTotalMateriales() {
-
-    let total = 0;
-
-    materialesPresupuesto.forEach(material => {
-
-        total +=
-            convertirNumero(material.cantidad) *
-            convertirNumero(material.precio);
-
-    });
-
-    return total;
-}
-
-
-// ==========================================
-// TOTAL MANO DE OBRA
-// ==========================================
-
-function calcularTotalMano() {
-
-    let total = 0;
-
-    manoObraPresupuesto.forEach(trabajo => {
-
-        total +=
-            convertirNumero(trabajo.cantidad) *
-            convertirNumero(trabajo.precio);
-
-    });
-
-    return total;
-}
-
-
-// ==========================================
-// TOTAL SERVICIOS
-// ==========================================
-
-function calcularTotalServicios() {
-
-    let total = 0;
-
-    serviciosPresupuesto.forEach(servicio => {
-
-        total +=
-            convertirNumero(servicio.cantidad) *
-            convertirNumero(servicio.precio);
-
-    });
-
-    return total;
-}
-
-
-// ==========================================
+// ==========================================================
 // ACTUALIZAR TOTALES
-// ==========================================
+// ==========================================================
 
 function actualizarTotales() {
 
     const totalMateriales =
-        calcularTotalMateriales();
+        calcularLista(
+            materialesPresupuesto
+        );
 
     const totalMano =
-        calcularTotalMano();
+        calcularLista(
+            manoObraPresupuesto
+        );
 
     const totalServicios =
-        calcularTotalServicios();
+        calcularLista(
+            serviciosPresupuesto
+        );
 
-
-    // -------------------------------
-    // VIÁTICOS
-    // -------------------------------
 
     const viaticos =
         convertirNumero(
@@ -1118,22 +1588,12 @@ function actualizarTotales() {
             )?.value
         );
 
-
-    // -------------------------------
-    // HOSPEDAJE
-    // -------------------------------
-
     const hospedaje =
         convertirNumero(
             document.getElementById(
                 "hospedajeTotal"
             )?.value
         );
-
-
-    // -------------------------------
-    // OTROS GASTOS
-    // -------------------------------
 
     const otros =
         convertirNumero(
@@ -1142,10 +1602,6 @@ function actualizarTotales() {
             )?.value
         );
 
-
-    // -------------------------------
-    // TOTAL GENERAL
-    // -------------------------------
 
     const totalGeneral =
         totalMateriales +
@@ -1156,18 +1612,18 @@ function actualizarTotales() {
         otros;
 
 
-    // -------------------------------
-    // MOSTRAR TOTALES
-    // -------------------------------
+    // ------------------------------------------
+    // TOTALES DE CATEGORIAS
+    // ------------------------------------------
 
-    const totalMaterialesElemento =
+    const elementoMateriales =
         document.getElementById(
             "totalMateriales"
         );
 
-    if (totalMaterialesElemento) {
+    if (elementoMateriales) {
 
-        totalMaterialesElemento.textContent =
+        elementoMateriales.textContent =
             formatearDinero(
                 totalMateriales
             );
@@ -1175,14 +1631,14 @@ function actualizarTotales() {
     }
 
 
-    const totalManoElemento =
+    const elementoMano =
         document.getElementById(
             "totalMano"
         );
 
-    if (totalManoElemento) {
+    if (elementoMano) {
 
-        totalManoElemento.textContent =
+        elementoMano.textContent =
             formatearDinero(
                 totalMano
             );
@@ -1190,14 +1646,14 @@ function actualizarTotales() {
     }
 
 
-    const totalServiciosElemento =
+    const elementoServicios =
         document.getElementById(
             "totalServicios"
         );
 
-    if (totalServiciosElemento) {
+    if (elementoServicios) {
 
-        totalServiciosElemento.textContent =
+        elementoServicios.textContent =
             formatearDinero(
                 totalServicios
             );
@@ -1205,44 +1661,19 @@ function actualizarTotales() {
     }
 
 
-    const totalGeneralElemento =
+    // ------------------------------------------
+    // TOTAL GENERAL
+    // ------------------------------------------
+
+    const elementoGeneral =
         document.getElementById(
             "totalGeneral"
         );
 
-    if (totalGeneralElemento) {
+    if (elementoGeneral) {
 
-        if (
-            totalGeneralElemento.tagName ===
-            "INPUT"
-        ) {
-
-            totalGeneralElemento.value =
-                "$ " +
-                formatearDinero(
-                    totalGeneral
-                );
-
-        } else {
-
-            totalGeneralElemento.textContent =
-                formatearDinero(
-                    totalGeneral
-                );
-
-        }
-
-    }
-
-
-    const totalGeneralTexto =
-        document.getElementById(
-            "totalGeneralTexto"
-        );
-
-    if (totalGeneralTexto) {
-
-        totalGeneralTexto.textContent =
+        elementoGeneral.value =
+            "$ " +
             formatearDinero(
                 totalGeneral
             );
@@ -1250,9 +1681,24 @@ function actualizarTotales() {
     }
 
 
-    // -------------------------------
+    const elementoGeneralTexto =
+        document.getElementById(
+            "totalGeneralTexto"
+        );
+
+    if (elementoGeneralTexto) {
+
+        elementoGeneralTexto.textContent =
+            formatearDinero(
+                totalGeneral
+            );
+
+    }
+
+
+    // ------------------------------------------
     // RESUMEN
-    // -------------------------------
+    // ------------------------------------------
 
     const resumenMateriales =
         document.getElementById(
@@ -1334,87 +1780,527 @@ function actualizarTotales() {
     }
 
 
-    console.log(
-        "TOTAL GENERAL:",
-        totalGeneral
-    );
-
     return totalGeneral;
 
 }
 
 
-// ==========================================
-// ACTUALIZAR AL CAMBIAR CANTIDADES
-// ==========================================
+// ==========================================================
+// GUARDAR PRESUPUESTO
+// ==========================================================
 
-document.addEventListener(
-    "input",
-    function (evento) {
+function guardarPresupuesto() {
 
-        if (
-            evento.target.matches(
-                'input[type="number"]'
-            )
-        ) {
+    const presupuesto = {
 
-            actualizarTotales();
+        fechaGuardado:
+            new Date().toISOString(),
 
-        }
+        numero:
+            document.getElementById(
+                "agenda"
+            )?.value || "",
+
+        fecha:
+            document.getElementById(
+                "fecha"
+            )?.value || "",
+
+        estado:
+            document.getElementById(
+                "estado"
+            )?.value || "Borrador",
+
+        empresa:
+            document.getElementById(
+                "empresa"
+            )?.value || "",
+
+        sucursal:
+            document.getElementById(
+                "sucursal"
+            )?.value || "",
+
+        provincia:
+            document.getElementById(
+                "provincia"
+            )?.value || "",
+
+        localidad:
+            document.getElementById(
+                "localidad"
+            )?.value || "",
+
+        direccion:
+            document.getElementById(
+                "direccion"
+            )?.value || "",
+
+        lugar:
+            document.getElementById(
+                "lugar"
+            )?.value || "",
+
+        tareas:
+            document.getElementById(
+                "tareas"
+            )?.value || "",
+
+        validez:
+            document.getElementById(
+                "validez"
+            )?.value || "",
+
+        condicionesPago:
+            document.getElementById(
+                "condicionesPago"
+            )?.value || "",
+
+        viaticos:
+            convertirNumero(
+                document.getElementById(
+                    "viaticos"
+                )?.value
+            ),
+
+        hospedaje:
+            convertirNumero(
+                document.getElementById(
+                    "hospedajeTotal"
+                )?.value
+            ),
+
+        otrosGastos:
+            convertirNumero(
+                document.getElementById(
+                    "otrosGastos"
+                )?.value
+            ),
+
+        otros:
+            document.getElementById(
+                "otros"
+            )?.value || "",
+
+        observaciones:
+            document.getElementById(
+                "observaciones"
+            )?.value || "",
+
+        materiales:
+            materialesPresupuesto,
+
+        manoObra:
+            manoObraPresupuesto,
+
+        servicios:
+            serviciosPresupuesto,
+
+        total:
+            actualizarTotales()
+
+    };
+
+
+    let historial = [];
+
+
+    try {
+
+        historial =
+            JSON.parse(
+                localStorage.getItem(
+                    "albe_presupuestos"
+                )
+            ) || [];
+
+    } catch (error) {
+
+        historial = [];
 
     }
-);
 
 
-// ==========================================
-// ACTUALIZAR AL AGREGAR / ELIMINAR
-// ==========================================
+    historial.push(
+        presupuesto
+    );
 
-const mostrarMaterialesOriginal =
-    mostrarMateriales;
 
-mostrarMateriales = function () {
+    localStorage.setItem(
+        "albe_presupuestos",
+        JSON.stringify(
+            historial
+        )
+    );
 
-    mostrarMaterialesOriginal();
+
+    alert(
+        "Presupuesto guardado correctamente."
+    );
+
+}
+
+
+// ==========================================================
+// NUEVO PRESUPUESTO
+// ==========================================================
+
+function nuevoPresupuesto() {
+
+    const confirmar =
+        confirm(
+            "¿Desea iniciar un nuevo presupuesto?"
+        );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    materialesPresupuesto = [];
+
+    manoObraPresupuesto = [];
+
+    serviciosPresupuesto = [];
+
+
+    const formulario =
+        document.querySelector(
+            "form"
+        );
+
+
+    if (formulario) {
+
+        formulario.reset();
+
+    }
+
+
+    mostrarMateriales();
+
+    mostrarManoObra();
+
+    mostrarServicios();
 
     actualizarTotales();
 
-};
+
+    const fecha =
+        document.getElementById(
+            "fecha"
+        );
 
 
-const mostrarManoObraOriginal =
-    mostrarManoObra;
+    if (fecha) {
 
-mostrarManoObra = function () {
+        const hoy =
+            new Date();
 
-    mostrarManoObraOriginal();
+        const año =
+            hoy.getFullYear();
 
-    actualizarTotales();
+        const mes =
+            String(
+                hoy.getMonth() + 1
+            ).padStart(
+                2,
+                "0"
+            );
 
-};
+        const dia =
+            String(
+                hoy.getDate()
+            ).padStart(
+                2,
+                "0"
+            );
 
 
-const mostrarServiciosOriginal =
-    mostrarServicios;
+        fecha.value =
+            `${año}-${mes}-${dia}`;
 
-mostrarServicios = function () {
+    }
 
-    mostrarServiciosOriginal();
-
-    actualizarTotales();
-
-};
+}
 
 
-// ==========================================
-// INICIO DE TOTALES
-// ==========================================
+// ==========================================================
+// WHATSAPP
+// ==========================================================
+
+function enviarWhatsApp() {
+
+    const empresa =
+        document.getElementById(
+            "empresa"
+        )?.value || "Cliente";
+
+
+    const numero =
+        document.getElementById(
+            "agenda"
+        )?.value || "";
+
+
+    const total =
+        document.getElementById(
+            "totalGeneral"
+        )?.value || "$ 0,00";
+
+
+    const lugar =
+        document.getElementById(
+            "lugar"
+        )?.value || "";
+
+
+    const mensaje =
+        `ALBE SERVICIOS GENERALES
+
+Presupuesto N°: ${numero}
+
+Cliente: ${empresa}
+
+Lugar: ${lugar}
+
+TOTAL: ${total}
+
+Saludos.
+ALBE Servicios Generales`;
+
+
+    const url =
+        "https://wa.me/?text=" +
+        encodeURIComponent(
+            mensaje
+        );
+
+
+    window.open(
+        url,
+        "_blank"
+    );
+
+}
+
+
+// ==========================================================
+// EVENTOS
+// ==========================================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+
+        // ------------------------------------------
+        // CARGAR BASES
+        // ------------------------------------------
+
+        cargarBases();
+
+
+        // ------------------------------------------
+        // MATERIAL
+        // ------------------------------------------
+
+        const btnMaterial =
+            document.getElementById(
+                "btnAgregarMaterial"
+            );
+
+        if (btnMaterial) {
+
+            btnMaterial.addEventListener(
+                "click",
+                agregarMaterial
+            );
+
+        }
+
+
+        const selectMaterial =
+            document.getElementById(
+                "materialBase"
+            );
+
+        if (selectMaterial) {
+
+            selectMaterial.addEventListener(
+                "change",
+                mostrarInfoMaterial
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // MANO DE OBRA
+        // ------------------------------------------
+
+        const btnMano =
+            document.getElementById(
+                "btnAgregarMano"
+            );
+
+        if (btnMano) {
+
+            btnMano.addEventListener(
+                "click",
+                agregarManoObra
+            );
+
+        }
+
+
+        const selectMano =
+            document.getElementById(
+                "manoObraBase"
+            );
+
+        if (selectMano) {
+
+            selectMano.addEventListener(
+                "change",
+                mostrarInfoManoObra
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // SERVICIOS
+        // ------------------------------------------
+
+        const btnServicio =
+            document.getElementById(
+                "btnAgregarServicio"
+            );
+
+        if (btnServicio) {
+
+            btnServicio.addEventListener(
+                "click",
+                agregarServicio
+            );
+
+        }
+
+
+        const selectServicio =
+            document.getElementById(
+                "servicioBase"
+            );
+
+        if (selectServicio) {
+
+            selectServicio.addEventListener(
+                "change",
+                mostrarInfoServicio
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // GASTOS
+        // ------------------------------------------
+
+        [
+            "viaticos",
+            "hospedajeTotal",
+            "otrosGastos"
+        ]
+        .forEach(
+            id => {
+
+                const campo =
+                    document.getElementById(
+                        id
+                    );
+
+                if (campo) {
+
+                    campo.addEventListener(
+                        "input",
+                        actualizarTotales
+                    );
+
+                }
+
+            }
+        );
+
+
+        // ------------------------------------------
+        // GUARDAR
+        // ------------------------------------------
+
+        const btnGuardar =
+            document.getElementById(
+                "btnGuardar"
+            );
+
+        if (btnGuardar) {
+
+            btnGuardar.addEventListener(
+                "click",
+                guardarPresupuesto
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // NUEVO
+        // ------------------------------------------
+
+        const btnNuevo =
+            document.getElementById(
+                "btnNuevo"
+            );
+
+        if (btnNuevo) {
+
+            btnNuevo.addEventListener(
+                "click",
+                nuevoPresupuesto
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // WHATSAPP
+        // ------------------------------------------
+
+        const btnWhatsapp =
+            document.getElementById(
+                "btnWhatsapp"
+            );
+
+        if (btnWhatsapp) {
+
+            btnWhatsapp.addEventListener(
+                "click",
+                enviarWhatsApp
+            );
+
+        }
+
+
+        // ------------------------------------------
+        // TOTAL INICIAL
+        // ------------------------------------------
+
         actualizarTotales();
+
+
+        console.log(
+            "ALBE PRESUPUESTOS V4.0 - OK"
+        );
 
     }
 );
