@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#111827"
+>
+
+<title>Atención al cliente - GESBASE</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#111827;
+}
+
+header{
+    background:#111827;
+    color:white;
+    padding:24px 20px;
+    text-align:center;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.subtitulo{
+    margin-top:7px;
+    font-size:14px;
+    color:#d1d5db;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.volver{
+    border:0;
+    background:#374151;
+    color:white;
+    padding:12px 18px;
+    border-radius:9px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.volver:hover{
+    background:#1f2937;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.card h2{
+    margin-top:0;
+    margin-bottom:8px;
+}
+
+.descripcion{
+    color:#6b7280;
+    line-height:1.5;
+    margin-bottom:20px;
+}
+
+.usuario{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    padding:14px;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.usuario-label{
+    font-size:12px;
+    color:#6b7280;
+    margin-bottom:4px;
+}
+
+.usuario-email{
+    font-weight:bold;
+    word-break:break-word;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.campo{
+    display:flex;
+    flex-direction:column;
+}
+
+.campo.full{
+    grid-column:1 / -1;
+}
+
+label{
+    font-weight:bold;
+    margin-bottom:6px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:16px;
+    background:white;
+}
+
+textarea{
+    min-height:140px;
+    resize:vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+.ayuda{
+    margin-top:5px;
+    color:#6b7280;
+    font-size:12px;
+}
+
+.botones{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+button{
+    border:0;
+    border-radius:9px;
+    padding:12px 18px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-principal{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-principal:hover{
+    background:#1d4ed8;
+}
+
+.btn-secundario{
+    background:#374151;
+    color:white;
+}
+
+.btn-secundario:hover{
+    background:#1f2937;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.mensaje{
+    display:none;
+    padding:14px;
+    border-radius:9px;
+    margin-bottom:20px;
+    line-height:1.5;
+}
+
+.mensaje.exito{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.mensaje.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.cargando{
+    text-align:center;
+    padding:25px;
+    color:#6b7280;
+}
+
+.tabla-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+}
+
+th{
+    background:#f9fafb;
+    font-size:14px;
+}
+
+.estado{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.estado-pendiente{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.estado-proceso{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.estado-resuelto{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.estado-cancelado{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.sin-consultas{
+    text-align:center;
+    padding:30px 15px;
+    color:#6b7280;
+}
+
+.prioridad-alta{
+    color:#b91c1c;
+    font-weight:bold;
+}
+
+.prioridad-media{
+    color:#92400e;
+    font-weight:bold;
+}
+
+.prioridad-baja{
+    color:#166534;
+    font-weight:bold;
+}
+
+@media(max-width:700px){
+
+    .container{
+        padding:12px;
+    }
+
+    .card{
+        padding:16px;
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .campo.full{
+        grid-column:auto;
+    }
+
+    .botones{
+        flex-direction:column;
+    }
+
+    .botones button{
+        width:100%;
+    }
+
+    table{
+        min-width:650px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        GESBASE
+    </div>
+
+    <div class="subtitulo">
+        Atención al cliente
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- VOLVER -->
+
+    <button
+        type="button"
+        class="volver"
+        id="btnVolver"
+    >
+        ← Volver al panel
+    </button>
+
+
+    <!-- MENSAJE -->
+
+    <div
+        id="mensaje"
+        class="mensaje"
+    ></div>
+
+
+    <!-- CUENTA -->
+
+    <div class="card">
+
+        <div class="usuario">
+
+            <div class="usuario-label">
+                Cuenta
+            </div>
+
+            <div
+                class="usuario-email"
+                id="emailUsuario"
+            >
+                Verificando sesión...
+            </div>
+
+        </div>
+
+
+        <h2>
+            🆘 ¿En qué podemos ayudarte?
+        </h2>
+
+        <p class="descripcion">
+
+            Enviá tu consulta al equipo de GESBASE.
+            Podrás consultar posteriormente el estado
+            de tu solicitud.
+
+        </p>
+
+
+        <!-- FORMULARIO -->
+
+        <form id="formAtencion">
+
+            <div class="grid">
+
+
+                <!-- CATEGORÍA -->
+
+                <div class="campo">
+
+                    <label for="categoria">
+                        Motivo de consulta
+                    </label>
+
+                    <select
+                        id="categoria"
+                        required
+                    >
+
+                        <option value="">
+                            Seleccionar...
+                        </option>
+
+                        <option value="Cuenta">
+                            Cuenta
+                        </option>
+
+                        <option value="Suscripción">
+                            Suscripción
+                        </option>
+
+                        <option value="Facturación">
+                            Facturación
+                        </option>
+
+                        <option value="Presupuestos">
+                            Presupuestos
+                        </option>
+
+                        <option value="Clientes">
+                            Clientes
+                        </option>
+
+                        <option value="Trabajos">
+                            Trabajos
+                        </option>
+
+                        <option value="Empleados">
+                            Empleados
+                        </option>
+
+                        <option value="Cobros">
+                            Cobros
+                        </option>
+
+                        <option value="Gastos">
+                            Gastos
+                        </option>
+
+                        <option value="Problema técnico">
+                            Problema técnico
+                        </option>
+
+                        <option value="Otro">
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- PRIORIDAD -->
+
+                <div class="campo">
+
+                    <label for="prioridad">
+                        Prioridad
+                    </label>
+
+                    <select
+                        id="prioridad"
+                        required
+                    >
+
+                        <option value="baja">
+                            Baja
+                        </option>
+
+                        <option
+                            value="media"
+                            selected
+                        >
+                            Media
+                        </option>
+
+                        <option value="alta">
+                            Alta
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- ASUNTO -->
+
+                <div class="campo full">
+
+                    <label for="asunto">
+                        Asunto
+                    </label>
+
+                    <input
+                        type="text"
+                        id="asunto"
+                        maxlength="120"
+                        placeholder="Ej: No puedo cargar una factura"
+                        required
+                    >
+
+                    <div class="ayuda">
+                        Escribí brevemente el motivo de tu consulta.
+                    </div>
+
+                </div>
+
+
+                <!-- MENSAJE -->
+
+                <div class="campo full">
+
+                    <label for="mensajeConsulta">
+                        Mensaje
+                    </label>
+
+                    <textarea
+                        id="mensajeConsulta"
+                        maxlength="3000"
+                        placeholder="Contanos qué sucede y te ayudaremos..."
+                        required
+                    ></textarea>
+
+                    <div class="ayuda">
+                        Máximo 3000 caracteres.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="botones">
+
+                <button
+                    type="submit"
+                    class="btn-principal"
+                    id="btnEnviar"
+                >
+                    📤 Enviar consulta
+                </button>
+
+                <button
+                    type="button"
+                    class="btn-secundario"
+                    id="btnLimpiar"
+                >
+                    Limpiar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- HISTORIAL -->
+
+    <div class="card">
+
+        <h2>
+            📋 Mis consultas
+        </h2>
+
+        <p class="descripcion">
+            Acá podrás consultar las solicitudes que enviaste a GESBASE.
+        </p>
+
+
+        <div
+            id="cargandoConsultas"
+            class="cargando"
+        >
+            Cargando consultas...
+        </div>
+
+
+        <div
+            id="contenedorConsultas"
+            style="display:none;"
+        >
+
+            <div class="tabla-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Fecha
+                            </th>
+
+                            <th>
+                                Asunto
+                            </th>
+
+                            <th>
+                                Categoría
+                            </th>
+
+                            <th>
+                                Prioridad
+                            </th>
+
+                            <th>
+                                Estado
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody
+                        id="tablaConsultas"
+                    ></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="sinConsultas"
+            class="sin-consultas"
+            style="display:none;"
+        >
+
+            📭 Todavía no tenés consultas.
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script type="module">
+
+
+/* ==========================================
+   FIREBASE ACTUAL DE GESBASE
+========================================== */
+
+import {
+    auth,
+    db
+} from "./Js/firebase.js";
+
+
+import {
+    onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+    collection,
+    addDoc,
+    query,
+    where,
+    orderBy,
+    getDocs,
+    serverTimestamp
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* ==========================================
+   ELEMENTOS
+========================================== */
+
+const emailUsuario =
+document.getElementById(
+    "emailUsuario"
+);
+
+const mensaje =
+document.getElementById(
+    "mensaje"
+);
+
+const formAtencion =
+document.getElementById(
+    "formAtencion"
+);
+
+const btnEnviar =
+document.getElementById(
+    "btnEnviar"
+);
+
+const btnLimpiar =
+document.getElementById(
+    "btnLimpiar"
+);
+
+const btnVolver =
+document.getElementById(
+    "btnVolver"
+);
+
+const cargandoConsultas =
+document.getElementById(
+    "cargandoConsultas"
+);
+
+const contenedorConsultas =
+document.getElementById(
+    "contenedorConsultas"
+);
+
+const tablaConsultas =
+document.getElementById(
+    "tablaConsultas"
+);
+
+const sinConsultas =
+document.getElementById(
+    "sinConsultas"
+);
+
+
+/* ==========================================
+   USUARIO ACTUAL
+========================================== */
+
+let usuarioActual = null;
+
+
+/* ==========================================
+   MOSTRAR MENSAJE
+========================================== */
+
+function mostrarMensaje(
+    texto,
+    tipo
+){
+
+    mensaje.textContent =
+        texto;
+
+    mensaje.className =
+        "mensaje " + tipo;
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* ==========================================
+   SESIÓN
+========================================== */
+
+onAuthStateChanged(
+    auth,
+    async function(usuario){
+
+        if(!usuario){
+
+            window.location.replace(
+                "login.html"
+            );
+
+            return;
+
+        }
+
+
+        usuarioActual =
+            usuario;
+
+
+        emailUsuario.textContent =
+            usuario.email ||
+            "Usuario";
+
+
+        await cargarConsultas();
+
+    }
+);
+
+
+/* ==========================================
+   ENVIAR CONSULTA
+========================================== */
+
+formAtencion.addEventListener(
+    "submit",
+    async function(event){
+
+        event.preventDefault();
+
+
+        if(!usuarioActual){
+
+            mostrarMensaje(
+                "No hay una sesión activa.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const categoria =
+            document.getElementById(
+                "categoria"
+            ).value;
+
+
+        const prioridad =
+            document.getElementById(
+                "prioridad"
+            ).value;
+
+
+        const asunto =
+            document.getElementById(
+                "asunto"
+            ).value.trim();
+
+
+        const mensajeConsulta =
+            document.getElementById(
+                "mensajeConsulta"
+            ).value.trim();
+
+
+        if(
+            !categoria ||
+            !prioridad ||
+            !asunto ||
+            !mensajeConsulta
+        ){
+
+            mostrarMensaje(
+                "Completá todos los campos obligatorios.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        btnEnviar.disabled =
+            true;
+
+        btnEnviar.textContent =
+            "Enviando...";
+
+
+        try{
+
+
+            /* ==================================
+               CREAR CONSULTA
+            ================================== */
+
+            const referencia =
+                collection(
+                    db,
+                    "atencion_cliente"
+                );
+
+
+            const nuevaConsulta =
+                await addDoc(
+                    referencia,
+                    {
+
+                        uid:
+                            usuarioActual.uid,
+
+                        email:
+                            usuarioActual.email ||
+                            "",
+
+                        categoria:
+                            categoria,
+
+                        prioridad:
+                            prioridad,
+
+                        asunto:
+                            asunto,
+
+                        mensaje:
+                            mensajeConsulta,
+
+                        estado:
+                            "pendiente",
+
+                        asignadoA:
+                            null,
+
+                        creado:
+                            serverTimestamp(),
+
+                        actualizado:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+            console.log(
+                "Consulta creada:",
+                nuevaConsulta.id
+            );
+
+
+            mostrarMensaje(
+                "Tu consulta fue enviada correctamente. El equipo de GESBASE la revisará.",
+                "exito"
+            );
+
+
+            /* ==================================
+               LIMPIAR
+            ================================== */
+
+            formAtencion.reset();
+
+
+            document.getElementById(
+                "prioridad"
+            ).value =
+                "media";
+
+
+            await cargarConsultas();
+
+
+        }
+        catch(error){
+
+            console.error(
+                "Error creando consulta:",
+                error
+            );
+
+
+            mostrarMensaje(
+                "No se pudo enviar la consulta. " +
+                error.message,
+                "error"
+            );
+
+        }
+        finally{
+
+            btnEnviar.disabled =
+                false;
+
+            btnEnviar.textContent =
+                "📤 Enviar consulta";
+
+        }
+
+    }
+);
+
+
+/* ==========================================
+   CARGAR CONSULTAS DEL USUARIO
+========================================== */
+
+async function cargarConsultas(){
+
+    if(!usuarioActual){
+
+        return;
+
+    }
+
+
+    cargandoConsultas.style.display =
+        "block";
+
+    contenedorConsultas.style.display =
+        "none";
+
+    sinConsultas.style.display =
+        "none";
+
+
+    tablaConsultas.innerHTML =
+        "";
+
+
+    try{
+
+
+        const referencia =
+            collection(
+                db,
+                "atencion_cliente"
+            );
+
+
+        const consulta =
+            query(
+                referencia,
+
+                where(
+                    "uid",
+                    "==",
+                    usuarioActual.uid
+                ),
+
+                orderBy(
+                    "creado",
+                    "desc"
+                )
+            );
+
+
+        const resultado =
+            await getDocs(
+                consulta
+            );
+
+
+        cargandoConsultas.style.display =
+            "none";
+
+
+        if(
+            resultado.empty
+        ){
+
+            sinConsultas.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        resultado.forEach(
+            documento => {
+
+                const datos =
+                    documento.data();
+
+
+                const fila =
+                    document.createElement(
+                        "tr"
+                    );
+
+
+                const fecha =
+                    formatearFecha(
+                        datos.creado
+                    );
+
+
+                const estado =
+                    String(
+                        datos.estado ||
+                        "pendiente"
+                    )
+                    .toLowerCase();
+
+
+                const prioridad =
+                    String(
+                        datos.prioridad ||
+                        "media"
+                    )
+                    .toLowerCase();
+
+
+                fila.innerHTML = `
+
+                    <td>
+                        ${escapeHTML(fecha)}
+                    </td>
+
+                    <td>
+                        <strong>
+                            ${escapeHTML(
+                                datos.asunto ||
+                                ""
+                            )}
+                        </strong>
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            datos.categoria ||
+                            ""
+                        )}
+                    </td>
+
+                    <td>
+                        <span
+                            class="${clasePrioridad(
+                                prioridad
+                            )}"
+                        >
+                            ${textoPrioridad(
+                                prioridad
+                            )}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span
+                            class="estado ${claseEstado(
+                                estado
+                            )}"
+                        >
+                            ${textoEstado(
+                                estado
+                            )}
+                        </span>
+                    </td>
+
+                `;
+
+
+                tablaConsultas.appendChild(
+                    fila
+                );
+
+            }
+        );
+
+
+        contenedorConsultas.style.display =
+            "block";
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Error cargando consultas:",
+            error
+        );
+
+
+        cargandoConsultas.style.display =
+            "none";
+
+
+        mostrarMensaje(
+            "No se pudieron cargar tus consultas. " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   FORMATO FECHA
+========================================== */
+
+function formatearFecha(
+    timestamp
+){
+
+    if(!timestamp){
+
+        return "Procesando...";
+
+    }
+
+
+    try{
+
+        const fecha =
+            timestamp.toDate();
+
+
+        return fecha.toLocaleString(
+            "es-AR",
+            {
+                day:"2-digit",
+                month:"2-digit",
+                year:"numeric",
+                hour:"2-digit",
+                minute:"2-digit"
+            }
+        );
+
+    }
+    catch(error){
+
+        return "Sin fecha";
+
+    }
+
+}
+
+
+/* ==========================================
+   ESTADO
+========================================== */
+
+function textoEstado(
+    estado
+){
+
+    const estados = {
+
+        pendiente:
+            "Pendiente",
+
+        "en proceso":
+            "En proceso",
+
+        proceso:
+            "En proceso",
+
+        resuelto:
+            "Resuelto",
+
+        cancelado:
+            "Cancelado"
+
+    };
+
+
+    return estados[estado] ||
+        "Pendiente";
+
+}
+
+
+function claseEstado(
+    estado
+){
+
+    if(
+        estado === "en proceso" ||
+        estado === "proceso"
+    ){
+
+        return "estado-proceso";
+
+    }
+
+
+    if(
+        estado === "resuelto"
+    ){
+
+        return "estado-resuelto";
+
+    }
+
+
+    if(
+        estado === "cancelado"
+    ){
+
+        return "estado-cancelado";
+
+    }
+
+
+    return "estado-pendiente";
+
+}
+
+
+/* ==========================================
+   PRIORIDAD
+========================================== */
+
+function textoPrioridad(
+    prioridad
+){
+
+    const prioridades = {
+
+        baja:
+            "Baja",
+
+        media:
+            "Media",
+
+        alta:
+            "Alta"
+
+    };
+
+
+    return prioridades[prioridad] ||
+        "Media";
+
+}
+
+
+function clasePrioridad(
+    prioridad
+){
+
+    if(
+        prioridad === "alta"
+    ){
+
+        return "prioridad-alta";
+
+    }
+
+
+    if(
+        prioridad === "baja"
+    ){
+
+        return "prioridad-baja";
+
+    }
+
+
+    return "prioridad-media";
+
+}
+
+
+/* ==========================================
+   LIMPIAR
+========================================== */
+
+btnLimpiar.addEventListener(
+    "click",
+    function(){
+
+        formAtencion.reset();
+
+
+        document.getElementById(
+            "prioridad"
+        ).value =
+            "media";
+
+    }
+);
+
+
+/* ==========================================
+   VOLVER
+========================================== */
+
+btnVolver.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "index.html";
+
+    }
+);
+
+
+/* ==========================================
+   SEGURIDAD HTML
+========================================== */
+
+function escapeHTML(
+    texto
+){
+
+    return String(
+        texto ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
