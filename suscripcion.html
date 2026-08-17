@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#111827"
+>
+
+<title>Suscripción - GESBASE</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#111827;
+}
+
+header{
+    background:#111827;
+    color:white;
+    padding:25px 20px;
+    text-align:center;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.subtitulo{
+    margin-top:7px;
+    color:#d1d5db;
+    font-size:14px;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.volver{
+    border:0;
+    background:#374151;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.volver:hover{
+    background:#1f2937;
+}
+
+.usuario{
+    background:white;
+    border-radius:12px;
+    padding:16px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.usuario-label{
+    color:#6b7280;
+    font-size:13px;
+    margin-bottom:5px;
+}
+
+.usuario-email{
+    font-weight:bold;
+    word-break:break-word;
+}
+
+.estado{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    margin-bottom:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.estado h2{
+    margin:0 0 18px;
+}
+
+.estado-linea{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.plan-actual{
+    font-size:18px;
+}
+
+.plan-actual span{
+    color:#6b7280;
+}
+
+.badge{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.badge.activa{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge.prueba{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.badge.pendiente{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.badge.cancelada,
+.badge.vencida{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.titulo-planes{
+    text-align:center;
+    margin:30px 0 20px;
+}
+
+.titulo-planes h2{
+    margin:0 0 8px;
+    font-size:26px;
+}
+
+.titulo-planes p{
+    margin:0;
+    color:#6b7280;
+}
+
+.planes{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.plan{
+    background:white;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    border:2px solid transparent;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+}
+
+.plan.destacado{
+    border-color:#2563eb;
+}
+
+.etiqueta{
+    position:absolute;
+    top:-12px;
+    right:18px;
+    background:#2563eb;
+    color:white;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.plan h3{
+    margin:0;
+    font-size:22px;
+}
+
+.plan-descripcion{
+    color:#6b7280;
+    line-height:1.5;
+    min-height:72px;
+    margin-top:10px;
+}
+
+.precio{
+    margin:15px 0;
+    font-size:34px;
+    font-weight:bold;
+}
+
+.precio span{
+    font-size:14px;
+    color:#6b7280;
+    font-weight:normal;
+}
+
+.prueba{
+    background:#ecfdf5;
+    color:#166534;
+    border-radius:8px;
+    padding:10px;
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.lista{
+    padding-left:20px;
+    line-height:1.8;
+    margin-top:5px;
+    margin-bottom:25px;
+    flex:1;
+}
+
+.btn-plan{
+    width:100%;
+    border:0;
+    border-radius:9px;
+    padding:14px;
+    background:#111827;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-plan:hover{
+    opacity:.9;
+}
+
+.plan.destacado .btn-plan{
+    background:#2563eb;
+}
+
+.plan-empresa .btn-plan{
+    background:#7c3aed;
+}
+
+.btn-plan:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+.mensaje{
+    display:none;
+    padding:14px;
+    border-radius:9px;
+    margin-bottom:20px;
+    line-height:1.5;
+}
+
+.mensaje.exito{
+    display:block;
+    background:#dcfce7;
+    color:#166534;
+}
+
+.mensaje.error{
+    display:block;
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.condiciones{
+    background:white;
+    border-radius:14px;
+    padding:20px;
+    margin-top:25px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.condiciones h3{
+    margin-top:0;
+}
+
+.condiciones p{
+    color:#6b7280;
+    line-height:1.6;
+    font-size:14px;
+}
+
+.seguridad{
+    text-align:center;
+    color:#6b7280;
+    font-size:13px;
+    margin:25px 0;
+    line-height:1.6;
+}
+
+.cargando{
+    text-align:center;
+    padding:30px;
+    color:#6b7280;
+}
+
+@media(max-width:850px){
+
+    .planes{
+        grid-template-columns:1fr;
+    }
+
+    .plan-descripcion{
+        min-height:auto;
+    }
+
+    .container{
+        padding:12px;
+    }
+
+}
+
+@media(max-width:500px){
+
+    header{
+        padding:20px 15px;
+    }
+
+    .logo{
+        font-size:28px;
+    }
+
+    .estado-linea{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .precio{
+        font-size:30px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        GESBASE
+    </div>
+
+    <div class="subtitulo">
+        Tu empresa. Todo organizado.
+    </div>
+
+</header>
+
+
+<div class="container">
+
+
+    <!-- VOLVER -->
+
+    <button
+        type="button"
+        class="volver"
+        id="btnVolver"
+    >
+        ← Volver al panel
+    </button>
+
+
+    <!-- USUARIO -->
+
+    <div class="usuario">
+
+        <div class="usuario-label">
+            Cuenta GESBASE
+        </div>
+
+        <div
+            class="usuario-email"
+            id="emailUsuario"
+        >
+            Verificando sesión...
+        </div>
+
+    </div>
+
+
+    <!-- MENSAJE -->
+
+    <div
+        id="mensaje"
+        class="mensaje"
+    ></div>
+
+
+    <!-- ESTADO ACTUAL -->
+
+    <section class="estado">
+
+        <h2>
+            ⭐ Mi suscripción
+        </h2>
+
+        <div class="estado-linea">
+
+            <div class="plan-actual">
+
+                <span>
+                    Plan actual:
+                </span>
+
+                <strong id="planActual">
+                    Sin suscripción
+                </strong>
+
+            </div>
+
+
+            <span
+                id="estadoActual"
+                class="badge pendiente"
+            >
+                Sin activar
+            </span>
+
+        </div>
+
+    </section>
+
+
+    <!-- TÍTULO -->
+
+    <div class="titulo-planes">
+
+        <h2>
+            Elegí tu plan
+        </h2>
+
+        <p>
+            Probá GESBASE durante 7 días.
+        </p>
+
+    </div>
+
+
+    <!-- PLANES -->
+
+    <section class="planes">
+
+
+        <!-- =================================
+             PLAN INICIAL
+        ================================== -->
+
+        <article class="plan">
+
+            <h3>
+                🟢 GESBASE Inicial
+            </h3>
+
+            <div class="plan-descripcion">
+
+                Para pequeños negocios y
+                emprendimientos.
+
+            </div>
+
+
+            <div class="precio">
+
+                $9.000
+
+                <span>
+                    ARS / mes
+                </span>
+
+            </div>
+
+
+            <div class="prueba">
+
+                🎁 7 días de prueba gratis
+
+            </div>
+
+
+            <ul class="lista">
+
+                <li>
+                    Clientes
+                </li>
+
+                <li>
+                    Presupuestos
+                </li>
+
+                <li>
+                    Trabajos
+                </li>
+
+                <li>
+                    Facturas
+                </li>
+
+                <li>
+                    Cobros
+                </li>
+
+                <li>
+                    Gastos
+                </li>
+
+                <li>
+                    Fotos
+                </li>
+
+                <li>
+                    Mi empresa
+                </li>
+
+            </ul>
+
+
+            <button
+                type="button"
+                class="btn-plan"
+                id="btnInicial"
+            >
+                Probar 7 días gratis
+            </button>
+
+        </article>
+
+
+        <!-- =================================
+             PLAN PROFESIONAL
+        ================================== -->
+
+        <article class="plan destacado">
+
+            <div class="etiqueta">
+                MÁS ELEGIDO
+            </div>
+
+
+            <h3>
+                🔵 GESBASE Profesional
+            </h3>
+
+
+            <div class="plan-descripcion">
+
+                Para empresas que necesitan
+                más herramientas de gestión.
+
+            </div>
+
+
+            <div class="precio">
+
+                $19.000
+
+                <span>
+                    ARS / mes
+                </span>
+
+            </div>
+
+
+            <div class="prueba">
+
+                🎁 7 días de prueba gratis
+
+            </div>
+
+
+            <ul class="lista">
+
+                <li>
+                    Todo lo del plan Inicial
+                </li>
+
+                <li>
+                    Empleados
+                </li>
+
+                <li>
+                    Correo empresarial
+                </li>
+
+                <li>
+                    Control de trabajos
+                </li>
+
+                <li>
+                    Avisos de vencimiento
+                </li>
+
+                <li>
+                    Gestión empresarial
+                </li>
+
+                <li>
+                    Herramientas administrativas
+                </li>
+
+            </ul>
+
+
+            <button
+                type="button"
+                class="btn-plan"
+                id="btnProfesional"
+            >
+                Probar 7 días gratis
+            </button>
+
+        </article>
+
+
+        <!-- =================================
+             PLAN EMPRESA
+        ================================== -->
+
+        <article class="plan plan-empresa">
+
+            <h3>
+                🟣 GESBASE Empresa
+            </h3>
+
+
+            <div class="plan-descripcion">
+
+                Para empresas que necesitan
+                gestión avanzada.
+
+            </div>
+
+
+            <div class="precio">
+
+                $39.000
+
+                <span>
+                    ARS / mes
+                </span>
+
+            </div>
+
+
+            <div class="prueba">
+
+                🎁 7 días de prueba gratis
+
+            </div>
+
+
+            <ul class="lista">
+
+                <li>
+                    Todo lo del plan Profesional
+                </li>
+
+                <li>
+                    Más usuarios
+                </li>
+
+                <li>
+                    Gestión avanzada
+                </li>
+
+                <li>
+                    Reportes
+                </li>
+
+                <li>
+                    Administración de usuarios
+                </li>
+
+                <li>
+                    Herramientas avanzadas
+                </li>
+
+                <li>
+                    Soporte prioritario
+                </li>
+
+            </ul>
+
+
+            <button
+                type="button"
+                class="btn-plan"
+                id="btnEmpresa"
+            >
+                Probar 7 días gratis
+            </button>
+
+        </article>
+
+
+    </section>
+
+
+    <!-- CONDICIONES -->
+
+    <section class="condiciones">
+
+        <h3>
+            ℹ️ Sobre la suscripción
+        </h3>
+
+        <p>
+            Los planes de GESBASE se cobran
+            mensualmente mediante Mercado Pago.
+            Cada plan incluye el período de prueba
+            configurado en Mercado Pago.
+        </p>
+
+        <p>
+            El importe mostrado corresponde al
+            precio mensual configurado para cada plan.
+        </p>
+
+    </section>
+
+
+    <div class="seguridad">
+
+        🔒 Pago procesado de forma segura por
+        Mercado Pago.
+
+        <br>
+
+        GESBASE no almacena los datos de tu tarjeta.
+
+    </div>
+
+
+</div>
+
+
+<script type="module">
+
+
+/* ==========================================
+   FIREBASE ACTUAL DE GESBASE
+========================================== */
+
+import {
+    auth,
+    db
+} from "./Js/firebase.js";
+
+
+import {
+    onAuthStateChanged
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+
+import {
+    doc,
+    getDoc
+} from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+
+/* ==========================================
+   ENLACES MERCADO PAGO
+========================================== */
+
+const ENLACES_MERCADO_PAGO = {
+
+    Inicial:
+        "https://mpago.la/1vgKgkJ",
+
+    Profesional:
+        "https://mpago.la/1477cbu",
+
+    Empresa:
+        "https://mpago.la/1JvL7BE"
+
+};
+
+
+/* ==========================================
+   ELEMENTOS
+========================================== */
+
+const emailUsuario =
+document.getElementById(
+    "emailUsuario"
+);
+
+const planActual =
+document.getElementById(
+    "planActual"
+);
+
+const estadoActual =
+document.getElementById(
+    "estadoActual"
+);
+
+const mensaje =
+document.getElementById(
+    "mensaje"
+);
+
+const btnInicial =
+document.getElementById(
+    "btnInicial"
+);
+
+const btnProfesional =
+document.getElementById(
+    "btnProfesional"
+);
+
+const btnEmpresa =
+document.getElementById(
+    "btnEmpresa"
+);
+
+const btnVolver =
+document.getElementById(
+    "btnVolver"
+);
+
+
+/* ==========================================
+   USUARIO ACTUAL
+========================================== */
+
+let usuarioActual = null;
+
+
+/* ==========================================
+   MOSTRAR MENSAJE
+========================================== */
+
+function mostrarMensaje(
+    texto,
+    tipo
+){
+
+    mensaje.textContent =
+        texto;
+
+    mensaje.className =
+        "mensaje " + tipo;
+
+}
+
+
+/* ==========================================
+   SESIÓN FIREBASE
+========================================== */
+
+onAuthStateChanged(
+    auth,
+    async function(usuario){
+
+        if(!usuario){
+
+            window.location.replace(
+                "login.html"
+            );
+
+            return;
+
+        }
+
+
+        usuarioActual =
+            usuario;
+
+
+        emailUsuario.textContent =
+            usuario.email ||
+            "Usuario";
+
+
+        await cargarDatosUsuario(
+            usuario.uid
+        );
+
+    }
+);
+
+
+/* ==========================================
+   CARGAR DATOS DEL USUARIO
+========================================== */
+
+async function cargarDatosUsuario(uid){
+
+    try{
+
+        const referencia =
+            doc(
+                db,
+                "usuarios",
+                uid
+            );
+
+
+        const documento =
+            await getDoc(
+                referencia
+            );
+
+
+        if(
+            !documento.exists()
+        ){
+
+            planActual.textContent =
+                "Sin suscripción";
+
+            estadoActual.textContent =
+                "Sin activar";
+
+            estadoActual.className =
+                "badge pendiente";
+
+            return;
+
+        }
+
+
+        const datos =
+            documento.data();
+
+
+        /*
+         * Estos campos son compatibles
+         * con diferentes nombres que ya
+         * puede tener tu colección usuarios.
+         */
+
+        const plan =
+            datos.planSuscripcion ||
+            datos.plan ||
+            datos.suscripcionPlan ||
+            "";
+
+
+        const estado =
+            datos.estadoSuscripcion ||
+            datos.estado ||
+            "";
+
+
+        if(plan){
+
+            planActual.textContent =
+                plan;
+
+        }
+        else{
+
+            planActual.textContent =
+                "Sin suscripción";
+
+        }
+
+
+        actualizarEstadoVisual(
+            estado
+        );
+
+
+    }
+    catch(error){
+
+        console.error(
+            "Error leyendo suscripción:",
+            error
+        );
+
+
+        mostrarMensaje(
+            "No se pudo consultar el estado de tu suscripción.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   ESTADO VISUAL
+========================================== */
+
+function actualizarEstadoVisual(
+    estado
+){
+
+    const valor =
+        String(
+            estado || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if(
+        valor === "activa" ||
+        valor === "activo" ||
+        valor === "authorized"
+    ){
+
+        estadoActual.textContent =
+            "Activa";
+
+        estadoActual.className =
+            "badge activa";
+
+        return;
+
+    }
+
+
+    if(
+        valor === "prueba" ||
+        valor === "trial"
+    ){
+
+        estadoActual.textContent =
+            "Prueba activa";
+
+        estadoActual.className =
+            "badge prueba";
+
+        return;
+
+    }
+
+
+    if(
+        valor === "cancelada" ||
+        valor === "cancelado"
+    ){
+
+        estadoActual.textContent =
+            "Cancelada";
+
+        estadoActual.className =
+            "badge cancelada";
+
+        return;
+
+    }
+
+
+    if(
+        valor === "vencida" ||
+        valor === "vencido"
+    ){
+
+        estadoActual.textContent =
+            "Vencida";
+
+        estadoActual.className =
+            "badge vencida";
+
+        return;
+
+    }
+
+
+    estadoActual.textContent =
+        "Sin activar";
+
+    estadoActual.className =
+        "badge pendiente";
+
+}
+
+
+/* ==========================================
+   DESACTIVAR BOTONES
+========================================== */
+
+function bloquearBotones(){
+
+    btnInicial.disabled =
+        true;
+
+    btnProfesional.disabled =
+        true;
+
+    btnEmpresa.disabled =
+        true;
+
+}
+
+
+/* ==========================================
+   ACTIVAR BOTONES
+========================================== */
+
+function activarBotones(){
+
+    btnInicial.disabled =
+        false;
+
+    btnProfesional.disabled =
+        false;
+
+    btnEmpresa.disabled =
+        false;
+
+}
+
+
+/* ==========================================
+   ABRIR MERCADO PAGO
+========================================== */
+
+function contratarPlan(
+    nombrePlan
+){
+
+    if(!usuarioActual){
+
+        mostrarMensaje(
+            "Esperá un momento mientras verificamos tu sesión.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const enlace =
+        ENLACES_MERCADO_PAGO[
+            nombrePlan
+        ];
+
+
+    if(!enlace){
+
+        mostrarMensaje(
+            "No se encontró el enlace del plan.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    bloquearBotones();
+
+
+    mostrarMensaje(
+        "Abriendo Mercado Pago para contratar el plan " +
+        nombrePlan +
+        "...",
+        "exito"
+    );
+
+
+    /*
+     * Guardamos solamente información
+     * no sensible para poder identificar
+     * qué plan eligió el usuario cuando
+     * vuelva a GESBASE.
+     */
+
+    try{
+
+        sessionStorage.setItem(
+            "gesbase_plan_seleccionado",
+            nombrePlan
+        );
+
+    }
+    catch(error){
+
+        console.warn(
+            "No se pudo guardar la selección:",
+            error
+        );
+
+    }
+
+
+    /*
+     * Redirección a Mercado Pago.
+     */
+
+    window.location.href =
+        enlace;
+
+}
+
+
+/* ==========================================
+   BOTONES
+========================================== */
+
+btnInicial.addEventListener(
+    "click",
+    function(){
+
+        contratarPlan(
+            "Inicial"
+        );
+
+    }
+);
+
+
+btnProfesional.addEventListener(
+    "click",
+    function(){
+
+        contratarPlan(
+            "Profesional"
+        );
+
+    }
+);
+
+
+btnEmpresa.addEventListener(
+    "click",
+    function(){
+
+        contratarPlan(
+            "Empresa"
+        );
+
+    }
+);
+
+
+/* ==========================================
+   VOLVER
+========================================== */
+
+btnVolver.addEventListener(
+    "click",
+    function(){
+
+        window.location.href =
+            "index.html";
+
+    }
+);
+
+
+</script>
+
+
+</body>
+
+</html>
